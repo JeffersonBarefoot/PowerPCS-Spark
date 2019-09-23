@@ -3,7 +3,7 @@
 <ul>
 
 <li>
-    <a href="/PosMain" href="#">Setup 9876 description</a>
+    <a href="/PosMain" href="#">Setup 987 description</a>
 </li>
 
 
