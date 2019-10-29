@@ -1,6 +1,7 @@
 @extends('spark::layouts.app')
 
 @section('content')
+<!-- Include a navbar with auth user features-->
 <home :user="user" inline-template>
     <div class="container">
         <!-- Application Dashboard -->
