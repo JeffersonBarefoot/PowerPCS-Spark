@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
+@extends('home')
+@section('navbarsection')
+@parent
+
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Laravel 5.8 & MySQL CRUD Tutorial</title>
@@ -30,7 +35,7 @@
 
 
     <div class="row">
-        <div class="column" style="background-color:#aaa;">
+        <div class="col-xs-4" style="background-color:#aaa;">
 
 
           <h2>Navigation</h2>
@@ -99,9 +104,9 @@
 
         </div>
 
-      <div class="column">
-        @yield('main')
-      </div>
+        <div class="col-xs-4">
+          @yield('main')
+        </div>
       </form>
 
 
@@ -111,4 +116,5 @@
     </div>
   <script src="{{ asset('js/app.js') }}" type="text/js"></script>
 </body>
+@endsection
 </html>

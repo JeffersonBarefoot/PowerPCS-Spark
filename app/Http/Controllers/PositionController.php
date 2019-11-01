@@ -135,9 +135,9 @@ dump('positioncontroller.index');
     //***************************************************
     public function show($id,Request $request)
     {
-      dump('positioncontroller.show');
-      dump($id);
-      dump("end");
+      // dump('positioncontroller.show');
+      // dump($id);
+      // dump("end");
 
       if (is_null($id)) {
         $id=1;
@@ -175,7 +175,7 @@ dump('positioncontroller.index');
       //   ->with(compact('positionsnavbar'))
       //   ->with(compact('incumbentsinposition'));
 
-      return View('home')
+      return View('positions.show')
         ->with(compact('position'))
         ->with(compact('viewincumbent'))
         ->with(compact('positionsnavbar'))
