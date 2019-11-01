@@ -466,9 +466,14 @@
                         @endsection
 
                     </div>
+                    a
                 </div>
+                b
             </div>
+            c
         </div>
+        d
     </div>
+
 </home>
 @endsection

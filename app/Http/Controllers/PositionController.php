@@ -136,7 +136,12 @@ dump('positioncontroller.index');
     public function show($id,Request $request)
     {
       dump('positioncontroller.show');
+      dump($id);
+      dump("end");
 
+      if (is_null($id)) {
+        $id=1;
+      }
       $position = Position::find($id);
 
 //dd($id);
@@ -164,7 +169,13 @@ dump('positioncontroller.index');
         ->where('id','=',$viewincid)
         ->get();
 
-      return View('positions.show')
+      // return View('positions.show')
+      //   ->with(compact('position'))
+      //   ->with(compact('viewincumbent'))
+      //   ->with(compact('positionsnavbar'))
+      //   ->with(compact('incumbentsinposition'));
+
+      return View('home')
         ->with(compact('position'))
         ->with(compact('viewincumbent'))
         ->with(compact('positionsnavbar'))
@@ -190,6 +201,9 @@ dump('positioncontroller.index');
          public function edit($id)
     {
       // dump('positioncontroller.edit');
+      if (is_null($id)) {
+        $id=1;
+      }
 
       $position = Position::find($id);
 
@@ -214,6 +228,11 @@ dump('positioncontroller.index');
      //***************************************************
     public function update(Request $request, $id)
     {
+
+      if (is_null($id)) {
+        $id=1;
+      }
+
       // dump('positioncontroller.update');
       UpdatePosition($id, $request);
 
