@@ -30,13 +30,14 @@ background-color: #EBF5FB;
 </style>
 
 <div class="row">
-    <div class="col-sm-8 offset-sm-0">
-        <h1 class="display-5">{{$position->company}} / {{$position->posno}}: {{$position->descr}}</h1>
+    <!-- <div class="col-sm-8 offset-sm-0"> -->
+    <div class="col-md-auto">
+        <h1 class="display-5">&nbsp;&nbsp;&nbsp;{{$position->descr}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{$position->company}} / {{$position->posno}}</small></h1>
 
         <form action={{route('positions.show',$position->id)}} method="get">
 
-        <input type="checkbox" name="mycheckbox" value="myvalue" onclick={{route('positions.show',$position->id)}}>TestCheckBox</input><br>
-        <input type="checkbox" name="mycheckbox" value="myvalue" onclick=“this.form.submit()”>TestCheckBox</input><br>
+        <!-- <input type="checkbox" name="mycheckbox" value="myvalue" onclick={{route('positions.show',$position->id)}}>TestCheckBox</input><br>
+        <input type="checkbox" name="mycheckbox" value="myvalue" onclick=“this.form.submit()”>TestCheckBox</input><br> -->
 
         @if ($errors->any())
         <div class="alert alert-danger">
@@ -69,7 +70,7 @@ background-color: #EBF5FB;
         <h4 class="panel-title">
             <table>
               <tr>
-                <td width="30%"><a data-toggle="collapse" href="#collapse1">Identification, Dates</a></td>
+                <td width="50%"><a data-toggle="collapse" href="#collapse1">Identification, Dates</a></td>
                 <td>{{$position->company}} / {{$position->posno}} / {{$position->curstatus}} :: {{$position->descr}} </td>
               </tr>
             </table>
@@ -189,7 +190,7 @@ background-color: #EBF5FB;
         <h4 class="panel-title">
           <table>
             <tr>
-              <td width="30%"><a data-toggle="collapse" href="#collapse2">Budgets and FTEs</a></td>
+              <td width="50%"><a data-toggle="collapse" href="#collapse2">Budgets and FTEs</a></td>
               <td>{{$position->fulltimeequiv}} FTEs / $ {{$position->budgsal}} </td>
             </tr>
           </table>
@@ -207,7 +208,7 @@ background-color: #EBF5FB;
               <tr>
                   <td width="20%">Annual FTE Basis</td>
                   <td width="20%"><input type="text" class="form-control" name="annftehour" value="{{$position->annftehour}}"></td>
-                  <td width="20%"><input type="text" class="form-control" name="annftehour" value="{{ $position->annftehour}}"></td>
+                  <td width="5%"><input type="text" class="form-control" name="annftehour" value="{{ $position->annftehour}}"></td>
                   <td></td>
                   <td></td>
 

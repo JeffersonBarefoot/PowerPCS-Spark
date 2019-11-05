@@ -4,13 +4,15 @@
 @parent
 <!-- Include a navbar with auth user features-->
 <home :user="user" inline-template>
-    <div class="container">
+    <div class="container-fluid">
         <!-- Application Dashboard -->
-        <div class="row justify-content-center">
-            <div class="col-md-8">
+        <!-- <div class="row justify-content-center"> -->
+        <div class="row">
+            <!-- <div class="col-md-8"> -->
+            <div class="col">
                 <!-- <div class="card card-default"> -->
 
-test verbiage
+<!-- test verbiage -->
   @yield("navbarsection","didn't find the navbarsection")
 
                 <!-- </div> -->
