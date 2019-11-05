@@ -83,37 +83,73 @@ background-color: #EBF5FB;
         <!-- <div class="panel-body">Panel Body #1a -->
         	<table style="width:100%">
             <tr>
-              <td colspan="2"><span style="font-weight: bold;">Dates</span></td>
+              <td colspan="2"><span style="font-weight: bold;">General</span></td>
               <td></td>
               <td colspan="2"></td>
             </tr>
 
             <tr>
-              <td width="24%">Established</td>
-              <td width="24%"><input type="text" class="form-control" name="annftehour" value="{{$position->avail_date}}" {{$readonly}}></td>
+
+
+              <td width="24%">Position Status:</td>
+              <td width="24%">
+                @if ($position->active=='A')
+                  <input type=radio id=radio11 name=active value="A" checked=checked/> Active&nbsp;&nbsp;&nbsp;
+                  <input type=radio id=radio12 name=active value="I"/> Inactive
+                @else
+                  <input type=radio id=radio11 name=active value="A"/> Active&nbsp;&nbsp;&nbsp;
+                  <input type=radio id=radio12 name=active value="I" checked=checked/> Inactive
+                @endif
+              </td>
               <td width="4%"></td>
-              <td width="24%"></td>
-              <td width="24%"></td>
+              <td width="24%">Established</td>
+              <td width="24%"><input type="text" class="form-control" name="annftehour" value="{{$position->startdate}}" {{$readonly}}></td>
             </tr>
 
             <tr>
+
+              <td>Allow multiple incumbents:</td>
+              <td>
+                @if ($position->multincumb==1)
+                  <input type=radio id=radio2 name=multincumb value=1 checked=checked/> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input type=radio id=radio2 name=multincumb value=0/> No
+                @else
+                  <input type=radio id=radio2 name=multincumb value=1/> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input type=radio id=radio2 name=multincumb value=0 checked=checked /> No
+                @endif
+              </td>
+              <td></td>
               <td>Available</td>
               <td><input type="text" class="form-control" name="annftehour" value="{{$position->avail_date}}" {{$readonly}}></td>
-              <td></td>
-              <td>Pay Frequency</td>
-              <td></td>
             </tr>
 
             <tr>
+
+              <td>Position is Funded:</td>
+              <td>
+                @if ($position->Funded==1)
+                  <input type=radio id=radio2 name=Funded value=1 checked=checked/> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input type=radio id=radio2 name=Funded value=0/> No
+                @else
+                  <input type=radio id=radio2 name=Funded value=1/> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input type=radio id=radio2 name=Funded value=0 checked=checked /> No
+                @endif
+              </td>
+              <td></td>
               <td>End Date</td>
               <td><input type="text" class="form-control" name="annftehour" value="{{$position->enddate}}" {{$readonly}}></td>
+            </tr>
+
+            <tr>
+              <td>.</td>
               <td></td>
-              <td>Pay Rate</td>
+              <td></td>
+              <td></td>
               <td></td>
             </tr>
 
             <tr>
-              <td></td>
+              <td>.</td>
               <td></td>
               <td></td>
               <td></td>
@@ -130,7 +166,7 @@ background-color: #EBF5FB;
               <td>Last Entered Vacant</td>
               <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_vac}}" {{$readonly}}></td>
               <td></td>
-              <td>@if ($position->curstatus=='VACANT') Current Status:  Vacant @endif</td>
+              <td>@if ($position->curstatus=='VACANT') *** Current Status:  Vacant @endif</td>
               <td></td>
             </tr>
 
@@ -138,7 +174,7 @@ background-color: #EBF5FB;
               <td>Last Entered Partially Filled</td>
               <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_par}}" {{$readonly}}></td>
               <td></td>
-              <td>@if ($position->curstatus=='PARTIALLYFILLED') Current Status:  Partially Filled @endif</td>
+              <td>@if ($position->curstatus=='PARTIALLYFILLED') *** Current Status:  Partially Filled @endif</td>
               <td></td>
             </tr>
 
@@ -146,7 +182,7 @@ background-color: #EBF5FB;
               <td>Last Entered Filled</td>
               <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_fil}}" {{$readonly}}></td>
               <td></td>
-              <td>@if (trim($position->curstatus)=='FILLED') Current Status:  Filled @endif</td>
+              <td>@if (trim($position->curstatus)=='FILLED') *** Current Status:  Filled @endif</td>
               <td></td>
             </tr>
 
@@ -154,7 +190,7 @@ background-color: #EBF5FB;
               <td>Last Entered Overfilled</td>
               <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_fpl}}"></td>
               <td></td>
-              <td>@if ($position->curstatus=='OVERFILLED') Current Status:  Overfilled @endif</td>
+              <td>@if ($position->curstatus=='OVERFILLED') *** Current Status:  Overfilled @endif</td>
               <td></td>
             </tr>
 
