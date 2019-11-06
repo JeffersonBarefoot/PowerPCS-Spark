@@ -16,9 +16,13 @@ width: 100%;
 }
 
 td, th {
-border: 0px solid #dddddd;
+border: 10px solid #dddddd;
 text-align: left;
 padding: 2px;
+}
+
+tr {
+   height: 50px;
 }
 
 tr:nth-child(even) {
@@ -70,8 +74,16 @@ background-color: #EBF5FB;
         <h4 class="panel-title">
             <table>
               <tr>
-                <td width="50%"><a data-toggle="collapse" href="#collapse1">Identification, Dates</a></td>
-                <td>{{$position->company}} / {{$position->posno}} / {{$position->curstatus}} :: {{$position->descr}} </td>
+                <td width="20%" height="20"><a data-toggle="collapse" href="#collapse1">Identification, Dates</a></td>
+                <td width="70%" height="20">
+                  Status:&nbsp&nbsp
+                  @if ($position->Active=="A")
+                    Active,&nbsp
+                  @else
+                    Inactive,&nbsp
+                  @endif
+                  {{ $position->curstatus }}
+                </td>
               </tr>
             </table>
         </h4>
@@ -79,9 +91,9 @@ background-color: #EBF5FB;
       <!-- <div id="collapse1" class="panel-collapse collapse"> =====collapsed -->
       <!-- <div id="collapse1" class="panel-collapse collapse in"> ==open (i.e. not collapsed) -->
 
-      <div id="collapse1" class="panel-collapse collapse in">
+      <div id="collapse1" class="panel-collapse collapse">
         <!-- <div class="panel-body">Panel Body #1a -->
-        	<table style="width:100%">
+        	<table style="width:90%">
             <tr>
               <td colspan="2"><span style="font-weight: bold;">General</span></td>
               <td></td>
@@ -93,7 +105,7 @@ background-color: #EBF5FB;
 
               <td width="24%">Position Status:</td>
               <td width="24%">
-                @if ($position->active=='A')
+                @if ($position->active=="A")
                   <input type=radio id=radio11 name=active value="A" checked=checked/> Active&nbsp;&nbsp;&nbsp;
                   <input type=radio id=radio12 name=active value="I"/> Inactive
                 @else
@@ -233,7 +245,7 @@ background-color: #EBF5FB;
 
         </h4>
       </div>
-      <div id="collapse2" class="panel-collapse collapse in">
+      <div id="collapse2" class="panel-collapse collapse">
         <!-- <div class="panel-body">Full Time Equivalent Calculation -->
           <table>
               <tr>
@@ -244,9 +256,9 @@ background-color: #EBF5FB;
               <tr>
                   <td width="20%">Annual FTE Basis</td>
                   <td width="20%"><input type="text" class="form-control" name="annftehour" value="{{$position->annftehour}}"></td>
-                  <td width="5%"><input type="text" class="form-control" name="annftehour" value="{{ $position->annftehour}}"></td>
-                  <td></td>
-                  <td></td>
+                  <td width="5%"></td>
+                  <td width="20%"></td>
+                  <td width="20%"></td>
 
               </tr>
               <tr>
@@ -293,7 +305,7 @@ background-color: #EBF5FB;
           <a data-toggle="collapse" href="#collapse3" aria-expanded="true">Incumbents</a>
         </h4>
       </div>
-      <div id="collapse3" class="panel-collapse collapse in">
+      <div id="collapse3" class="panel-collapse collapse">
         <div class="panel-body">
           <!-- *************************** -->
           <!-- *************************** -->

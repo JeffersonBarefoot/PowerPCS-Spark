@@ -19,7 +19,7 @@
 .column {
   float: left;
 
-  padding: 20px;
+  padding: 30px;
   /*height: 300px;  Should be removed. Only for demonstration */
 }
 
@@ -43,8 +43,8 @@
           <form action={{route('positions.show',$position->id)}} method="get">
 
           <table>
-            <col width="150">
-            <col width="150">
+            <col>
+            <col>
             <tr>
               <td>Company:</td>
               <td><input type="text" class="form-control" style="font-size:11pt;" name="company"/></td>
@@ -70,10 +70,10 @@
           </table>
 
 
-          <input type="submit" name="submit" value="Submit (blank queries return all records)">
+          <!-- <input type="submit" name="submit" value="Submit (blank queries return all records)"> -->
           <br>
-
-<input type="checkbox" name="gender" value="Male">Male</input>
+          <button type="submit" class="btn btn-primary btn-sm">Submit (blank queries return all records)</button>
+          <br>
 
           <br>
           <table>
@@ -83,25 +83,13 @@
             @foreach($positionsnavbar as $position)
 
             <tr>
-                <td height="20"><a href={{route('positions.show',$position->id)}}>{{$position->company}}</td>
-                <td height="20"><a href={{route('positions.show',$position->id)}}>{{$position->posno}}</td>
-                <td height="20"><a href={{route('positions.show',$position->id)}}>{{$position->descr}}</td>
+                <td height="25"><a href={{route('positions.show',$position->id)}}>{{$position->company}}</td>
+                <td height="25"><a href={{route('positions.show',$position->id)}}>{{$position->posno}}</td>
+                <td height="25"><a href={{route('positions.show',$position->id)}}>{{$position->descr}}</td>
             </tr>
 
             @endforeach
           </table>
-
-          <form action="#" method="post">
-          <input type="checkbox" name="gender" value="Male">Male</input>
-          <input type="checkbox" name="gender" value="Female">Female</input>
-          <input type="submit" name="submit" value="Submit"/>
-          </form>
-          <?php
-          if (isset($_POST['gender'])){
-          echo $_POST['gender']; // Displays value of checked checkbox.
-          }
-          ?>
-
         </div>
 
         <!-- <div class="col-xs-4"> -->
