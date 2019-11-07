@@ -74,15 +74,15 @@ background-color: #EBF5FB;
         <h4 class="panel-title">
             <table>
               <tr>
-                <td width="20%" height="20"><a data-toggle="collapse" href="#collapse1">Identification, Dates</a></td>
+                <td width="20%" height="20"><a data-toggle="collapse" href="#collapse1">Dates, Status</a></td>
                 <td width="70%" height="20">
-                  Status:&nbsp&nbsp
+                  &nbsp&nbsp&nbsp Currently &nbsp
                   @if ($position->Active=="A")
                     Active,&nbsp
                   @else
                     Inactive,&nbsp
                   @endif
-                  {{ $position->curstatus }}
+                    {{ ucwords(strtolower($position->curstatus)) }}
                 </td>
               </tr>
             </table>
@@ -175,7 +175,7 @@ background-color: #EBF5FB;
             </tr>
 
             <tr>
-              <td>Last Entered Vacant</td>
+              <td>Last Became Vacant</td>
               <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_vac}}" {{$readonly}}></td>
               <td></td>
               <td>@if ($position->curstatus=='VACANT') *** Current Status:  Vacant @endif</td>
@@ -183,7 +183,7 @@ background-color: #EBF5FB;
             </tr>
 
             <tr>
-              <td>Last Entered Partially Filled</td>
+              <td>Last Became Partially Filled</td>
               <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_par}}" {{$readonly}}></td>
               <td></td>
               <td>@if ($position->curstatus=='PARTIALLYFILLED') *** Current Status:  Partially Filled @endif</td>
@@ -191,7 +191,7 @@ background-color: #EBF5FB;
             </tr>
 
             <tr>
-              <td>Last Entered Filled</td>
+              <td>Last Became Filled</td>
               <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_fil}}" {{$readonly}}></td>
               <td></td>
               <td>@if (trim($position->curstatus)=='FILLED') *** Current Status:  Filled @endif</td>
@@ -199,7 +199,7 @@ background-color: #EBF5FB;
             </tr>
 
             <tr>
-              <td>Last Entered Overfilled</td>
+              <td>Last Became Overfilled</td>
               <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_fpl}}"></td>
               <td></td>
               <td>@if ($position->curstatus=='OVERFILLED') *** Current Status:  Overfilled @endif</td>
