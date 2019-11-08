@@ -163,23 +163,31 @@ dump('positioncontroller.index');
         ->orderby("posstart","desc")
         ->get();
 
+      $activeincumbentsinposition = \DB::table('incumbents')
+        ->where('posno','=',$posno)
+        ->where('active_pos','=','A')
+        ->orderby("posstart","desc")
+        ->get();
 
+      $activeincumbentlist = '';
+      foreach ($activeincumbentsinposition as $ActInc){
+        $activeincumbentlist = $activeincumbentlist.substr($ActInc->fname,0,1).' '.$ActInc->lname.', ' ;
+      }
+
+
+      $activeincumbentcount = $activeincumbentsinposition->count();
 
       $viewincumbent = \DB::table('incumbents')
         ->where('id','=',$viewincid)
         ->get();
 
-      // return View('positions.show')
-      //   ->with(compact('position'))
-      //   ->with(compact('viewincumbent'))
-      //   ->with(compact('positionsnavbar'))
-      //   ->with(compact('incumbentsinposition'));
-
       return View('positions.show')
         ->with(compact('position'))
         ->with(compact('viewincumbent'))
         ->with(compact('positionsnavbar'))
-        ->with(compact('incumbentsinposition'));
+        ->with(compact('incumbentsinposition'))
+        ->with('activeincumbentcount',$activeincumbentcount)
+        ->with('activeincumbentlist',$activeincumbentlist);
 
     }
 

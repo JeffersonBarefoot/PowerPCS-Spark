@@ -302,7 +302,7 @@ background-color: #EBF5FB;
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" href="#collapse3" aria-expanded="true">Incumbents</a>
+          <a data-toggle="collapse" href="#collapse3" aria-expanded="true">Incumbents,&nbsp{{$activeincumbentcount}} Active:&nbsp&nbsp{{$activeincumbentlist}}</a>
         </h4>
       </div>
       <div id="collapse3" class="panel-collapse collapse">
