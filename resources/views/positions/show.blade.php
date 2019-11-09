@@ -59,6 +59,7 @@ background-color: #EBF5FB;
 <!-- set this to readonly to make this a show screen, or something else (blank, notreadonly, etc) to allow editing -->
 <?php $readonly='readonly' ?>
 
+
 <body>
 <div class="container">
   <div class="panel-group">
@@ -76,11 +77,11 @@ background-color: #EBF5FB;
               <tr>
                 <td width="20%" height="20"><a data-toggle="collapse" href="#collapse1">Dates, Status</a></td>
                 <td width="70%" height="20">
-                  &nbsp&nbsp&nbsp Currently &nbsp
+                  &nbsp&nbsp&nbsp Currently
                   @if ($position->Active=="A")
-                    Active,&nbsp
+                    Active,
                   @else
-                    Inactive,&nbsp
+                    Inactive,
                   @endif
                     {{ ucwords(strtolower($position->curstatus)) }}
                 </td>
@@ -239,7 +240,7 @@ background-color: #EBF5FB;
           <table>
             <tr>
               <td width="50%"><a data-toggle="collapse" href="#collapse2">Budgets and FTEs</a></td>
-              <td>{{$position->fulltimeequiv}} FTEs / $ {{$position->budgsal}} </td>
+              <td>{{round($position->fulltimeequiv,3)}} FTEs / {{FormatMoney($position->budgsal)}} </td>
             </tr>
           </table>
 
@@ -314,11 +315,23 @@ background-color: #EBF5FB;
           <!-- *************************** -->
           <div class="column">
             <table>
+
+              <tr>
+                <td width="15%">Status</td>
+                <td width="15%">Name</td>
+                <td width="15%">Start Date</td>
+                <td width="15%"></td>
+                <td width="15%"></td>
+              </tr>
+
+
+
+
               @foreach($incumbentsinposition as $incumbent)
                 <tr>
-                    <td>{{$incumbent->active_pos}}"></td>
-                    <td height="20"><a href={{route('positions.show',$position->id)}}?viewincid={{$incumbent->id}}>{{$incumbent->lname}}"></td>
-                    <td>{{$incumbent->posstart}}"></td>
+                    <td>{{$incumbent->active_pos}}</td>
+                    <td height="20"><a href={{route('positions.show',$position->id)}}?viewincid={{$incumbent->id}}>{{$incumbent->lname}}</td>
+                    <td>{{$incumbent->posstart}}</td>
 
                 </tr>
               @endforeach
