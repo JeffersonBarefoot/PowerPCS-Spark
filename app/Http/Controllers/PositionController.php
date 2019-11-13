@@ -181,6 +181,12 @@ dump('positioncontroller.index');
         ->where('id','=',$viewincid)
         ->get();
 
+// TEST TEST Test
+// Test Import Positions function, 20191109
+// ImportPositions('test');
+// $test=Getcolumntype('positions','linktoabra');
+// dd($test);
+
       return View('positions.show')
         ->with(compact('position'))
         ->with(compact('viewincumbent'))

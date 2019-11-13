@@ -5,10 +5,6 @@ use App\Position;
 use Illuminate\Support\Facades\Schema\columns;
 use Illuminate\Support\Facades\DB;
 
-
-
-
-
 // leave namespace out so that functions are global
 //namespace App\Http\Middleware;
 
@@ -45,12 +41,6 @@ if (!function_exists('GetFriendlyColumnName')) {
   function GetFriendlyColumnName($table, $column)
   {
 
-    // return DB::table('Information_Schema.Columns')
-    //   ->select('COLUMN_COMMENT')
-    //   ->where('TABLE_NAME', '=', $table)
-    //   ->where('COLUMN_NAME', '=', $column)
-    //   ->value('user_id');
-
     $friendlyName = DB::table('Information_Schema.Columns')
       ->select('COLUMN_COMMENT')
       ->where('TABLE_NAME', '=', $table)
@@ -61,6 +51,24 @@ if (!function_exists('GetFriendlyColumnName')) {
       return $column;
     } else {
       return $friendlyName;
+    }
+  }
+}
+
+if (!function_exists('GetColumnType')) {
+  function GetColumnType($table, $column)
+  {
+
+    $dataType = DB::table('Information_Schema.Columns')
+      ->select('COLUMN_TYPE')
+      ->where('TABLE_NAME', '=', strtolower($table))
+      ->where('COLUMN_NAME', '=', strtolower($column))
+      ->value('user_id');
+
+    if (($dataType) == '') {
+      return 'Error - Column Does Not Exist';
+    } else {
+      return $dataType;
     }
   }
 }
@@ -76,27 +84,26 @@ if (!function_exists('FormatMoney')) {
   }
 }
 
-
-//***************************************************
-//***************************************************
-//***************************************************
-//**  U P D A T E   P O S I T I O N
-//**
-//**  After editing position data in the Position Edit screen,
-//**  cycle through each field in POSITIONS.
-//**
-//**  1 - check to see if the field is included in the Return String.
-//**    If not, then it wasn't editable on the Position Edit Screen
-//**  2 - If it's in the Return String, Update the value in the Position Model
-//**  3 - Once Updated, check for changed fields via IsDirty()
-//**    If dirty fields are found, we can notify the user and ask for
-//**    confirmation to save.
-//**
-//***************************************************
-//***************************************************
-//***************************************************
-
 if (!function_exists('UpdatePosition')) {
+
+  //***************************************************
+  //***************************************************
+  //***************************************************
+  //**  U P D A T E   P O S I T I O N
+  //**
+  //**  After editing position data in the Position Edit screen,
+  //**  cycle through each field in POSITIONS.
+  //**
+  //**  1 - check to see if the field is included in the Return String.
+  //**    If not, then it wasn't editable on the Position Edit Screen
+  //**  2 - If it's in the Return String, Update the value in the Position Model
+  //**  3 - Once Updated, check for changed fields via IsDirty()
+  //**    If dirty fields are found, we can notify the user and ask for
+  //**    confirmation to save.
+  //**
+  //***************************************************
+  //***************************************************
+  //***************************************************
 
   function UpdatePosition($id, $request)
   {
@@ -178,5 +185,46 @@ if (!function_exists('UpdatePosition')) {
     // sleep(10);
 
     // dd('end');
+  }
+}
+
+if (!function_exists('ImportPositions')) {
+
+  //***************************************************
+  //***************************************************
+  //***************************************************
+  //**  I M P O R T   P O S I T I O N S
+  //**
+  //**  Import from a CSV file
+  //**  Pull column name from header row
+  //**
+  //**  Validate data, etc.  and then create a new record in POSITIONS table
+  //**
+  //***************************************************
+  //***************************************************
+  //***************************************************
+  function ImportPositions($incomingfile)
+  {
+    if (($handle = fopen ( public_path () . '/ImportFiles/samplepositions.csv', 'r' )) !== FALSE) {
+
+      $header = fgetcsv($handle, 2000, ',');
+      $headercount = count($header);
+
+      while ( ($data = fgetcsv ( $handle, 2000, ',' )) !== FALSE ) {
+
+        $position = new Position ();
+        $i = 0;
+        while ($i<$headercount):
+            $fieldname=$header[$i];
+            $fielddata=$data[$i];
+            $position->$fieldname=$fielddata;
+            $i++;
+        endwhile;
+
+        $positionxx->save();
+      }
+
+      fclose ( $handle );
+    }
   }
 }
