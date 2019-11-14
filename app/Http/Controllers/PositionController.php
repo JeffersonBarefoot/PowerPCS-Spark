@@ -144,54 +144,75 @@ dump('positioncontroller.index');
       }
       $position = Position::find($id);
 
-//dd($id);
-      $company = $request->input('company');
-      $posno = $request->input('posno');
-      $descr = $request->input('descr');
-      $viewincid = $request->input('viewincid');
-//      dd($request);
+      //gather general info
+      $posno = $position->posno;
+      $company = $position->company;
 
-      $positionsnavbar = Position::where('company','like',"$company%")
-                          ->where('posno','like',"$posno%")
-                          ->where('descr','like',"%$descr%")
+
+      //****************************
+      // N A V B A R
+      // these variables are used to populate the NavBar, not the main portion of Positions.Show
+      $navbarcompany = $request->input('company');
+      $navbarposno = $request->input('posno');
+      $navbardescr = $request->input('descr');
+      $viewincid = $request->input('viewincid');
+
+      $positionsnavbar = Position::where('company','like',"$navbarcompany%")
+                          ->where('posno','like',"$navbarposno%")
+                          ->where('descr','like',"%$navbardescr%")
                           ->orderby("posno")
                           ->get();
 
-      $posno = $position->posno;
+      //****************************
+      // I N C U M B E N T S
+      // gather all incumbents related to this position
+
       $incumbentsinposition = \DB::table('incumbents')
         ->where('posno','=',$posno)
         ->orderby("posstart","desc")
         ->get();
 
+      // determine all ACTIVE incumbents related to this position
       $activeincumbentsinposition = \DB::table('incumbents')
         ->where('posno','=',$posno)
         ->where('active_pos','=','A')
         ->orderby("posstart","desc")
         ->get();
 
+      // build a text element that can be displayed on the incumbents tab
       $activeincumbentlist = '';
       foreach ($activeincumbentsinposition as $ActInc){
         $activeincumbentlist = $activeincumbentlist.substr($ActInc->fname,0,1).' '.$ActInc->lname.', ' ;
       }
 
-
       $activeincumbentcount = $activeincumbentsinposition->count();
 
+      // pull all details for a selected incumbent.
+      // this can be used to show details of a "selected incumbent"
       $viewincumbent = \DB::table('incumbents')
         ->where('id','=',$viewincid)
         ->get();
 
-// TEST TEST Test
-// Test Import Positions function, 20191109
-// ImportPositions('test');
-// $test=Getcolumntype('positions','linktoabra');
-// dd($test);
+      //****************************
+      // D I R E C T   R E P O R T S
+      // "reports to" position is directly available in the positions table
+      // Direct Reports will reference this position in their positions.reptocomp / reptoposno
+      // Dotted lines will have this position number in reptocom2 / reptopos2
+      $directReports = \DB::table('positions')
+        ->where('reptoposno','=',$posno)
+        ->where('reptocomp','=',$company)
+        ->orderby("posno")
+        ->get();
 
+
+      //****************************
+      // R E T U R N   T O   positions.show
       return View('positions.show')
         ->with(compact('position'))
         ->with(compact('viewincumbent'))
         ->with(compact('positionsnavbar'))
         ->with(compact('incumbentsinposition'))
+        ->with(compact('directReports'))
         ->with('activeincumbentcount',$activeincumbentcount)
         ->with('activeincumbentlist',$activeincumbentlist);
 

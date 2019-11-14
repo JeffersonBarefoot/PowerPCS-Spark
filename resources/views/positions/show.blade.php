@@ -363,7 +363,7 @@ background-color: #EBF5FB;
 
           </div>
 
-
+          </div>
         </div>
       </div>
 
@@ -377,25 +377,17 @@ background-color: #EBF5FB;
           <div class="panel-body">Panel Body
             <table>
                 <tr>
-                    <td>one</td>
-                      <td>two</td>
-                      <td>three</td>
+                    <td width="40%">Direct Reports</td>
+                    <td width="40%">Indirect Reports</td>
                   </tr>
-                  <tr>
-                    <td>one</td>
-                      <td>two</td>
-                      <td>three</td>
-                  </tr>
-                  <tr>
-                    <td>one</td>
-                      <td>two</td>
-                      <td>three</td>
-                  </tr>
-                  <tr>
-                    <td>one</td>
-                      <td>two</td>
-                      <td>three</td>
-                  </tr>
+
+
+                  @foreach($directReports as $dirrep)
+                    <tr>
+                        <td>{{$dirrep->company.'/'.$dirrep->posno.', '.$dirrep->descr}}</td>
+                    </tr>
+                  @endforeach
+
               </table>
           </div>
         </div>
@@ -446,33 +438,9 @@ background-color: #EBF5FB;
         </h4>
       </div>
       <div id="collapse5" class="panel-collapse collapse">
-        <div class="panel-body">Panel Body
-          <table>
-              <tr>
-                  <td>one</td>
-                    <td>two</td>
-                    <td>three</td>
-                </tr>
-                <tr>
-                  <td>one</td>
-                    <td>two</td>
-                    <td>three</td>
-                </tr>
-                <tr>
-                  <td>one</td>
-                    <td>two</td>
-                    <td>three</td>
-                </tr>
-                <tr>
-                  <td>one</td>
-                    <td>two</td>
-                    <td>three</td>
-                </tr>
-            </table>
-
+        <div class="panel-body">Reserved for future functionality
 
         </div>
-        <div class="panel-footer">Panel Footer</div>
       </div>
     </div>
 
