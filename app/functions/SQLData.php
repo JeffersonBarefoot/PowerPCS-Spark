@@ -58,9 +58,8 @@ if (!function_exists('GetFriendlyColumnName')) {
 if (!function_exists('GetColumnType')) {
   function GetColumnType($table, $column)
   {
-
     $dataType = DB::table('Information_Schema.Columns')
-      ->select('COLUMN_TYPE')
+      ->select('DATA_TYPE')
       ->where('TABLE_NAME', '=', strtolower($table))
       ->where('COLUMN_NAME', '=', strtolower($column))
       ->value('user_id');
@@ -69,6 +68,24 @@ if (!function_exists('GetColumnType')) {
       return 'Error - Column Does Not Exist';
     } else {
       return $dataType;
+    }
+  }
+}
+
+if (!function_exists('GetColumnLength')) {
+  function GetColumnLength($table, $column)
+  {
+    $columnLength = DB::table('Information_Schema.Columns')
+      ->select('CHARACTER_MAXIMUM_LENGTH')
+      ->where('TABLE_NAME', '=', strtolower($table))
+      ->where('COLUMN_NAME', '=', strtolower($column))
+      ->value('user_id');
+
+    if (($columnLength) == '') {
+      dump('Problem determining column width for '.$column.'.');
+      return '0';
+    } else {
+      return $columnLength;
     }
   }
 }
@@ -207,21 +224,85 @@ if (!function_exists('ImportPositions')) {
   {
     if (($handle = fopen ( public_path () . '/ImportFiles/samplepositions.csv', 'r' )) !== FALSE) {
 
+      // extract headers so we can see what fields are being imported
       $header = fgetcsv($handle, 2000, ',');
       $headercount = count($header);
 
+      // scan remaining CSV records, and put each into an array named $data
       while ( ($data = fgetcsv ( $handle, 2000, ',' )) !== FALSE ) {
 
+        //add a new record to positions table
         $position = new Position ();
         $i = 0;
+
+        // scan through all fields in the current record
         while ($i<$headercount):
+
+            // grab the fieldname from $header and the imported data from $data
             $fieldname=$header[$i];
             $fielddata=$data[$i];
+
+            //************************
+            //************************
+            // validate Data
+            //************************
+            //************************
+            $columntype = GetColumnType('positions',$fieldname);
+
+            // text:  if too long.  Truncate
+            if ($columntype=='varchar') {
+
+              $ColumnLength = GetColumnLength('positions',$fieldname);
+        //      dump('|'.$columntype.'|'.$fieldname.'-'.$ColumnLength);
+              if (strlen($fielddata)>$ColumnLength) {
+                $fielddata=substr($fielddata,0,$ColumnLength);
+              }
+            }
+
+            //date:  wrong Format.  convert mm/dd/yyyy to yyyy-mm-dd.  blank should be 2999-12-31
+            if ($columntype=='date') {
+              // mm/dd/yyyy - convert
+              if (is_numeric(substr($fielddata,0,2).substr($fielddata,3,2).substr($fielddata,6,4)) and substr($fielddata,2,1)=='/' and substr($fielddata,5,1)=='/') {
+                  $fielddata=substr($fielddata,6,4).'-'.substr($fielddata,0,2).'-'.substr($fielddata,3,2);
+              // yyyy-mm-dd - nothing to do
+            } elseif (is_numeric(substr($fielddata,0,4).substr($fielddata,5,2).substr($fielddata,8,2)) and substr($fielddata,4,1)=='-' and substr($fielddata,7,1)=='-') {
+                // already in correct format, nothing to do
+              } else {
+                $fielddata='2999-12-31';
+              }
+            }
+
+            //decimal:  contains only numbers.  If anything else, make it zero
+            if ($columntype=='decimal') {
+              if (! is_numeric($fielddata)) {
+                $fielddata=0;
+              }
+            }
+
+            //boolean/tinyint:  convert N,F,0
+            if ($columntype=='tinyint') {
+              if (substr($fielddata,0,1)=='0' or substr($fielddata,0,1)=='N' or substr($fielddata,0,1)=='F')  {
+                $fielddata=0;
+              } else {
+                $fielddata=1 ;
+              }
+
+            }
+            //************************
+            //************************
+            // END validate data
+            //************************
+            //************************
+// dump('||'.$columntype.'||'.$fieldname.'-'.$fielddata);
+            // update the field in the new positions records
+            // import will look like:  $position->active="A"
             $position->$fieldname=$fielddata;
             $i++;
         endwhile;
 
-        $positionxx->save();
+        // dd('end');
+
+        $position->save();
       }
 
       fclose ( $handle );
