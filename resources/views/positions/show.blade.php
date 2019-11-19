@@ -65,11 +65,11 @@ background-color: #EBF5FB;
   <div class="panel-group">
 
 
-<!-- ************************** -->
-<!-- ************************** -->
-<!-- Position Summary Data -->
-<!-- ************************** -->
-<!-- ************************** -->
+    <!-- ************************** -->
+    <!-- ************************** -->
+    <!-- Position Summary Data -->
+    <!-- ************************** -->
+    <!-- ************************** -->
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
@@ -313,86 +313,76 @@ background-color: #EBF5FB;
           <!-- Left div contains list of all incumbents -->
           <!-- *************************** -->
           <!-- *************************** -->
-          <div class="column">
-            <table>
+          <table style="float: left">
+            <tr>
+              <td width="5%">Status</td>
+              <td width="10%">Name</td>
+              <td width="15%">Start Date</td>
+              <td width="15%"></td>
+              <td width="15%"></td>
+            </tr>
 
+            @foreach($incumbentsinposition as $incumbent)
               <tr>
-                <td width="15%">Status</td>
-                <td width="15%">Name</td>
-                <td width="15%">Start Date</td>
-                <td width="15%"></td>
-                <td width="15%"></td>
+                <td>{{$incumbent->active_pos}}</td>
+                <td height="20"><a href={{route('positions.show',$position->id)}}?viewincid={{$incumbent->id}}>{{$incumbent->lname}}</td>
+                <td>{{$incumbent->posstart}}</td>
               </tr>
-
-
-
-
-              @foreach($incumbentsinposition as $incumbent)
-                <tr>
-                    <td>{{$incumbent->active_pos}}</td>
-                    <td height="20"><a href={{route('positions.show',$position->id)}}?viewincid={{$incumbent->id}}>{{$incumbent->lname}}</td>
-                    <td>{{$incumbent->posstart}}</td>
-
-                </tr>
-              @endforeach
-
-            </table>
-          </div>
+            @endforeach
+          </table>
 
           <!-- *************************** -->
           <!-- *************************** -->
           <!-- Right div contains details of selected incumbent -->
           <!-- *************************** -->
           <!-- *************************** -->
-          <div class="column">
+          <table style="float: left">
+            <tr>
+              <td width="5%">{{$incumbent->lname}}</td>
+              <td>{{$incumbent->posstart}}</td>
+              <td>{{$incumbent->posstop}}</td>
+            </tr>
+          </table>
 
-              @foreach ($viewincumbent as $incumbent)
-              <table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ************************** -->
+    <!-- ************************** -->
+    <!-- Reports To -->
+    <!-- ************************** -->
+    <!-- ************************** -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" href="#collapse7">Reports To</a>
+        </h4>
+      </div>
+      <div id="collapse7" class="panel-collapse collapse">
+        <div class="panel-body">Panel Body
+          <table>
               <tr>
-                <td>incumbent that i am viewing</td>
-                  <td>{{$incumbent->active_pos}}"></td>
-                  <td>{{$incumbent->lname}}"></td>
-                  <td>{{$incumbent->posstart}}"></td>
-                  <td>{{$incumbent->posstop}}"></td>
+                <td width="40%">Direct Reports</td>
+                <td width="40%">Indirect Reports</td>
               </tr>
-            </table>
-            @endforeach
 
-
-
-
-          </div>
-
-          </div>
-        </div>
-      </div>
-
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-toggle="collapse" href="#collapse7">Reports To</a>
-          </h4>
-        </div>
-        <div id="collapse7" class="panel-collapse collapse">
-          <div class="panel-body">Panel Body
-            <table>
+              @foreach($directReports as $dirrep)
                 <tr>
-                    <td width="40%">Direct Reports</td>
-                    <td width="40%">Indirect Reports</td>
-                  </tr>
+                    <td>{{$dirrep->company.'/'.$dirrep->posno.', '.$dirrep->descr}}</td>
+                </tr>
+              @endforeach
 
-
-                  @foreach($directReports as $dirrep)
-                    <tr>
-                        <td>{{$dirrep->company.'/'.$dirrep->posno.', '.$dirrep->descr}}</td>
-                    </tr>
-                  @endforeach
-
-              </table>
-          </div>
+            </table>
         </div>
       </div>
+    </div>
 
+    <!-- ************************** -->
+    <!-- ************************** -->
+    <!-- position history -->
+    <!-- ************************** -->
+    <!-- ************************** -->
 
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -428,9 +418,11 @@ background-color: #EBF5FB;
       </div>
     </div>
 
-
-
-
+    <!-- ************************** -->
+    <!-- ************************** -->
+    <!-- user defined fields -->
+    <!-- ************************** -->
+    <!-- ************************** -->
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
@@ -444,9 +436,11 @@ background-color: #EBF5FB;
       </div>
     </div>
 
-
-
-
+    <!-- ************************** -->
+    <!-- ************************** -->
+    <!-- funding sources -->
+    <!-- ************************** -->
+    <!-- ************************** -->
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
@@ -460,6 +454,11 @@ background-color: #EBF5FB;
       </div>
     </div>
 
+    <!-- ************************** -->
+    <!-- ************************** -->
+    <!-- succession planning -->
+    <!-- ************************** -->
+    <!-- ************************** -->
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
