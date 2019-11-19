@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Position;
+use App\Incumbent;
 use Illuminate\Support\Facades\Schema\columns;
 use Illuminate\Support\Facades\DB;
 
@@ -203,6 +204,11 @@ dump('positioncontroller.index');
         ->where('reptocomp','=',$company)
         ->orderby("posno")
         ->get();
+
+
+// importpositions('');
+// importincumbents('');
+
 
 
       //****************************

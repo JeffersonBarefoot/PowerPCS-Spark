@@ -4,6 +4,12 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+
+
+// Schema::table('tasks', function (Blueprint $table) {
+//     $table->index(['user_id', 'created_at']);
+// });
+
 class CreatePositionsTable extends Migration
 {
     /**
@@ -106,6 +112,17 @@ class CreatePositionsTable extends Migration
       ['posno' => '12286','descr' => 'Warehouse Supervisor'],
       ['posno' => '62253','descr' => 'Receptionist'],
     ]);
+
+    // DB::$table('positions')->index(['company']);
+    // DB::$table('positions')->index(['posno']);
+
+    Schema::table('positions', function (Blueprint $table) {
+        $table->index(['company']);
+    });
+
+    Schema::table('positions', function (Blueprint $table) {
+        $table->index(['posno']);
+    });
 
 }
 

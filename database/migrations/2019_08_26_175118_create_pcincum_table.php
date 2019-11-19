@@ -69,6 +69,22 @@ class CreatePcincumTable extends Migration
           ['posno' => '10275','poscompany' => 'SAMPLE','empno' => '10324','company' => 'SAMPLE','lname' => 'Jones'],
         ]);
 
+        Schema::table('incumbents', function (Blueprint $table) {
+            $table->index(['poscompany']);
+        });
+
+        Schema::table('incumbents', function (Blueprint $table) {
+            $table->index(['posno']);
+        });
+
+        Schema::table('incumbents', function (Blueprint $table) {
+            $table->index(['company']);
+        });
+
+        Schema::table('incumbents', function (Blueprint $table) {
+            $table->index(['empno']);
+        });
+
 
 
     }
