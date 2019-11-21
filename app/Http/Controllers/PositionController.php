@@ -208,6 +208,7 @@ dump('positioncontroller.index');
 
 // importpositions('');
 // importincumbents('');
+// dump($viewincumbent);
 
 
 

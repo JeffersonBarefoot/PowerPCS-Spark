@@ -8,29 +8,25 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 
-<style media="screen">
-table {
-font-family: arial, sans-serif;
-border-collapse: collapse;
-width: 100%;
+<style>
+* {
+  box-sizing: border-box;
 }
 
-td, th {
-border: 10px solid #dddddd;
-text-align: left;
-padding: 2px;
-}
+/* Create two equal columns that floats next to each other */
+/* .column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+} */
 
-tr {
-   height: 50px;
-}
-
-tr:nth-child(even) {
-background-color: #EBF5FB;
-}
-tr:nth-child(odd) {
-background-color: #EBF5FB;
-}
+/* Clear floats after the columns */
+/* .row:after {
+  content: "";
+  display: table;
+  clear: both;
+} */
 </style>
 
 <div class="row">
@@ -313,40 +309,60 @@ background-color: #EBF5FB;
           <!-- Left div contains list of all incumbents -->
           <!-- *************************** -->
           <!-- *************************** -->
-          <table style="float: left">
-            <tr>
-              <td width="5%">Status</td>
-              <td width="10%">Name</td>
-              <td width="15%">Start Date</td>
-              <td width="15%"></td>
-              <td width="15%"></td>
-            </tr>
+          <div class="row">
+            <div class="col-md-4">Incumbents related to this position
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="20%">Status</th>
+                    <th width="50%">name</th>
+                    <th width="30%">Start Date</th>
+                  </tr>
 
-            @foreach($incumbentsinposition as $incumbent)
-              <tr>
-                <td>{{$incumbent->active_pos}}</td>
-                <td height="20"><a href={{route('positions.show',$position->id)}}?viewincid={{$incumbent->id}}>{{$incumbent->lname}}</td>
-                <td>{{$incumbent->posstart}}</td>
-              </tr>
-            @endforeach
-          </table>
+                  <tr>
+                    @foreach($incumbentsinposition as $incumbent)
+                      <tr>
+                        <td>{{$incumbent->active_pos}}</td>
+                        <td><a href={{route('positions.show',$position->id)}}?viewincid={{$incumbent->id}}>{{$incumbent->lname.', '.$incumbent->fname}}</td>
+                        <td>{{$incumbent->posstart}}</td>
+                      </tr>
+                    @endforeach
+                  </tr>
+                </thead>
+              </table>
+            </div>
 
-          <!-- *************************** -->
-          <!-- *************************** -->
-          <!-- Right div contains details of selected incumbent -->
-          <!-- *************************** -->
-          <!-- *************************** -->
-          <table style="float: left">
-            <tr>
-              <td width="5%">{{$incumbent->lname}}</td>
-              <td>{{$incumbent->posstart}}</td>
-              <td>{{$incumbent->posstop}}</td>
-            </tr>
-          </table>
+            <!-- *************************** -->
+            <!-- *************************** -->
+            <!-- Right div contains details of selected incumbent -->
+            <!-- *************************** -->
+            <!-- *************************** -->
+            <div class="col-md-8">Details
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="20%">Name</th>
+                    <th width="20%">Start Date</th>
+                    <th width="20%">End Date</th>
+                    <th width="20%">Col 4</th>
+                    <th width="20%">Col 5</th>
+                  </tr>
 
+                  @foreach($viewincumbent as $viewinc)
+                    <tr>
+                      <td>{{$viewinc->lname}}</td>
+                      <td>{{$viewinc->posstart}}</td>
+                      <td>{{$viewinc->posstop}}</td>
+                    </tr>
+                  @endforeach
+                </thead>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
 
     <!-- ************************** -->
     <!-- ************************** -->
@@ -390,30 +406,48 @@ background-color: #EBF5FB;
           <a data-toggle="collapse" href="#collapse4">History</a>
         </h4>
       </div>
-      <div id="collapse4" class="panel-collapse collapse">
-        <div class="panel-body">Panel Body
-          <table>
-              <tr>
-                  <td>one</td>
-                    <td>two</td>
-                    <td>three</td>
-                </tr>
-                <tr>
-                  <td>one</td>
-                    <td>two</td>
-                    <td>three</td>
-                </tr>
-                <tr>
-                  <td>one</td>
-                    <td>two</td>
-                    <td>three</td>
-                </tr>
-                <tr>
-                  <td>one</td>
-                    <td>two</td>
-                    <td>three</td>
-                </tr>
-            </table>
+      <div id="collapse4" class="panel-collapse collapse in">
+        <div class="panel-body">text1
+          <!-- <div class="row"><h4>Panel Body</h4></div> -->
+          text2
+          <div class="row">
+            <div class="col-md-6">this is a test
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="20%">Col 1</th>
+                    <th width="20%">Col 2</th>
+                    <th width="20%">Col 3</th>
+                    <th width="20%">Col 4</th>
+                    <th width="20%">Col 5</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="col-md-6">this is a test
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="20%">Col 1</th>
+                    <th width="20%">Col 2</th>
+                    <th width="20%">Col 3</th>
+                    <th width="20%">Col 4</th>
+                    <th width="20%">Col 5</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <!-- <div class="col-md-1">this is a test</div>
+            <div class="col-md-1">this is a test</div>
+            <div class="col-md-1">this is a test</div>
+            <div class="col-md-1">this is a test</div>
+            <div class="col-md-1">this is a test</div>
+            <div class="col-md-1">this is a test</div>
+            <div class="col-md-1">this is a test</div>
+            <div class="col-md-1">this is a test</div>
+            <div class="col-md-1">this is a test</div>
+            <div class="col-md-1">this is a test</div> -->
+          </div>
         </div>
       </div>
     </div>
