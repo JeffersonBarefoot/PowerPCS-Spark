@@ -35,7 +35,7 @@
 
 
     <div class="row">
-        <div class="col-lg-3" style="background-color:#aaa;">
+        <div class="col-md-3" style="background-color:#aaa;">
 
 
           <h2>Navigation</h2>
@@ -93,7 +93,7 @@
         </div>
 
         <!-- <div class="col-xs-4"> -->
-        <div class="col-lg-9">
+        <div class="col-md-9">
           @yield('main')
         </div>
       </form>

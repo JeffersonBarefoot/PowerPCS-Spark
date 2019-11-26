@@ -9,29 +9,17 @@
 </head>
 
 <style>
-* {
-  box-sizing: border-box;
+
+#teststyle {
+  height: 550px;
+  vertical-align: bottom;
 }
 
-/* Create two equal columns that floats next to each other */
-/* .column {
-  float: left;
-  width: 50%;
-  padding: 10px;
-  height: 300px; /* Should be removed. Only for demonstration */
-} */
-
-/* Clear floats after the columns */
-/* .row:after {
-  content: "";
-  display: table;
-  clear: both;
-} */
 </style>
 
 <div class="row">
     <!-- <div class="col-sm-8 offset-sm-0"> -->
-    <div class="col-md-auto">
+    <div class="col-md-12">
         <h1 class="display-5">&nbsp;&nbsp;&nbsp;{{$position->descr}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{$position->company}} / {{$position->posno}}</small></h1>
 
         <form action={{route('positions.show',$position->id)}} method="get">
@@ -53,12 +41,12 @@
 </div>
 
 <!-- set this to readonly to make this a show screen, or something else (blank, notreadonly, etc) to allow editing -->
-<?php $readonly='readonly' ?>
+<?php $readonly='xxreadonly' ?>
 
 
 <body>
-<div class="container">
-  <div class="panel-group">
+  <div class="col-sm-12">
+    <div class="panel-group">
 
 
     <!-- ************************** -->
@@ -69,7 +57,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-            <table>
+            <table id="teststyle">
               <tr>
                 <td width="20%" height="20"><a data-toggle="collapse" href="#collapse1">Dates, Status</a></td>
                 <td width="70%" height="20">
@@ -89,83 +77,196 @@
       <!-- <div id="collapse1" class="panel-collapse collapse in"> ==open (i.e. not collapsed) -->
 
       <div id="collapse1" class="panel-collapse collapse">
-        <!-- <div class="panel-body">Panel Body #1a -->
-        	<table style="width:90%">
-            <tr>
-              <td colspan="2"><span style="font-weight: bold;">General</span></td>
-              <td></td>
-              <td colspan="2"></td>
-            </tr>
+        <div class="panel-body">
+          <!-- *************************** -->
+          <!-- Left div contains list of all incumbents -->
+          <div class="row">
+            <div class="col-md-6">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="35%">Settings</th>
+                    <th width="5%"></th>
+                    <th width="15%"></th>
+                    <th width="15%"></th>
+                    <th width="30%"></th>
+                  </tr>
+                </thead>
 
-            <tr>
+                <tr>
+                  <td>Position Status</td>
+                  <td></td>
+                  <div class="radio">
+
+                      @if ($position->active=="A")
+                      <td>
+                        <label><input type="radio" name="active" value="A"checked>Active</label>
+                      </td>
+                      <td>
+                        <label><input type="radio" name="active" value="I">Inactive</label>
+                      </td>
+                      @else
+                      <td>
+                        <label><input type="radio" name="active" value="A">Active</label>
+                      </td>
+                      <td>
+                        <label><input type="radio" name="active" value="I" checked>Inactive</label>
+                      </td>
+                      @endif
+
+                  </div>
+                </tr>
+
+                <tr>
+                  <td>Allow Multiple Incumbents:</td>
+                  <td></td>
+                  <div class="radio">
+                      @if ($position->multincumb==1)
+                      <td>
+                        <label><input type="radio" name="xmultincumb" value="1" checked>Yes</label>
+                      </td>
+                      <td>
+                        <label><input type="radio" name="xmultincumb" value="0">No</label>
+                      </td>
+                      @else
+                      <td>
+                        <label><input type="radio" name="xmultincumb" value="1">Yes</label>
+                      </td>
+                      <td>
+                        <label><input type="radio" name="xmultincumb" value="0" checked>No</label>
+                      </td>
+                      @endif
+
+                  </div>
+                </tr>
+
+                <tr>
+                  <td>Position Status</td>
+                  <td></td>
+                  <div class="radio">
+
+                    @if ($position->multincumb==1)
+                    <td>
+                      <label><input type="radio" name="Funded" value="1" checked>Yes</label>
+                    </td>
+                    <td>
+                      <label><input type="radio" name="Funded" value="0">No</label>
+                    </td>
+                    @else
+                    <td>
+                      <label><input type="radio" name="Funded" value="1">Yes</label>
+                    </td>
+                    <td>
+                      <label><input type="radio" name="Funded" value="0" checked>No</label>
+                    </td>
+                    @endif
+                  </div>
+                </tr>
+              </table>
+            </div>
+
+            <!-- *************************** -->
+            <!-- Right div contains details of selected incumbent -->
+            <div class="col-md-6">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="45%">Dates</th>
+                    <th width="10%"></th>
+                    <th width="40%"></th>
+                    <th width="4%"></th>
+                    <th width="1%"></th>
+                  </tr>
+                </thead>
+                  <tr>
+                    <td>Established</td>
+                    <td></td>
+                    <td><input type="text" class="form-control" name="annftehour" value="{{$position->startdate}}" {{$readonly}}></td>
+                  </tr>
+                  <tr>
+                    <td>Available</td>
+                    <td></td>
+                    <td><input type="text" class="form-control" name="annftehour" value="{{$position->avail_date}}" {{$readonly}}></td>
+                  </tr>
+                  <tr>
+                    <td>End Date</td>
+                    <td></td>
+                    <td><input type="text" class="form-control" name="annftehour" value="{{$position->enddate}}" {{$readonly}}></td>
+                  </tr>
 
 
-              <td width="24%">Position Status:</td>
-              <td width="24%">
-                @if ($position->active=="A")
-                  <input type=radio id=radio11 name=active value="A" checked=checked/> Active&nbsp;&nbsp;&nbsp;
-                  <input type=radio id=radio12 name=active value="I"/> Inactive
-                @else
-                  <input type=radio id=radio11 name=active value="A"/> Active&nbsp;&nbsp;&nbsp;
-                  <input type=radio id=radio12 name=active value="I" checked=checked/> Inactive
-                @endif
-              </td>
-              <td width="4%"></td>
-              <td width="24%">Established</td>
-              <td width="24%"><input type="text" class="form-control" name="annftehour" value="{{$position->startdate}}" {{$readonly}}></td>
-            </tr>
+              </table>
+            </div>
+          </div>
+        </div>
 
-            <tr>
+        <div class="row">
+          <div class="col-md-6">
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th width="30%">Status Changes</th>
+                  <th width="30%"></th>
+                  <th width="38%"></th>
+                  <th width="1%"></th>
+                  <th width="1%"></th>
+                </tr>
+              </thead>
 
-              <td>Allow multiple incumbents:</td>
-              <td>
-                @if ($position->multincumb==1)
-                  <input type=radio id=radio2 name=multincumb value=1 checked=checked/> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type=radio id=radio2 name=multincumb value=0/> No
-                @else
-                  <input type=radio id=radio2 name=multincumb value=1/> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type=radio id=radio2 name=multincumb value=0 checked=checked /> No
-                @endif
-              </td>
-              <td></td>
-              <td>Available</td>
-              <td><input type="text" class="form-control" name="annftehour" value="{{$position->avail_date}}" {{$readonly}}></td>
-            </tr>
+              <tr>
+                <td>Last Became Vacant</td>
+                <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_vac}}" {{$readonly}}></td>
+                <td>@if ($position->curstatus=='VACANT') *** Current Status:  Vacant   @endif</td>
+              </tr>
+              <tr>
+                <td>Last Became Partially Filled</td>
+                <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_par}}" {{$readonly}}></td>
+                <td>@if ($position->curstatus=='PARTIALLYFILLED') *** Current Status:  Partially Filled   @endif</td>
+              </tr>
+              <tr>
+                <td>Last Became Filled</td>
+                <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_fil}}" {{$readonly}}></td>
+                <td>@if ($position->curstatus=='FILLED') *** Current Status:  Filled  @endif</td>
+              </tr>
+              <tr>
+                <td>Last Became Overfilled</td>
+                <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_fpl}}" {{$readonly}}></td>
+                <td>@if ($position->curstatus=='OVERFILLED') *** Current Status:  Overfilled  @endif</td>
+              </tr>
+            </table>
+          </div>
 
-            <tr>
+          <div class="col-md-6">
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th width="45%"></th>
+                  <th width="10%"></th>
+                  <th width="40%"></th>
+                  <th width="4%"></th>
+                  <th width="1%"></th>
+                </tr>
+              </thead>
 
-              <td>Position is Funded:</td>
-              <td>
-                @if ($position->Funded==1)
-                  <input type=radio id=radio2 name=Funded value=1 checked=checked/> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type=radio id=radio2 name=Funded value=0/> No
-                @else
-                  <input type=radio id=radio2 name=Funded value=1/> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type=radio id=radio2 name=Funded value=0 checked=checked /> No
-                @endif
-              </td>
-              <td></td>
-              <td>End Date</td>
-              <td><input type="text" class="form-control" name="annftehour" value="{{$position->enddate}}" {{$readonly}}></td>
-            </tr>
+              <tr>
 
-            <tr>
-              <td>.</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+              </tr>
+              <tr>
 
-            <tr>
-              <td>.</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+              </tr>
+              <tr>
 
-            <tr>
+              </tr>
+              <tr>
+
+              </tr>
+
+
+            </table>
+          </div>
+        </div>
+
+            <!-- <tr>
               <td colspan="2"><span style="font-weight: bold;">Status Changes</span></td>
               <td></td>
               <td colspan="2"></td>
@@ -218,7 +319,7 @@
               <td></td>
               <td></td>
             </tr>
-            </table>
+            </table> -->
           <!-- </div> -->
         <!-- <div class="panel-footer">Panel Footer</div> -->
       </div>
@@ -302,7 +403,7 @@
           <a data-toggle="collapse" href="#collapse3" aria-expanded="true">Incumbents,&nbsp{{$activeincumbentcount}} Active:&nbsp&nbsp{{$activeincumbentlist}}</a>
         </h4>
       </div>
-      <div id="collapse3" class="panel-collapse collapse">
+      <div id="collapse3" class="panel-collapse collapse show">
         <div class="panel-body">
           <!-- *************************** -->
           <!-- *************************** -->
