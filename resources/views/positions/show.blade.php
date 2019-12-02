@@ -123,17 +123,17 @@
                   <div class="radio">
                       @if ($position->multincumb==1)
                       <td>
-                        <label><input type="radio" name="xmultincumb" value="1" checked>Yes</label>
+                        <label><input type="radio" name="multincumb" value="1" checked>Yes</label>
                       </td>
                       <td>
-                        <label><input type="radio" name="xmultincumb" value="0">No</label>
+                        <label><input type="radio" name="multincumb" value="0">No</label>
                       </td>
                       @else
                       <td>
-                        <label><input type="radio" name="xmultincumb" value="1">Yes</label>
+                        <label><input type="radio" name="multincumb" value="1">Yes</label>
                       </td>
                       <td>
-                        <label><input type="radio" name="xmultincumb" value="0" checked>No</label>
+                        <label><input type="radio" name="multincumb" value="0" checked>No</label>
                       </td>
                       @endif
 
@@ -403,7 +403,7 @@
           <a data-toggle="collapse" href="#collapse3" aria-expanded="true">Incumbents,&nbsp{{$activeincumbentcount}} Active:&nbsp&nbsp{{$activeincumbentlist}}</a>
         </h4>
       </div>
-      <div id="collapse3" class="panel-collapse collapse show">
+      <div id="collapse3" class="panel-collapse collapse">
         <div class="panel-body">
           <!-- *************************** -->
           <!-- *************************** -->
@@ -507,7 +507,7 @@
           <a data-toggle="collapse" href="#collapse4">History</a>
         </h4>
       </div>
-      <div id="collapse4" class="panel-collapse collapse in">
+      <div id="collapse4" class="panel-collapse collapse">
         <div class="panel-body">text1
           <!-- <div class="row"><h4>Panel Body</h4></div> -->
           text2
