@@ -240,88 +240,16 @@
             <table class="table table-condensed">
               <thead>
                 <tr>
-                  <th width="45%"></th>
+                  <th width="45%">Table Header Goes Here</th>
                   <th width="10%"></th>
                   <th width="40%"></th>
                   <th width="4%"></th>
                   <th width="1%"></th>
                 </tr>
               </thead>
-
-              <tr>
-
-              </tr>
-              <tr>
-
-              </tr>
-              <tr>
-
-              </tr>
-              <tr>
-
-              </tr>
-
-
             </table>
           </div>
         </div>
-
-            <!-- <tr>
-              <td colspan="2"><span style="font-weight: bold;">Status Changes</span></td>
-              <td></td>
-              <td colspan="2"></td>
-            </tr>
-
-            <tr>
-              <td>Last Became Vacant</td>
-              <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_vac}}" {{$readonly}}></td>
-              <td></td>
-              <td>@if ($position->curstatus=='VACANT') *** Current Status:  Vacant @endif</td>
-              <td></td>
-            </tr>
-
-            <tr>
-              <td>Last Became Partially Filled</td>
-              <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_par}}" {{$readonly}}></td>
-              <td></td>
-              <td>@if ($position->curstatus=='PARTIALLYFILLED') *** Current Status:  Partially Filled @endif</td>
-              <td></td>
-            </tr>
-
-            <tr>
-              <td>Last Became Filled</td>
-              <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_fil}}" {{$readonly}}></td>
-              <td></td>
-              <td>@if (trim($position->curstatus)=='FILLED') *** Current Status:  Filled @endif</td>
-              <td></td>
-            </tr>
-
-            <tr>
-              <td>Last Became Overfilled</td>
-              <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_fpl}}"></td>
-              <td></td>
-              <td>@if ($position->curstatus=='OVERFILLED') *** Current Status:  Overfilled @endif</td>
-              <td></td>
-            </tr>
-
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            </table> -->
-          <!-- </div> -->
-        <!-- <div class="panel-footer">Panel Footer</div> -->
       </div>
     </div>
 
@@ -400,70 +328,116 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" href="#collapse3" aria-expanded="true">Incumbents,&nbsp{{$activeincumbentcount}} Active:&nbsp&nbsp{{$activeincumbentlist}}</a>
+            <table id="teststyle">
+              <tr>
+                <td width="100%" height="20"><a data-toggle="collapse" href="#collapse19999">Incumbents,&nbsp{{$activeincumbentcount}} Active:&nbsp&nbsp{{$activeincumbentlist}}</a></td>
+              </tr>
+            </table>
         </h4>
       </div>
-      <div id="collapse3" class="panel-collapse collapse">
+      <!-- <div id="collapse1" class="panel-collapse collapse"> =====collapsed -->
+      <!-- <div id="collapse1" class="panel-collapse collapse in"> ==open (i.e. not collapsed) -->
+
+      <div id="collapse19999" class="panel-collapse collapse in">
         <div class="panel-body">
           <!-- *************************** -->
-          <!-- *************************** -->
           <!-- Left div contains list of all incumbents -->
-          <!-- *************************** -->
-          <!-- *************************** -->
           <div class="row">
-            <div class="col-md-4">Incumbents related to this position
+            <div class="col-md-3">Incumbents in Position
               <table class="table table-condensed">
                 <thead>
                   <tr>
                     <th width="20%">Status</th>
-                    <th width="50%">name</th>
-                    <th width="30%">Start Date</th>
-                  </tr>
-
-                  <tr>
-                    @foreach($incumbentsinposition as $incumbent)
-                      <tr>
-                        <td>{{$incumbent->active_pos}}</td>
-                        <td><a href={{route('positions.show',$position->id)}}?viewincid={{$incumbent->id}}>{{$incumbent->lname.', '.$incumbent->fname}}</td>
-                        <td>{{$incumbent->posstart}}</td>
-                      </tr>
-                    @endforeach
+                    <th width="40%"></th>
+                    <th width="40%">Start Date</th>
+                    <!-- <th width="15%"></th>
+                    <th width="30%"></th> -->
                   </tr>
                 </thead>
+
+                <tr>
+                  @foreach($incumbentsinposition as $incumbent)
+                    <tr>
+                      <td>{{$incumbent->active_pos}}</td>
+                      <td><a href={{route('positions.show',$position->id)}}?viewincid={{$incumbent->id}}>{{$incumbent->lname.', '.$incumbent->fname}}</td>
+                      <td>{{$incumbent->posstart}}</td>
+                    </tr>
+                  @endforeach
+                </tr>
+
               </table>
             </div>
 
             <!-- *************************** -->
-            <!-- *************************** -->
             <!-- Right div contains details of selected incumbent -->
-            <!-- *************************** -->
-            <!-- *************************** -->
-            <div class="col-md-8">Details
+            <div class="col-md-3">Records on file for
+              @foreach($viewincumbent as $vi)
+                {{$vi->fname.' '.$vi->lname}}
+              @endforeach
+
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="20%">Name</th>
-                    <th width="20%">Start Date</th>
-                    <th width="20%">End Date</th>
-                    <th width="20%">Col 4</th>
-                    <th width="20%">Col 5</th>
+                    <th width="30%">Began</th>
+                    <th width="10%">Status</th>
+                    <th width="30%">FTE</th>
+                    <th width="30%">Cost</th>
+                  </tr>
+                </thead>
+                  <tr>
+                    @foreach($viewIncumbentHistory as $incHistory)
+                      <tr>
+                        <td><a href={{route('positions.show',$position->id)}}?viewincid={{$incumbent->id}}&viewinchistid={{$incHistory->id}}>{{$incHistory->posstart}}</td>
+                        <td>{{$incHistory->active_pos}}</td>
+                        <td>{{$incHistory->fulltimeequiv}}</td>
+                        <td>{{$incHistory->ann_cost}}</td>
+                      </tr>
+                    @endforeach
                   </tr>
 
-                  @foreach($viewincumbent as $viewinc)
-                    <tr>
-                      <td>{{$viewinc->lname}}</td>
-                      <td>{{$viewinc->posstart}}</td>
-                      <td>{{$viewinc->posstop}}</td>
-                    </tr>
-                  @endforeach
+
+              </table>
+            </div>
+
+            <div class="col-md-6">Details, Selected History Record
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="25%">History</th>
+                    <th width="20%"></th>
+                    <th width="10%"></th>
+                    <th width="25%"></th>
+                    <th width="20%"></th>
+                  </tr>
                 </thead>
+                  <tr>
+                    <td>Began</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Status</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>FTE</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Annual Cost</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
               </table>
             </div>
           </div>
         </div>
+
+
       </div>
     </div>
-
 
     <!-- ************************** -->
     <!-- ************************** -->

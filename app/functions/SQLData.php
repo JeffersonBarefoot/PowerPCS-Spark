@@ -3,6 +3,7 @@
 use App\Models\Post;
 use App\Position;
 use App\Incumbent;
+use App\HIncumbent;
 use Illuminate\Support\Facades\Schema\columns;
 use Illuminate\Support\Facades\DB;
 
@@ -316,7 +317,7 @@ if (!function_exists('ImportIncumbents')) {
   //***************************************************
   //***************************************************
   //***************************************************
-  //**  I M P O R T   I N C U M B  N T S
+  //**  I M P O R T   I N C U M B E N T S
   //***************************************************
   //***************************************************
   //***************************************************
@@ -354,6 +355,57 @@ if (!function_exists('ImportIncumbents')) {
         // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
 
         $incumbent->save();
+      }
+
+      fclose ( $handle );
+    }
+  }
+}
+
+if (!function_exists('ImportHIncumbents')) {
+
+  //***************************************************
+  //***************************************************
+  //***************************************************
+  //**  I M P O R T   H I S T O R I C A L   I N C U M B E N T S
+  //***************************************************
+  //***************************************************
+  //***************************************************
+  function ImportHIncumbents($incomingfile)
+  {
+    if (($handle = fopen ( public_path () . '/ImportFiles/samplehincums.csv', 'r' )) !== FALSE) {
+
+      // extract headers so we can see what fields are being imported
+      $header = fgetcsv($handle, 2000, ',');
+      $headercount = count($header);
+
+      // scan remaining CSV records, and put each into an array named $data
+      while ( ($data = fgetcsv ( $handle, 2000, ',' )) !== FALSE ) {
+
+        //add a new record to positions table
+        $hincumbent = new HIncumbent() ;
+        $i = 0;
+
+        // scan through all fields in the current record
+        while ($i<$headercount):
+
+            // grab the fieldname from $header and the imported data from $data
+            $fieldname=$header[$i];
+            $fielddata=$data[$i];
+
+            // validate the incoming data, based on the table.field data type
+            $fielddata=validateData('hincumbents',$fieldname,$fielddata);
+
+            // update the field in the new positions records
+            // import will look like:  $position->active="A"
+            // dump();
+            $hincumbent->$fieldname=$fielddata;
+            $i++;
+        endwhile;
+
+        // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
+
+        $hincumbent->save();
       }
 
       fclose ( $handle );

@@ -170,6 +170,7 @@ dump('positioncontroller.index');
 
       $incumbentsinposition = \DB::table('incumbents')
         ->where('posno','=',$posno)
+        ->orderby("active_pos","asc")
         ->orderby("posstart","desc")
         ->get();
 
@@ -189,10 +190,32 @@ dump('positioncontroller.index');
       $activeincumbentcount = $activeincumbentsinposition->count();
 
       // pull all details for a selected incumbent.
-      // this can be used to show details of a "selected incumbent"
+      // this is used to identify the empno and company, for the history query
       $viewincumbent = \DB::table('incumbents')
         ->where('id','=',$viewincid)
         ->get();
+      $incumbentCompany='';
+      $incumbentEmpno='';  
+      foreach ($viewincumbent as $vi){
+        $incumbentCompany=$vi->company;
+        $incumbentEmpno=$vi->empno;
+      }
+
+
+
+      // pull all history records for a selected incumbents
+      // this will populate the middle column of incumbent history, showing all hist records
+      $viewIncumbentHistory = \DB::table('hincumbents')
+        ->where('poscompany','=',$company)
+        ->where('posno','=',$posno)
+        ->where('company','=',$incumbentCompany)
+        ->where('empno','=',$incumbentEmpno)
+        ->orderby('posstart','desc')
+        ->get();
+
+      // pull all details for the selected incumbent-history record.
+      // this can be used to show details of a "selected incumbent"
+
 
       //****************************
       // D I R E C T   R E P O R T S
@@ -208,6 +231,7 @@ dump('positioncontroller.index');
 
 // importpositions('');
 // importincumbents('');
+// importhincumbents('');
 // dump($viewincumbent);
 
 
@@ -217,6 +241,7 @@ dump('positioncontroller.index');
       return View('positions.show')
         ->with(compact('position'))
         ->with(compact('viewincumbent'))
+        ->with(compact('viewIncumbentHistory'))
         ->with(compact('positionsnavbar'))
         ->with(compact('incumbentsinposition'))
         ->with(compact('directReports'))
