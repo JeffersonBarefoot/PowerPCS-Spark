@@ -6,16 +6,12 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+  <style>
+
+  </style>
+
 </head>
-
-<style>
-
-#teststyle {
-  height: 550px;
-  vertical-align: bottom;
-}
-
-</style>
 
 <div class="row">
     <!-- <div class="col-sm-8 offset-sm-0"> -->
@@ -45,6 +41,7 @@
 
 
 <body>
+
   <div class="col-sm-12">
     <div class="panel-group">
 
@@ -57,7 +54,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-            <table id="teststyle">
+            <table id="teststyle" >
               <tr>
                 <td width="20%" height="20"><a data-toggle="collapse" href="#collapse1">Dates, Status</a></td>
                 <td width="70%" height="20">
@@ -258,7 +255,6 @@
     <!-- Budgets and FTEs -->
     <!-- ************************** -->
     <!-- ************************** -->
-
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
@@ -338,12 +334,12 @@
       <!-- <div id="collapse1" class="panel-collapse collapse"> =====collapsed -->
       <!-- <div id="collapse1" class="panel-collapse collapse in"> ==open (i.e. not collapsed) -->
 
-      <div id="collapse19999" class="panel-collapse collapse in">
+      <div id="collapse19999" class="panel-collapse collapse">
         <div class="panel-body">
           <!-- *************************** -->
           <!-- Left div contains list of all incumbents -->
           <div class="row">
-            <div class="col-md-4">Incumbents in Position
+            <div class="col-md-4">Incumbents that have been in this position
               <table class="table table-condensed">
                 <thead>
                   <tr>
@@ -372,7 +368,7 @@
             </div>
 
             <!-- *************************** -->
-            <!-- Right div contains details of selected incumbent -->
+            <!-- Middle div contains list of all history records for the selected incumbent -->
             <div class="col-md-3">Records on file for
               @foreach($viewincumbent as $vi)
                 {{$vi->fname.' '.$vi->lname}}
@@ -388,13 +384,15 @@
                   </tr>
                 </thead>
                   <tr>
+                    @foreach($viewincumbent as $viewinc)
                     @foreach($viewIncumbentHistory as $incHistory)
                       <tr>
-                        <td><a href={{route('positions.show',$position->id)}}?viewincid={{$incumbent->id}}&viewinchistid={{$incHistory->id}}>{{$incHistory->posstart}}</td>
+                        <td><a href={{route('positions.show',$position->id)}}?viewincid={{$viewinc->id}}&viewinchistid={{$incHistory->id}}>{{$incHistory->posstart}}</td>
                         <td>{{$incHistory->active_pos}}</td>
                         <td>{{$incHistory->fulltimeequiv}}</td>
                         <td>{{$incHistory->ann_cost}}</td>
                       </tr>
+                    @endforeach
                     @endforeach
                   </tr>
 
@@ -402,14 +400,16 @@
               </table>
             </div>
 
+            <!-- *************************** -->
+            <!-- Right div contains details of selected incumbent -->
             <div class="col-md-5">Details, Selected History Record
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="25%">History</th>
+                    <th width="30%">History</th>
                     <th width="20%"></th>
-                    <th width="10%"></th>
-                    <th width="25%"></th>
+                    <th width="0%"></th>
+                    <th width="30%"></th>
                     <th width="20%"></th>
                   </tr>
                 </thead>
@@ -417,6 +417,14 @@
                   <tr>
                     <td>DATES:</td>
                     <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+
+                  <tr>
+                    <td>This record effective as of:</td>
+                    <td>{{$IncDet->trans_date}}</td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -510,19 +518,128 @@
       </div>
       <div id="collapse7" class="panel-collapse collapse">
         <div class="panel-body">Panel Body
-          <table>
-              <tr>
-                <td width="40%">Direct Reports</td>
-                <td width="40%">Indirect Reports</td>
-              </tr>
+          <div class="row">
+            <!-- *************************** -->
+            <!-- "THIS POSITION REPORTS TO" -->
+            <div class="col-md-5"  style="border: 1px solid blue;">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="25%"></th>
+                    <th width="50%">This Position Reports Directly To:</th>
+                    <th width="25%"></th>
+                  </tr>
+                </thead>
+                  <tr>
+                    <td>test</td>
+                  </tr>
+              </table>
+            </div>
+            <div class="col-md-1"></div>
 
-              @foreach($directReports as $dirrep)
+          <div class="col-md-5"  style="border: 1px solid blue;">
+            <table class="table table-condensed">
+              <thead>
                 <tr>
-                    <td>{{$dirrep->company.'/'.$dirrep->posno.', '.$dirrep->descr}}</td>
+                  <th width="100%">This Position Reports Indirectly To:</th>
                 </tr>
-              @endforeach
-
+              </thead>
+                <tr>
+                  <td>test</td>
+                </tr>
             </table>
+          </div>
+          <div class="col-md-1"></div>
+        </div>
+
+          <div class="row">
+            <!-- *************************** -->
+            <!-- "divider section with lines" -->
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+              <table class="table table-condensed">
+                  <tr>
+                    <td></td>
+                  </tr>
+              </table>
+            </div>
+            <div class="col-md-4"></div>
+          </div>
+
+          <div class="row">
+            <!-- *************************** -->
+            <!-- "THIS POSITION" -->
+            <div class="col-md-5"  style="border: 1px solid blue;">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="25%"></th>
+                    <th width="50%">This Position</th>
+                    <th width="25%"></th>
+                  </tr>
+                </thead>
+                  <tr>
+                    <td>test</td>
+                  </tr>
+              </table>
+            </div>
+            <div class="col-md-7"></div>
+          </div>
+
+          <div class="row">
+            <!-- *************************** -->
+            <!-- "divider section with lines" -->
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+              <table class="table table-condensed">
+                  <tr>
+                    <td></td>
+                  </tr>
+              </table>
+            </div>
+            <div class="col-md-4"></div>
+          </div>
+
+          <div class="row">
+            <!-- *************************** -->
+            <!-- "REPORTS TO THIS POSITION" -->
+            <div class="col-md-5"  style="border: 1px solid blue;">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="1%"></th>
+                    <th width="98%">Direct Reports</th>
+                    <th width="1%"></th>
+                  </tr>
+                </thead>
+                  <tr>
+                    @foreach($directReports as $dirrep)
+                      <tr>
+                          <td></td>
+                          <td>{{$dirrep->company.'/'.$dirrep->posno.', '.$dirrep->descr}}</td>
+                          <td></td>
+                      </tr>
+                    @endforeach
+                  </tr>
+              </table>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-5"  style="border: 1px solid blue;">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="25%"></th>
+                    <th width="50%">Indirect/Dotted Line Reports</th>
+                    <th width="25%"></th>
+                  </tr>
+                </thead>
+                  <tr>
+                    <td>test</td>
+                  </tr>
+              </table>
+            </div>
+            <div class="col-md-1"></div>
+          </div>
         </div>
       </div>
     </div>
