@@ -156,7 +156,6 @@ dump('positioncontroller.index');
       $navbarcompany = $request->input('company');
       $navbarposno = $request->input('posno');
       $navbardescr = $request->input('descr');
-      $viewincid = $request->input('viewincid');
 
       $positionsnavbar = Position::where('company','like',"$navbarcompany%")
                           ->where('posno','like',"$navbarposno%")
@@ -167,6 +166,8 @@ dump('positioncontroller.index');
       //****************************
       // I N C U M B E N T S
       // gather all incumbents related to this position
+      $viewincid = $request->input('viewincid');
+      $viewinchistid = $request->input('viewinchistid');
 
       $incumbentsinposition = \DB::table('incumbents')
         ->where('posno','=',$posno)
@@ -195,7 +196,7 @@ dump('positioncontroller.index');
         ->where('id','=',$viewincid)
         ->get();
       $incumbentCompany='';
-      $incumbentEmpno='';  
+      $incumbentEmpno='';
       foreach ($viewincumbent as $vi){
         $incumbentCompany=$vi->company;
         $incumbentEmpno=$vi->empno;
@@ -213,6 +214,13 @@ dump('positioncontroller.index');
         ->orderby('posstart','desc')
         ->get();
 
+      // pull the specific history record that we are currently dealing wih
+      // IMPORTANT:  need a way to incorporate the CURRENT record into the SHOW blade
+        $viewIncumbentDetails = \DB::table('hincumbents')
+          ->where('id','=',$viewinchistid)
+          ->get();
+
+//var_dump("$viewIncumbentDetails");
       // pull all details for the selected incumbent-history record.
       // this can be used to show details of a "selected incumbent"
 
@@ -242,6 +250,7 @@ dump('positioncontroller.index');
         ->with(compact('position'))
         ->with(compact('viewincumbent'))
         ->with(compact('viewIncumbentHistory'))
+        ->with(compact('viewIncumbentDetails'))
         ->with(compact('positionsnavbar'))
         ->with(compact('incumbentsinposition'))
         ->with(compact('directReports'))

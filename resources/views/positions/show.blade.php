@@ -343,13 +343,14 @@
           <!-- *************************** -->
           <!-- Left div contains list of all incumbents -->
           <div class="row">
-            <div class="col-md-3">Incumbents in Position
+            <div class="col-md-4">Incumbents in Position
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="20%">Status</th>
-                    <th width="40%"></th>
-                    <th width="40%">Start Date</th>
+                    <th width="30%">Started</th>
+                    <th width="10%">Status</th>
+                    <th width="10%">FTE</th>
+                    <th width="50%">Name</th>
                     <!-- <th width="15%"></th>
                     <th width="30%"></th> -->
                   </tr>
@@ -358,9 +359,11 @@
                 <tr>
                   @foreach($incumbentsinposition as $incumbent)
                     <tr>
-                      <td>{{$incumbent->active_pos}}</td>
-                      <td><a href={{route('positions.show',$position->id)}}?viewincid={{$incumbent->id}}>{{$incumbent->lname.', '.$incumbent->fname}}</td>
                       <td>{{$incumbent->posstart}}</td>
+                      <td>{{$incumbent->active_pos}}</td>
+                      <td>{{$incumbent->fulltimeequiv}}</td>
+                      <td><a href={{route('positions.show',$position->id)}}?viewincid={{$incumbent->id}}>{{$incumbent->lname.', '.$incumbent->fname}}</td>
+
                     </tr>
                   @endforeach
                 </tr>
@@ -378,10 +381,10 @@
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="30%">Began</th>
-                    <th width="10%">Status</th>
-                    <th width="30%">FTE</th>
-                    <th width="30%">Cost</th>
+                    <th width="30%">Started</th>
+                    <th width="15%">Status</th>
+                    <th width="15%">FTE</th>
+                    <th width="40%">Ann Cost</th>
                   </tr>
                 </thead>
                   <tr>
@@ -399,7 +402,7 @@
               </table>
             </div>
 
-            <div class="col-md-6">Details, Selected History Record
+            <div class="col-md-5">Details, Selected History Record
               <table class="table table-condensed">
                 <thead>
                   <tr>
@@ -410,26 +413,81 @@
                     <th width="20%"></th>
                   </tr>
                 </thead>
+                @foreach($viewIncumbentDetails as $IncDet)
                   <tr>
-                    <td>Began</td>
+                    <td>DATES:</td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                   </tr>
+
                   <tr>
-                    <td>Status</td>
+                    <td>Pos Start Date</td>
+                    <td>{{$IncDet->posstart}}</td>
+                    <td></td>
+                    <td>Pos End Date</td>
+                    <td>{{$IncDet->posstop}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Last Hire Date</td>
+                    <td>{{$IncDet->lasthire}}</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                   </tr>
+
                   <tr>
-                    <td>FTE</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                   </tr>
+
                   <tr>
-                    <td>Annual Cost</td>
+                    <td>ORGANIZATION</td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                   </tr>
+
+                  <tr>
+                    <td>Org Level 1</td>
+                    <td>{{$IncDet->level1}}</td>
+                    <td></td>
+                    <td>Org Level 4</td>
+                    <td>{{$IncDet->level4}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Org Level 2</td>
+                    <td>{{$IncDet->level2}}</td>
+                    <td></td>
+                    <td>Org Level 5</td>
+                    <td>{{$IncDet->level5}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Org Level 3</td>
+                    <td>{{$IncDet->level3}}</td>
+                    <td></td>
+                    <td>Primary Job</td>
+                    <td>{{$IncDet->jobtitle}}</td>
+                  </tr>
+
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+
+
+                @endforeach
               </table>
             </div>
           </div>
