@@ -555,15 +555,14 @@
           <div class="row">
             <!-- *************************** -->
             <!-- "divider section with lines" -->
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
-              <table class="table table-condensed">
-                  <tr>
-                    <td></td>
-                  </tr>
-              </table>
+            <div class="col-md-5"  align="center">
+              <svg height="40" width="20">
+                <line x1="10" y1="0" x2="10" y2="80" style="stroke:rgb(0,0,0);stroke-width:2" />
+              </svg>
             </div>
-            <div class="col-md-4"></div>
+            <div class="col-md-1"></div>
+            <div class="col-md-5"></div>
+            <div class="col-md-1"></div>
           </div>
 
           <div class="row">
