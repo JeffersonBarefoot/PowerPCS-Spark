@@ -136,11 +136,11 @@
                 </tr>
 
                 <tr>
-                  <td>Position Status</td>
+                  <td>Position Funded</td>
                   <td></td>
                   <div class="radio">
 
-                    @if ($position->multincumb==1)
+                    @if ($position->funded=="Y")
                     <td>
                       <label><input type="radio" name="Funded" value="1" checked>Yes</label>
                     </td>
@@ -280,34 +280,58 @@
                 <thead>
                   <tr>
                     <th width="35%">FTEs</th>
-                    <th width="5%"></th>
-                    <th width="15%"></th>
-                    <th width="15%"></th>
-                    <th width="30%"></th>
+                    <th width="35%"></th>
+                    <th width="10%"></th>
+                    <th width="10%"></th>
+                    <th width="10%"></th>
                   </tr>
                 </thead>
 
                 <tr>
                   <td>Annual FTE Basis</td>
-                  <td></td>
+                  <td><input type="text" class="form-control" name="annftehour" value="{{$position->annftehour}}"></td>
+
+                </tr>
+              </table>
+            </div>
+            <div class="col-md-6">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="35%">Costs</th>
+                    <th width="35%"></th>
+                    <th width="10%"></th>
+                    <th width="10%"></th>
+                    <th width="10%"></th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <table class="table table-condensed">
+                <tr>
+                  <td width="35%">Pay Frequency</td>
+                  <td width="35%"><input type="text" class="form-control" name="annftehour" value="{{$position->ftefreq}}"></td>
+                  <td width="10%">
+                  <td width="10%">
+                  <td width="10%">
 
                 </tr>
 
                 <tr>
-                  <td>Pay Frequency</td>
-                  <td></td>
+                  <td>x Budgeted Hours</td>
+                  <td><input type="text" class="form-control" name="annftehour" value="{{$position->ftehours}}"></td>
 
                 </tr>
 
                 <tr>
-                  <td>Pay Period Hours</td>
+                  <td>/ Basis ) = FTEs</td>
+                  <td><input type="text" class="form-control" name="annftehour" value="{{$position->fulltimeequiv}}"></td>
                   <td></td>
-
-                </tr>
-
-                <tr>
-                  <td>Calculated FTEs</td>
-                  <td></td>
+                  <td><img src="/images/ArrowRight.jpg" width="50" height="15"></td>
 
                 </tr>
               </table>
@@ -317,28 +341,33 @@
             <!-- Right div contains xxxxxxxxxxxxxxxxxxxxxx -->
             <div class="col-md-6">
               <table class="table table-condensed">
-                <thead>
                   <tr>
-                    <th width="45%">Costs</th>
-                    <th width="10%"></th>
-                    <th width="40%"></th>
-                    <th width="4%"></th>
-                    <th width="1%"></th>
+                    <td width="35%">Pay Frequency</td>
+                    <td width="35%"><input type="text" class="form-control" name="payfreq" value="{{$position->payfreq}}"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
                   </tr>
-                </thead>
-                  <tr>
+                  <!-- <tr>
                     <td>Pay Frequency</td>
                     <td></td>
                     <td></td>
-                  </tr>
+                  </tr> -->
                   <tr>
-                    <td>Budgeted Pay Rate</td>
-                    <td></td>
+                    <td>x Budgeted Pay Rate</td>
+                    <td><input type="text" class="form-control" name="payrate" value="{{$position->payrate}}"></td>
                     <td></td>
                   </tr>
+
                   <tr>
-                    <td>Budgeted Annual Cost</td>
+                    <td>x Budgeted FTEs</td>
+                    <td><input type="text" class="form-control" name="dummyfulltimeequiv" value="{{$position->fulltimeequiv}}"></td>
                     <td></td>
+                  </tr>
+
+                  <tr>
+                    <td>= Budgeted Annual Cost</td>
+                    <td><input type="text" class="form-control" name="budgsal" value="{{$position->budgsal}}"></td>
                     <td></td>
                   </tr>
 
@@ -674,7 +703,7 @@
             <!-- "divider section with lines" -->
           <div class="row">
             <div class="col-md-5"  align="center">
-              <img src="/images/ArrowDirectUp.jpg" width="15" height="50">
+              <img src="/images/ArrowUp.jpg" width="15" height="50">
             </div>
             <div class="col-md-1"></div>
             <div class="col-md-5"></div>
@@ -710,7 +739,7 @@
             <!-- "divider section with lines" -->
             <div class="row">
               <div class="col-md-5"  align="center">
-                <img src="/images/ArrowDirectUp.jpg" width="15" height="50">
+                <img src="/images/ArrowUp.jpg" width="15" height="50">
               </div>
               <div class="col-md-1"></div>
               <div class="col-md-5"></div>
@@ -901,6 +930,30 @@
         </h4>
       </div>
       <div id="collapse8" class="panel-collapse collapse">
+        <div class="panel-body">Reserved for future functionality
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ************************** -->
+    <!-- ************************** -->
+    <!-- allocations -->
+    <!-- ************************** -->
+    <!-- ************************** -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <div class="row">
+            <div class="col-md-2">
+              <a data-toggle="collapse" href="#collapse9">Allocations</a>
+            </div>
+            <div class="col-md-10">
+            </div>
+          </div>
+        </h4>
+      </div>
+      <div id="collapse9" class="panel-collapse collapse">
         <div class="panel-body">Reserved for future functionality
 
         </div>
