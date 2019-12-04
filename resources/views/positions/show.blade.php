@@ -54,9 +54,9 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-            <table id="teststyle" >
+            <table>
               <tr>
-                <td width="20%" height="20"><a data-toggle="collapse" href="#collapse1">Dates, Status</a></td>
+                <td width="20%" height="20"><a data-toggle="collapse" href="#collapse1">Status</a></td>
                 <td width="70%" height="20">
                   &nbsp&nbsp&nbsp Currently
                   @if ($position->Active=="A")
@@ -260,7 +260,7 @@
         <h4 class="panel-title">
           <table>
             <tr>
-              <td width="50%"><a data-toggle="collapse" href="#collapse2">Budgets and FTEs</a></td>
+              <td width="50%"><a data-toggle="collapse" href="#collapse2">Budgets</a></td>
               <td>{{round($position->fulltimeequiv,3)}} FTEs / {{FormatMoney($position->budgsal)}} </td>
             </tr>
           </table>
@@ -320,19 +320,19 @@
     <!-- incumbents -->
     <!-- ************************** -->
     <!-- ************************** -->
-
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-            <table id="teststyle">
-              <tr>
-                <td width="100%" height="20"><a data-toggle="collapse" href="#collapse19999">Incumbents,&nbsp{{$activeincumbentcount}} Active:&nbsp&nbsp{{$activeincumbentlist}}</a></td>
-              </tr>
-            </table>
+          <div class="row">
+            <div class="col-md-1">
+              <a data-toggle="collapse" href="#collapse19999">Incumbents</a>
+            </div>
+            <div class="col-md-11">
+              {{$activeincumbentcount}} Active:&nbsp&nbsp{{$activeincumbentlist}}
+            </div>
+          </div>
         </h4>
       </div>
-      <!-- <div id="collapse1" class="panel-collapse collapse"> =====collapsed -->
-      <!-- <div id="collapse1" class="panel-collapse collapse in"> ==open (i.e. not collapsed) -->
 
       <div id="collapse19999" class="panel-collapse collapse">
         <div class="panel-body">
@@ -517,7 +517,7 @@
         </h4>
       </div>
       <div id="collapse7" class="panel-collapse collapse">
-        <div class="panel-body">Panel Body
+        <div class="panel-body">
           <div class="row">
             <!-- *************************** -->
             <!-- "THIS POSITION REPORTS TO" -->
@@ -532,7 +532,13 @@
                 </thead>
                   <tr>
                     <td></td>
-                    <td>{{$position->reptocomp}} / {{$position->reptoposno}}, {{$position->reptodesc}}</td>
+                    <td>
+                      @if ($position->reptoposno=="")
+                        None Assigned
+                      @else
+                        {{$position->reptocomp}} / {{$position->reptoposno}}, {{$position->reptodesc}}
+                      @endif
+                    </td>
                     <td></td>
                   </tr>
               </table>
@@ -550,7 +556,16 @@
               </thead>
                 <tr>
                   <td></td>
-                  <td>{{$position->reptocom2}} / {{$position->reptopos2}}, {{$position->reptodesc2}}</td>
+                  <td>
+                    @if ($position->reptopos2=="")
+                      None Assigned
+                    @else
+                      {{$position->reptocom2}} / {{$position->reptopos2}}, {{$position->reptodesc2}}
+                    @endif
+                  </td>
+
+
+
                   <td></td>
                 </tr>
             </table>
@@ -635,7 +650,7 @@
                 <thead>
                   <tr>
                     <th width="1%"></th>
-                    <th width="98%">Indirect/Dotted Line Reports</th>
+                    <th width="98%">Indirect Reports</th>
                     <th width="1%"></th>
                   </tr>
                 </thead>

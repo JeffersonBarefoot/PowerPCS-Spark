@@ -239,13 +239,13 @@ class PositionController extends Controller
         ->where('reptocom2','=',$company)
         ->orderby("posno")
         ->get();
-dump("$posno");
-dump("$company");
-dump($directReports);
+// dump("$posno");
+// dump("$company");
+// dump($directReports);
 // importpositions('');
 // importincumbents('');
 // importhincumbents('');
-dump($viewincumbent);
+// dump($viewincumbent);
 
 
 
