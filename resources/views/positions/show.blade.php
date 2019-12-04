@@ -48,35 +48,33 @@
 
     <!-- ************************** -->
     <!-- ************************** -->
-    <!-- Position Summary Data -->
+    <!-- Position Status -->
     <!-- ************************** -->
     <!-- ************************** -->
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-            <table>
-              <tr>
-                <td width="20%" height="20"><a data-toggle="collapse" href="#collapse1">Status</a></td>
-                <td width="70%" height="20">
-                  &nbsp&nbsp&nbsp Currently
-                  @if ($position->Active=="A")
-                    Active,
-                  @else
-                    Inactive,
-                  @endif
-                    {{ ucwords(strtolower($position->curstatus)) }}
-                </td>
-              </tr>
-            </table>
+          <div class="row">
+            <div class="col-md-2">
+              <a data-toggle="collapse" href="#collapse1">Status</a>
+            </div>
+            <div class="col-md-10">
+              Currently
+              @if ($position->Active=="A")
+                Active,
+              @else
+                Inactive,
+              @endif
+                {{ ucwords(strtolower($position->curstatus)) }}
+            </div>
+          </div>
         </h4>
       </div>
-      <!-- <div id="collapse1" class="panel-collapse collapse"> =====collapsed -->
-      <!-- <div id="collapse1" class="panel-collapse collapse in"> ==open (i.e. not collapsed) -->
 
       <div id="collapse1" class="panel-collapse collapse">
         <div class="panel-body">
           <!-- *************************** -->
-          <!-- Left div contains list of all incumbents -->
+          <!-- Left div contains xxxxxxxxxxxxxxxxxxxxxx -->
           <div class="row">
             <div class="col-md-6">
               <table class="table table-condensed">
@@ -163,12 +161,12 @@
             </div>
 
             <!-- *************************** -->
-            <!-- Right div contains details of selected incumbent -->
+            <!-- Right div contains xxxxxxxxxxxxxxxxxxxxxx -->
             <div class="col-md-6">
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="45%">Dates</th>
+                    <th width="45%">Reference Dates</th>
                     <th width="10%"></th>
                     <th width="40%"></th>
                     <th width="4%"></th>
@@ -178,24 +176,24 @@
                   <tr>
                     <td>Established</td>
                     <td></td>
-                    <td><input type="text" class="form-control" name="annftehour" value="{{$position->startdate}}" {{$readonly}}></td>
+                    <td><input type="text" class="form-control" name="startdate" value="{{$position->startdate}}" {{$readonly}}></td>
                   </tr>
                   <tr>
                     <td>Available</td>
                     <td></td>
-                    <td><input type="text" class="form-control" name="annftehour" value="{{$position->avail_date}}" {{$readonly}}></td>
+                    <td><input type="text" class="form-control" name="avail_date" value="{{$position->avail_date}}" {{$readonly}}></td>
                   </tr>
                   <tr>
                     <td>End Date</td>
                     <td></td>
-                    <td><input type="text" class="form-control" name="annftehour" value="{{$position->enddate}}" {{$readonly}}></td>
+                    <td><input type="text" class="form-control" name="enddate" value="{{$position->enddate}}" {{$readonly}}></td>
                   </tr>
 
 
               </table>
             </div>
           </div>
-        </div>
+
 
         <div class="row">
           <div class="col-md-6">
@@ -237,7 +235,7 @@
             <table class="table table-condensed">
               <thead>
                 <tr>
-                  <th width="45%">Table Header Goes Here</th>
+                  <th width="45%">Vacancy Statistics</th>
                   <th width="10%"></th>
                   <th width="40%"></th>
                   <th width="4%"></th>
@@ -246,6 +244,7 @@
               </thead>
             </table>
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -256,20 +255,104 @@
     <!-- ************************** -->
     <!-- ************************** -->
     <div class="panel panel-default">
+
       <div class="panel-heading">
         <h4 class="panel-title">
-          <table>
-            <tr>
-              <td width="50%"><a data-toggle="collapse" href="#collapse2">Budgets</a></td>
-              <td>{{round($position->fulltimeequiv,3)}} FTEs / {{FormatMoney($position->budgsal)}} </td>
-            </tr>
-          </table>
-
+          <div class="row">
+            <div class="col-md-2">
+              <a data-toggle="collapse" href="#collapse2">Budgets</a>
+            </div>
+            <div class="col-md-10">
+              {{round($position->fulltimeequiv,3)}} FTEs / {{FormatMoney($position->budgsal)}}
+            </div>
+          </div>
         </h4>
       </div>
+
       <div id="collapse2" class="panel-collapse collapse">
         <!-- <div class="panel-body">Full Time Equivalent Calculation -->
-          <table>
+        <div class="panel-body">
+          <!-- *************************** -->
+          <!-- Left div contains xxxxxxxxxxxxxxxxxxxxxx -->
+          <div class="row">
+            <div class="col-md-6">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="35%">FTEs</th>
+                    <th width="5%"></th>
+                    <th width="15%"></th>
+                    <th width="15%"></th>
+                    <th width="30%"></th>
+                  </tr>
+                </thead>
+
+                <tr>
+                  <td>Annual FTE Basis</td>
+                  <td></td>
+
+                </tr>
+
+                <tr>
+                  <td>Pay Frequency</td>
+                  <td></td>
+
+                </tr>
+
+                <tr>
+                  <td>Pay Period Hours</td>
+                  <td></td>
+
+                </tr>
+
+                <tr>
+                  <td>Calculated FTEs</td>
+                  <td></td>
+
+                </tr>
+              </table>
+            </div>
+
+            <!-- *************************** -->
+            <!-- Right div contains xxxxxxxxxxxxxxxxxxxxxx -->
+            <div class="col-md-6">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="45%">Costs</th>
+                    <th width="10%"></th>
+                    <th width="40%"></th>
+                    <th width="4%"></th>
+                    <th width="1%"></th>
+                  </tr>
+                </thead>
+                  <tr>
+                    <td>Pay Frequency</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Budgeted Pay Rate</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Budgeted Annual Cost</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+
+
+              </table>
+            </div>
+          </div>
+          </div>
+
+
+
+
+
+          <!-- <table>
               <tr>
                 <td colspan="2"><span style="font-weight: bold;">Full Time Equivalent Calculation</span></td>
                 <td></td>
@@ -307,7 +390,7 @@
                   <td></td>
 
               </tr>
-            </table>
+            </table> -->
 
 
         <!-- </div> -->
@@ -324,10 +407,10 @@
       <div class="panel-heading">
         <h4 class="panel-title">
           <div class="row">
-            <div class="col-md-1">
+            <div class="col-md-2">
               <a data-toggle="collapse" href="#collapse19999">Incumbents</a>
             </div>
-            <div class="col-md-11">
+            <div class="col-md-10">
               {{$activeincumbentcount}} Active:&nbsp&nbsp{{$activeincumbentlist}}
             </div>
           </div>
@@ -511,11 +594,24 @@
     <!-- ************************** -->
     <!-- ************************** -->
     <div class="panel panel-default">
+
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" href="#collapse7">Reports To</a>
+          <div class="row">
+            <div class="col-md-2">
+              <a data-toggle="collapse" href="#collapse7">Reports to</a>
+            </div>
+            <div class="col-md-10">
+              @if ($position->reptoposno=="")
+                None Assigned
+              @else
+                {{$position->reptocomp}} / {{$position->reptoposno}}, {{$position->reptodesc}}
+              @endif
+            </div>
+          </div>
         </h4>
       </div>
+
       <div id="collapse7" class="panel-collapse collapse">
         <div class="panel-body">
           <div class="row">
@@ -678,11 +774,19 @@
     <!-- ************************** -->
 
     <div class="panel panel-default">
+
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" href="#collapse4">History</a>
+          <div class="row">
+            <div class="col-md-2">
+              <a data-toggle="collapse" href="#collapse4">History</a>
+            </div>
+            <div class="col-md-10">
+            </div>
+          </div>
         </h4>
       </div>
+
       <div id="collapse4" class="panel-collapse collapse">
         <div class="panel-body">text1
           <!-- <div class="row"><h4>Panel Body</h4></div> -->
@@ -735,11 +839,19 @@
     <!-- ************************** -->
     <!-- ************************** -->
     <div class="panel panel-default">
+
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" href="#collapse5">User Defined</a>
+          <div class="row">
+            <div class="col-md-2">
+              <a data-toggle="collapse" href="#collapse5">User Defined</a>
+            </div>
+            <div class="col-md-10">
+            </div>
+          </div>
         </h4>
       </div>
+
       <div id="collapse5" class="panel-collapse collapse">
         <div class="panel-body">Reserved for future functionality
 
@@ -755,7 +867,13 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" href="#collapse6">Funding</a>
+          <div class="row">
+            <div class="col-md-2">
+              <a data-toggle="collapse" href="#collapse6">Funding</a>
+            </div>
+            <div class="col-md-10">
+            </div>
+          </div>
         </h4>
       </div>
       <div id="collapse6" class="panel-collapse collapse">
@@ -773,7 +891,13 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" href="#collapse8">Succession Planning</a>
+          <div class="row">
+            <div class="col-md-2">
+              <a data-toggle="collapse" href="#collapse8">Succession Planning</a>
+            </div>
+            <div class="col-md-10">
+            </div>
+          </div>
         </h4>
       </div>
       <div id="collapse8" class="panel-collapse collapse">
@@ -782,8 +906,6 @@
         </div>
       </div>
     </div>
-
-
   </div>
 </div>
 
