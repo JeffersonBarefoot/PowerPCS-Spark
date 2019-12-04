@@ -35,7 +35,7 @@ class PositionController extends Controller
         // $descr = $request->input('descr');
 //      dd($company);
 //      dd($posno);
-dump('positioncontroller.index');
+// dump('positioncontroller.index');
 
         $positions = Position::all();
         //$positionsnavbar = Position::all();
@@ -202,8 +202,6 @@ dump('positioncontroller.index');
         $incumbentEmpno=$vi->empno;
       }
 
-
-
       // pull all history records for a selected incumbents
       // this will populate the middle column of incumbent history, showing all hist records
       $viewIncumbentHistory = \DB::table('hincumbents')
@@ -226,7 +224,7 @@ dump('positioncontroller.index');
 
 
       //****************************
-      // D I R E C T   R E P O R T S
+      // REPORTS TO data
       // "reports to" position is directly available in the positions table
       // Direct Reports will reference this position in their positions.reptocomp / reptoposno
       // Dotted lines will have this position number in reptocom2 / reptopos2
@@ -236,11 +234,18 @@ dump('positioncontroller.index');
         ->orderby("posno")
         ->get();
 
-
+      $indirectReports = \DB::table('positions')
+        ->where('reptopos2','=',$posno)
+        ->where('reptocom2','=',$company)
+        ->orderby("posno")
+        ->get();
+dump("$posno");
+dump("$company");
+dump($directReports);
 // importpositions('');
 // importincumbents('');
 // importhincumbents('');
-// dump($viewincumbent);
+dump($viewincumbent);
 
 
 
@@ -254,6 +259,7 @@ dump('positioncontroller.index');
         ->with(compact('positionsnavbar'))
         ->with(compact('incumbentsinposition'))
         ->with(compact('directReports'))
+        ->with(compact('indirectReports'))
         ->with('activeincumbentcount',$activeincumbentcount)
         ->with('activeincumbentlist',$activeincumbentlist);
 

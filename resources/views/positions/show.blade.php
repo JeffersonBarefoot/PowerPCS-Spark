@@ -521,44 +521,49 @@
           <div class="row">
             <!-- *************************** -->
             <!-- "THIS POSITION REPORTS TO" -->
-            <div class="col-md-5"  style="border: 1px solid blue;">
+            <div class="col-md-5"  style="border: 1px solid grey;">
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="25%"></th>
-                    <th width="50%">This Position Reports Directly To:</th>
-                    <th width="25%"></th>
+                    <th width="1%"></th>
+                    <th width="98%">Reports Directly To:</th>
+                    <th width="1%"></th>
                   </tr>
                 </thead>
                   <tr>
-                    <td>test</td>
+                    <td></td>
+                    <td>{{$position->reptocomp}} / {{$position->reptoposno}}, {{$position->reptodesc}}</td>
+                    <td></td>
                   </tr>
               </table>
             </div>
             <div class="col-md-1"></div>
 
-          <div class="col-md-5"  style="border: 1px solid blue;">
+          <div class="col-md-5"  style="border: 1px solid grey;">
             <table class="table table-condensed">
               <thead>
                 <tr>
-                  <th width="100%">This Position Reports Indirectly To:</th>
+                  <th width="1%"></th>
+                  <th width="198%">Reports Indirectly To:</th>
+                  <th width="1%"></th>
                 </tr>
               </thead>
                 <tr>
-                  <td>test</td>
+                  <td></td>
+                  <td>{{$position->reptocom2}} / {{$position->reptopos2}}, {{$position->reptodesc2}}</td>
+                  <td></td>
                 </tr>
             </table>
           </div>
           <div class="col-md-1"></div>
         </div>
 
-          <div class="row">
+
             <!-- *************************** -->
             <!-- "divider section with lines" -->
+          <div class="row">
             <div class="col-md-5"  align="center">
-              <svg height="40" width="20">
-                <line x1="10" y1="0" x2="10" y2="80" style="stroke:rgb(0,0,0);stroke-width:2" />
-              </svg>
+              <img src="/images/ArrowDirectUp.jpg" width="15" height="50">
             </div>
             <div class="col-md-1"></div>
             <div class="col-md-5"></div>
@@ -568,41 +573,43 @@
           <div class="row">
             <!-- *************************** -->
             <!-- "THIS POSITION" -->
-            <div class="col-md-5"  style="border: 1px solid blue;">
+            <div class="col-md-5"  style="border: 1px solid grey;">
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="25%"></th>
-                    <th width="50%">This Position</th>
-                    <th width="25%"></th>
+                    <th width="1%"></th>
+                    <th width="98%">This Position</th>
+                    <th width="1%"></th>
                   </tr>
                 </thead>
                   <tr>
-                    <td>test</td>
-                  </tr>
-              </table>
-            </div>
-            <div class="col-md-7"></div>
-          </div>
-
-          <div class="row">
-            <!-- *************************** -->
-            <!-- "divider section with lines" -->
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
-              <table class="table table-condensed">
-                  <tr>
+                    <td></td>
+                    <td>{{$position->company}} / {{$position->posno}}, {{$position->descr}}</td>
                     <td></td>
                   </tr>
               </table>
             </div>
-            <div class="col-md-4"></div>
+            <div class="col-md-7" align="left">
+              <img src="/images/ArrowDottedUpUp.jpg" width="50" height="120">
+            </div>
           </div>
+
+
+            <!-- *************************** -->
+            <!-- "divider section with lines" -->
+            <div class="row">
+              <div class="col-md-5"  align="center">
+                <img src="/images/ArrowDirectUp.jpg" width="15" height="50">
+              </div>
+              <div class="col-md-1"></div>
+              <div class="col-md-5"></div>
+              <div class="col-md-1"></div>
+            </div>
 
           <div class="row">
             <!-- *************************** -->
             <!-- "REPORTS TO THIS POSITION" -->
-            <div class="col-md-5"  style="border: 1px solid blue;">
+            <div class="col-md-5"  style="border: 1px solid grey;">
               <table class="table table-condensed">
                 <thead>
                   <tr>
@@ -611,7 +618,7 @@
                     <th width="1%"></th>
                   </tr>
                 </thead>
-                  <tr>
+
                     @foreach($directReports as $dirrep)
                       <tr>
                           <td></td>
@@ -619,21 +626,27 @@
                           <td></td>
                       </tr>
                     @endforeach
-                  </tr>
+
               </table>
             </div>
             <div class="col-md-1"></div>
-            <div class="col-md-5"  style="border: 1px solid blue;">
+            <div class="col-md-5"  style="border: 1px solid grey;">
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="25%"></th>
-                    <th width="50%">Indirect/Dotted Line Reports</th>
-                    <th width="25%"></th>
+                    <th width="1%"></th>
+                    <th width="98%">Indirect/Dotted Line Reports</th>
+                    <th width="1%"></th>
                   </tr>
                 </thead>
                   <tr>
-                    <td>test</td>
+                    @foreach($indirectReports as $indirrep)
+                      <tr>
+                          <td></td>
+                          <td>{{$indirrep->company.'/'.$indirrep->posno.', '.$indirrep->descr}}</td>
+                          <td></td>
+                      </tr>
+                    @endforeach
                   </tr>
               </table>
             </div>
