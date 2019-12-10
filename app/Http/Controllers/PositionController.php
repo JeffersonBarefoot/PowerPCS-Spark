@@ -4,13 +4,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Position;
+use App\HPosition;
 use App\Incumbent;
+use Auth;
 use Illuminate\Support\Facades\Schema\columns;
 use Illuminate\Support\Facades\DB;
 
 
 class PositionController extends Controller
 {
+  /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+      $this->middleware('auth');
+
+      // $this->middleware('subscribed');
+
+      // $this->middleware('verified');
+  }
+
     /**
      * Display a listing of the resource.
      *
@@ -222,6 +238,16 @@ class PositionController extends Controller
       // pull all details for the selected incumbent-history record.
       // this can be used to show details of a "selected incumbent"
 
+      //****************************
+      // P O S I T I O N   H I S T O R Y
+      $posHistRecs = \DB::table('hpositions')
+        ->where('posno','=',$posno)
+        ->where('company','=',$company)
+        ->orderby('trans_date','desc')
+        ->get();
+
+
+
 
       //****************************
       // REPORTS TO data
@@ -243,9 +269,15 @@ class PositionController extends Controller
 // dump("$company");
 // dump($directReports);
 // importpositions('');
+// importhpositions('');
 // importincumbents('');
 // importhincumbents('');
 // dump($viewincumbent);
+// $user = Auth::user();
+// $id = Auth::id();
+// dump($id);
+// dump($user->currentTeam->name);
+// dump($user->currentTeam->id);
 
 
 
@@ -260,6 +292,7 @@ class PositionController extends Controller
         ->with(compact('incumbentsinposition'))
         ->with(compact('directReports'))
         ->with(compact('indirectReports'))
+        ->with(compact('posHistRecs'))
         ->with('activeincumbentcount',$activeincumbentcount)
         ->with('activeincumbentlist',$activeincumbentlist);
 

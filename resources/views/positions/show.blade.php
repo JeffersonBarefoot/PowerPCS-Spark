@@ -832,6 +832,13 @@
                     <th width="20%">Col 5</th>
                   </tr>
                 </thead>
+                @foreach($posHistRecs as $posHistRecs)
+                  <tr>
+                      <td>{{$posHistRecs->trans_date}}</td>
+                      <td>{{$posHistRecs->company.'/'.$posHistRecs->posno.', '.$posHistRecs->descr}}</td>
+                      <td></td>
+                  </tr>
+                @endforeach
               </table>
             </div>
             <div class="col-md-6">this is a test

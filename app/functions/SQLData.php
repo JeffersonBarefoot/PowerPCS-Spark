@@ -2,6 +2,7 @@
 <?php
 use App\Models\Post;
 use App\Position;
+use App\HPosition;
 use App\Incumbent;
 use App\HIncumbent;
 use Illuminate\Support\Facades\Schema\columns;
@@ -305,6 +306,62 @@ if (!function_exists('ImportPositions')) {
         // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
 
         $position->save();
+      }
+
+      fclose ( $handle );
+    }
+  }
+}
+
+if (!function_exists('ImportHPositions')) {
+
+  //***************************************************
+  //***************************************************
+  //***************************************************
+  //**  I M P O R T   H P O S I T I O N S
+  //**
+  //**  Import from a CSV file
+  //**  Pull column name from header row
+  //**
+  //**  Validate data, etc.  and then create a new record in POSITIONS table
+  //**
+  //***************************************************
+  //***************************************************
+  //***************************************************
+  function ImportHPositions($incomingfile)
+  {
+    if (($handle = fopen ( public_path () . '/ImportFiles/samplehpositions.csv', 'r' )) !== FALSE) {
+
+      // extract headers so we can see what fields are being imported
+      $header = fgetcsv($handle, 2000, ',');
+      $headercount = count($header);
+
+      // scan remaining CSV records, and put each into an array named $data
+      while ( ($data = fgetcsv ( $handle, 2000, ',' )) !== FALSE ) {
+
+        //add a new record to positions table
+        $hposition = new HPosition();
+        $i = 0;
+
+        // scan through all fields in the current record
+        while ($i<$headercount):
+
+            // grab the fieldname from $header and the imported data from $data
+            $fieldname=$header[$i];
+            $fielddata=$data[$i];
+
+            // validate the incoming data, based on the table.field data type
+            $fielddata=validateData('hpositions',$fieldname,$fielddata);
+
+            // update the field in the new positions records
+            // import will look like:  $position->active="A"
+            $hposition->$fieldname=$fielddata;
+            $i++;
+        endwhile;
+
+        // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
+
+        $hposition->save();
       }
 
       fclose ( $handle );
