@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Position;
 use App\HPosition;
 use App\Incumbent;
+use Session;
 use Auth;
 use Illuminate\Support\Facades\Schema\columns;
 use Illuminate\Support\Facades\DB;
@@ -278,6 +279,9 @@ class PositionController extends Controller
 // dump($id);
 // dump($user->currentTeam->name);
 // dump($user->currentTeam->id);
+
+//experiment with session variables, 2020-01-01
+Session::put('mykey', '12345');
 
 
 

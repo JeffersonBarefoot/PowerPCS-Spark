@@ -3,9 +3,9 @@
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
   <style>
 
@@ -37,13 +37,13 @@
 </div>
 
 <!-- set this to readonly to make this a show screen, or something else (blank, notreadonly, etc) to allow editing -->
-<?php $readonly='xxreadonly' ?>
+<?php $readonly='readonly' ?>
 
 
 <body>
 
   <div class="col-sm-12">
-    <div class="panel-group">
+    <!-- <div class="panel-group"> -->
 
 
     <!-- ************************** -->
@@ -60,7 +60,7 @@
             </div>
             <div class="col-md-10">
               Currently
-              @if ($position->Active=="A")
+              @if ($position->active=="A")
                 Active,
               @else
                 Inactive,
@@ -71,7 +71,7 @@
         </h4>
       </div>
 
-      <div id="collapse1" class="panel-collapse collapse">
+      <div id="collapse1" class="panel-collapse  show">
         <div class="panel-body">
           <!-- *************************** -->
           <!-- Left div contains xxxxxxxxxxxxxxxxxxxxxx -->
@@ -651,7 +651,33 @@
                 <thead>
                   <tr>
                     <th width="1%"></th>
-                    <th width="98%">Reports Directly To:</th>
+                    <th width="68%">Reports Directly To:</th>
+                    <th width="30%">
+                      <!-- Modal -->
+                      <!-- Trigger the modal with a button -->
+                      <button type="button" class="btn btn-info btn" data-toggle="modal" data-target="#directReportingModal">Assign</button>
+                      <!-- This is the modal istself -->
+                      <div class="modal fade" id="directReportingModal" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              <h4 class="modal-title">Modal Header</h4>
+                            </div>
+                            <div class="modal-body">
+                              <p>This is a direct modal.
+
+                                        </p>
+                                        <input type="text" class="form-control" name="avail_date" value="{{$position->avail_date}}"  {{$readonly}}>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </th>
                     <th width="1%"></th>
                   </tr>
                 </thead>
@@ -675,7 +701,33 @@
               <thead>
                 <tr>
                   <th width="1%"></th>
-                  <th width="198%">Reports Indirectly To:</th>
+                  <th width="68%">Reports Inirectly To:</th>
+                  <th width="30%">
+                    <!-- Modal -->
+                    <!-- Trigger the modal with a button -->
+                    <button type="button" class="btn btn-info btn" data-toggle="modal" data-target="#indirectReportingModal">Assign</button>
+                    <!-- This is the modal istself -->
+                    <div class="modal fade" id="indirectReportingModal" role="dialog">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Modal Header</h4>
+                          </div>
+                          <div class="modal-body">
+                            <p>This is a indirect modal.
+
+                                      </p>
+                                      <input type="text" class="form-control" name="avail_date" value="{{$position->avail_date}}" >
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </th>
                   <th width="1%"></th>
                 </tr>
               </thead>
@@ -817,31 +869,31 @@
       </div>
 
       <div id="collapse4" class="panel-collapse collapse">
-        <div class="panel-body">text1
-          <!-- <div class="row"><h4>Panel Body</h4></div> -->
-          text2
+        <div class="panel-body">
           <div class="row">
-            <div class="col-md-6">this is a test
+            <div class="col-md-6">
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="20%">Col 1</th>
-                    <th width="20%">Col 2</th>
-                    <th width="20%">Col 3</th>
-                    <th width="20%">Col 4</th>
-                    <th width="20%">Col 5</th>
+                    <th width="20%">Started</th>
+                    <th width="20%">Status</th>
+                    <th width="20%">FTEs</th>
+                    <th width="20%">Budg Sal</th>
+                    <th width="20%">Reason</th>
                   </tr>
                 </thead>
                 @foreach($posHistRecs as $posHistRecs)
                   <tr>
                       <td>{{$posHistRecs->trans_date}}</td>
-                      <td>{{$posHistRecs->company.'/'.$posHistRecs->posno.', '.$posHistRecs->descr}}</td>
-                      <td></td>
+                      <td>{{$posHistRecs->active}}</td>
+                      <td>{{$posHistRecs->fulltimeequiv}}</td>
+                      <td>{{$posHistRecs->budgsal}}</td>
+                      <td>{{$posHistRecs->reason}}</td>
                   </tr>
                 @endforeach
               </table>
             </div>
-            <div class="col-md-6">this is a test
+            <div class="col-md-6">
               <table class="table table-condensed">
                 <thead>
                   <tr>
@@ -960,13 +1012,37 @@
           </div>
         </h4>
       </div>
-      <div id="collapse9" class="panel-collapse collapse">
+      <div id="collapse9" class="panel-collapse in">
         <div class="panel-body">Reserved for future functionality
 
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- ************************** -->
+    <!-- ************************** -->
+    <!-- testing collapsible panels -->
+    <!-- ************************** -->
+    <!-- ************************** -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <div class="row">
+            <div class="col-md-2">
+              <a data-toggle="collapse" href="#collapseTEST">TEST TEST TEST</a>
+            </div>
+            <div class="col-md-10">
+            </div>
+          </div>
+        </h4>
+      </div>
+      <div id="collapseTEST" class="panel-collapse in">
+        <div class="panel-body">Reserved for future functionality
+
+        </div>
+      </div>
+    </div>
+  <!-- </div> -->
 </div>
 
 </body>
