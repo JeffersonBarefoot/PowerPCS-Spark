@@ -469,3 +469,23 @@ if (!function_exists('ImportHIncumbents')) {
     }
   }
 }
+
+if (!function_exists('TestOnclickFunction')) {
+  function TestOnclickFunction()
+  {
+
+//    $initialValue = Session::get('expandIncumbents');
+$initialValue = 'ABCDEFG' ;
+dd($initialValue);
+
+
+
+    if ($initialValue == 'YES') {
+      $finalValue = 'NO' ;
+    } else {
+      $finalValue = 'YES' ;
+    }
+
+
+  }
+}

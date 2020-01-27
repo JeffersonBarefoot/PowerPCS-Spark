@@ -174,6 +174,10 @@ class PositionController extends Controller
       $navbarposno = $request->input('posno');
       $navbardescr = $request->input('descr');
 
+      $testAriaCollapse = $request->input('testArial');
+dump($testAriaCollapse);
+dump($navbarposno);
+
       $positionsnavbar = Position::where('company','like',"$navbarcompany%")
                           ->where('posno','like',"$navbarposno%")
                           ->where('descr','like',"%$navbardescr%")
@@ -282,7 +286,8 @@ class PositionController extends Controller
 
 //experiment with session variables, 2020-01-01
 Session::put('mykey', '12345');
-
+Session::put('expandIncumbents', 'xHere is how you return a session variable into a blade...JLB 200113');
+//TestOnclickFunction();
 
 
       //****************************

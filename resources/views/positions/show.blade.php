@@ -42,6 +42,27 @@
 
 <body>
 
+  <button onclick="expandStatus()"  id="p2" aria-expanded="false">Try it</button>
+  <p id="demo"></p>
+
+  <input type="hidden" id="testArial" name="testArial" value="3487">
+  <script>
+    function expandStatus() {
+    var x = document.getElementById("p2").getAttribute("aria-expanded");
+    if (x == 'panel-collapse collapse')
+    {
+    x = 'panel-collapse'
+    } else {
+    x = 'panel-collapse collapse'
+    }
+    document.getElementById("p2").setAttribute("aria-expanded", x);
+    document.getElementById("p2").innerHTML = "aria-expanded =" + x;
+    }
+  </script>
+
+
+{{ Session::get('expandIncumbents')}}
+
   <div class="col-sm-12">
     <!-- <div class="panel-group"> -->
 
@@ -56,7 +77,10 @@
         <h4 class="panel-title">
           <div class="row">
             <div class="col-md-2">
-              <a data-toggle="collapse" href="#collapse1">Status</a>
+              <!-- <a href="#collapse1" data-toggle="collapse" >Status</a> -->
+              <a class="btn btn-primary" onclick="expandStatus()" data-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">
+                xStatus
+              </a>
             </div>
             <div class="col-md-10">
               Currently
@@ -71,7 +95,9 @@
         </h4>
       </div>
 
-      <div id="collapse1" class="panel-collapse  show">
+      <!-- To Collapse:   <div class="panel-collapse collapse" id="collapse1" >
+      To keep open:  <div class="panel-collapse" id="collapse1" >   -->
+      <div class='panel-collapse collapse' id="collapse1" >
         <div class="panel-body">
           <!-- *************************** -->
           <!-- Left div contains xxxxxxxxxxxxxxxxxxxxxx -->
@@ -269,7 +295,7 @@
         </h4>
       </div>
 
-      <div id="collapse2" class="panel-collapse collapse">
+      <div id="collapse2">
         <!-- <div class="panel-body">Full Time Equivalent Calculation -->
         <div class="panel-body">
           <!-- *************************** -->
@@ -446,7 +472,7 @@
         </h4>
       </div>
 
-      <div id="collapse19999" class="panel-collapse collapse">
+      <div id="collapse19999">
         <div class="panel-body">
           <!-- *************************** -->
           <!-- Left div contains list of all incumbents -->
@@ -632,7 +658,7 @@
             </div>
             <div class="col-md-10">
               @if ($position->reptoposno=="")
-                None Assigned
+                Not Assigned
               @else
                 {{$position->reptocomp}} / {{$position->reptoposno}}, {{$position->reptodesc}}
               @endif
@@ -685,7 +711,7 @@
                     <td></td>
                     <td>
                       @if ($position->reptoposno=="")
-                        None Assigned
+                        Not Assigned
                       @else
                         {{$position->reptocomp}} / {{$position->reptoposno}}, {{$position->reptodesc}}
                       @endif
@@ -1012,7 +1038,7 @@
           </div>
         </h4>
       </div>
-      <div id="collapse9" class="panel-collapse in">
+      <div id="collapse9" class="panel-collapse">
         <div class="panel-body">Reserved for future functionality
 
         </div>
