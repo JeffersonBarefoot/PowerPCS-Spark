@@ -175,8 +175,8 @@ class PositionController extends Controller
       $navbardescr = $request->input('descr');
 
       $testAriaCollapse = $request->input('testArial');
-dump($testAriaCollapse);
-dump($navbarposno);
+//dump($testAriaCollapse);
+//dump($navbarposno);
 
       $positionsnavbar = Position::where('company','like',"$navbarcompany%")
                           ->where('posno','like',"$navbarposno%")
@@ -270,6 +270,10 @@ dump($navbarposno);
         ->where('reptocom2','=',$company)
         ->orderby("posno")
         ->get();
+
+      $dirRepCount = count($directReports);
+      $indirRepCount = count($indirectReports);
+//dump($dirRepCount);
 // dump("$posno");
 // dump("$company");
 // dump($directReports);
@@ -302,6 +306,8 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
         ->with(compact('directReports'))
         ->with(compact('indirectReports'))
         ->with(compact('posHistRecs'))
+        ->with('dirRepCount',$dirRepCount)
+        ->with('indirRepCount',$indirRepCount)
         ->with('activeincumbentcount',$activeincumbentcount)
         ->with('activeincumbentlist',$activeincumbentlist);
 

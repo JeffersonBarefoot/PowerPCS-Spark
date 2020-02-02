@@ -37,31 +37,58 @@
 </div>
 
 <!-- set this to readonly to make this a show screen, or something else (blank, notreadonly, etc) to allow editing -->
-<?php $readonly='readonly' ?>
+<?php $readonly='xreadonly' ?>
 
 
 <body>
 
-  <button onclick="expandStatus()"  id="p2" aria-expanded="false">Try it</button>
+  <!-- <button onclick="expandStatus()"  id="p2" aria-expanded="false">Try it</button>
   <p id="demo"></p>
 
-  <input type="hidden" id="testArial" name="testArial" value="3487">
+  <input type="hidden" id="testArial" name="testArial" value="3487"> -->
+
+
+
   <script>
+    function initExpands() {
+
+      sessionStorage.setItem("initialized","expandStatus");
+
+    }
+
+
     function expandStatus() {
     var x = document.getElementById("p2").getAttribute("aria-expanded");
-    if (x == 'panel-collapse collapse')
-    {
-    x = 'panel-collapse'
-    } else {
-    x = 'panel-collapse collapse'
-    }
-    document.getElementById("p2").setAttribute("aria-expanded", x);
-    document.getElementById("p2").innerHTML = "aria-expanded =" + x;
+    if (x == " class='panel-collapse collapse' id='collapse1' ")
+      {
+        x = " class='panel-collapse' id='collapse1' ";
+      } else {
+        x = " class='panel-collapse collapse' id='collapse1' ";
+      }
+
+      // document.getElementById("p2").setAttribute("aria-expanded", x);
+      // document.getElementById("p2").innerHTML = "aria-expanded =" + x;
+
+      if (typeof(Storage) !== "undefined") {
+        if (sessionStorage.expandStatus) {
+          // sessionStorage.expandStatus = Number(sessionStorage.clickcount)+2;
+          sessionStorage.expandStatus = x;
+        }
+        // } else {
+        //   sessionStorage.expandStatus = 1;
+        // }
+        document.getElementById("demo123").innerHTML = x ;
+      } else {
+        document.getElementById("result").innerHTML = "Sorry, your browser does not support web storage...";
+      }
     }
   </script>
 
 
-{{ Session::get('expandIncumbents')}}
+<!-- {{ Session::get('expandIncumbents')}}
+sessionStorage.getItem("expandStatus")
+<p id="demo123"></p> -->
+
 
   <div class="col-sm-12">
     <!-- <div class="panel-group"> -->
@@ -77,10 +104,10 @@
         <h4 class="panel-title">
           <div class="row">
             <div class="col-md-2">
-              <!-- <a href="#collapse1" data-toggle="collapse" >Status</a> -->
-              <a class="btn btn-primary" onclick="expandStatus()" data-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">
-                xStatus
-              </a>
+              <a href="#collapse1" data-toggle="collapse" >Status</a>
+              <!-- <a class="btn btn-primary" onclick="expandStatus()" data-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1"> -->
+                <!-- Status
+              </a> -->
             </div>
             <div class="col-md-10">
               Currently
@@ -97,7 +124,8 @@
 
       <!-- To Collapse:   <div class="panel-collapse collapse" id="collapse1" >
       To keep open:  <div class="panel-collapse" id="collapse1" >   -->
-      <div class='panel-collapse collapse' id="collapse1" >
+      <!-- <div class='panel-collapse collapse' id='collapse1' > -->
+      <div id="collapse1" div class="panel-collapse collapse" >
         <div class="panel-body">
           <!-- *************************** -->
           <!-- Left div contains xxxxxxxxxxxxxxxxxxxxxx -->
@@ -295,7 +323,7 @@
         </h4>
       </div>
 
-      <div id="collapse2">
+      <div id="collapse2" class="panel-collapse collapse">
         <!-- <div class="panel-body">Full Time Equivalent Calculation -->
         <div class="panel-body">
           <!-- *************************** -->
@@ -450,6 +478,262 @@
 
         <!-- </div> -->
         <!-- <div class="panel-footer">Panel Footer</div> -->
+      </div>
+    </div>
+
+    <!-- ************************** -->
+    <!-- ************************** -->
+    <!-- Reports To -->
+    <!-- ************************** -->
+    <!-- ************************** -->
+    <div class="panel panel-default">
+
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <div class="row">
+            <div class="col-md-2">
+              <a data-toggle="collapse" href="#collapse7">Reports to</a>
+            </div>
+            <div class="col-md-10">
+              @if ($position->reptoposno=="")
+                Not Assigned
+              @else
+                {{$position->reptocomp}} / {{$position->reptoposno}}, {{$position->reptodesc}}
+              @endif
+            </div>
+          </div>
+        </h4>
+      </div>
+
+      <div id="collapse7" class="panel-collapse collapse">
+        <div class="panel-body">
+          <div class="row">
+            <!-- *************************** -->
+            <!-- "THIS POSITION REPORTS TO" -->
+            <div class="col-md-5"  style="border: 1px solid grey;">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="1%"></th>
+                    <th width="68%">Reports Directly To:</th>
+                    <th width="30%">
+                      <!-- Modal -->
+                      <!-- Trigger the modal with a button -->
+                      <button type="button" class="btn btn-info btn" data-toggle="modal" data-target="#directReportingModal">Assign</button>
+                      <!-- This is the modal istself -->
+                      <div class="modal fade" id="directReportingModal" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              <h4 class="modal-title">Modal Header</h4>
+                            </div>
+                            <div class="modal-body">
+                              <p>This is a direct modal.
+
+                                        </p>
+                                        <input type="text" class="form-control" name="avail_date" value="{{$position->avail_date}}"  {{$readonly}}>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </th>
+                    <th width="1%"></th>
+                  </tr>
+                </thead>
+                  <tr>
+                    <td></td>
+                    <td>
+                      @if ($position->reptoposno=="")
+                        Not Assigned
+                      @else
+                        {{$position->reptocomp}} / {{$position->reptoposno}}, {{$position->reptodesc}}
+                      @endif
+                    </td>
+                    <td></td>
+                  </tr>
+              </table>
+            </div>
+            <div class="col-md-1"></div>
+
+          <div class="col-md-5"  style="border: 1px solid grey;">
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th width="1%"></th>
+                  <th width="68%">Reports Inirectly To:</th>
+                  <th width="30%">
+                    <!-- Modal -->
+                    <!-- Trigger the modal with a button -->
+                    <button type="button" class="btn btn-info btn" data-toggle="modal" data-target="#indirectReportingModal">Assign</button>
+                    <!-- This is the modal istself -->
+                    <div class="modal fade" id="indirectReportingModal" role="dialog">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Modal Header</h4>
+                          </div>
+                          <div class="modal-body">
+                            <p>This is a indirect modal.
+
+                                      </p>
+                                      <input type="text" class="form-control" name="avail_date" value="{{$position->avail_date}}" >
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </th>
+                  <th width="1%"></th>
+                </tr>
+              </thead>
+                <tr>
+                  <td></td>
+                  <td>
+                    @if ($position->reptopos2=="")
+                      Not Assigned
+                    @else
+                      {{$position->reptocom2}} / {{$position->reptopos2}}, {{$position->reptodesc2}}
+                    @endif
+                  </td>
+
+
+
+                  <td></td>
+                </tr>
+            </table>
+          </div>
+          <div class="col-md-1"></div>
+        </div>
+
+
+            <!-- *************************** -->
+            <!-- "divider section with lines" -->
+          <div class="row">
+            <div class="col-md-5"  align="center">
+              <img src="/images/ArrowUp.jpg" width="15" height="50">
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-5"></div>
+            <div class="col-md-1"></div>
+          </div>
+
+          <div class="row">
+            <!-- *************************** -->
+            <!-- "THIS POSITION" -->
+            <div class="col-md-5"  style="border: 1px solid grey;">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="1%"></th>
+                    <th width="98%">This Position</th>
+                    <th width="1%"></th>
+                  </tr>
+                </thead>
+                  <tr>
+                    <td></td>
+                    <td>{{$position->company}} / {{$position->posno}}, {{$position->descr}}</td>
+                    <td></td>
+                  </tr>
+              </table>
+            </div>
+            <div class="col-md-7" align="left">
+              <img src="/images/ArrowDottedUpUp.jpg" width="50" height="120">
+            </div>
+          </div>
+
+
+            <!-- *************************** -->
+            <!-- "divider section with lines" -->
+            <div class="row">
+              <div class="col-md-5"  align="center">
+                <img src="/images/ArrowUp.jpg" width="15" height="50">
+              </div>
+              <div class="col-md-1"></div>
+              <div class="col-md-5"></div>
+              <div class="col-md-1"></div>
+            </div>
+
+          <div class="row">
+            <!-- *************************** -->
+            <!-- "REPORTS TO THIS POSITION" -->
+            <div class="col-md-5"  style="border: 1px solid grey;">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="1%"></th>
+                    <th width="98%">Direct Reports</th>
+                    <th width="1%"></th>
+                  </tr>
+                </thead>
+                    @if ($dirRepCount >= 1)
+                      @foreach($directReports as $dirrep)
+                        <tr>
+                            <td></td>
+                            <td>{{$dirrep->company.'/'.$dirrep->posno.', '.$dirrep->descr}}</td>
+                            <td></td>
+                        </tr>
+                      @endforeach
+
+                    @else
+                      <tr>
+                        <td></td>
+                        <td>No direct reports</td>
+                        <td></td>
+                      </tr>
+                    @endif
+
+              </table>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-5"  style="border: 1px solid grey;">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="1%"></th>
+                    <th width="98%">Indirect Reports</th>
+                    <th width="1%"></th>
+                  </tr>
+                </thead>
+                @if ($indirRepCount >= 1)
+                  @foreach($indirectReports as $indirrep)
+                    <tr>
+                        <td></td>
+                        <td>{{$indirrep->company.'/'.$indirrep->posno.', '.$indirrep->descr}}</td>
+                        <td></td>
+                    </tr>
+                  @endforeach
+
+                @else
+                  <tr>
+                    <td></td>
+                    <td>No indirect reports</td>
+                    <td></td>
+                  </tr>
+                @endif
+
+                  <!-- <tr>
+                    @foreach($indirectReports as $indirrep)
+                      <tr>
+                          <td></td>
+                          <td>{{$indirrep->company.'/'.$indirrep->posno.', '.$indirrep->descr}}</td>
+                          <td></td>
+                      </tr>
+                    @endforeach
+                  </tr> -->
+              </table>
+            </div>
+            <div class="col-md-1"></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -643,236 +927,7 @@
       </div>
     </div>
 
-    <!-- ************************** -->
-    <!-- ************************** -->
-    <!-- Reports To -->
-    <!-- ************************** -->
-    <!-- ************************** -->
-    <div class="panel panel-default">
 
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <div class="row">
-            <div class="col-md-2">
-              <a data-toggle="collapse" href="#collapse7">Reports to</a>
-            </div>
-            <div class="col-md-10">
-              @if ($position->reptoposno=="")
-                Not Assigned
-              @else
-                {{$position->reptocomp}} / {{$position->reptoposno}}, {{$position->reptodesc}}
-              @endif
-            </div>
-          </div>
-        </h4>
-      </div>
-
-      <div id="collapse7" class="panel-collapse collapse">
-        <div class="panel-body">
-          <div class="row">
-            <!-- *************************** -->
-            <!-- "THIS POSITION REPORTS TO" -->
-            <div class="col-md-5"  style="border: 1px solid grey;">
-              <table class="table table-condensed">
-                <thead>
-                  <tr>
-                    <th width="1%"></th>
-                    <th width="68%">Reports Directly To:</th>
-                    <th width="30%">
-                      <!-- Modal -->
-                      <!-- Trigger the modal with a button -->
-                      <button type="button" class="btn btn-info btn" data-toggle="modal" data-target="#directReportingModal">Assign</button>
-                      <!-- This is the modal istself -->
-                      <div class="modal fade" id="directReportingModal" role="dialog">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              <h4 class="modal-title">Modal Header</h4>
-                            </div>
-                            <div class="modal-body">
-                              <p>This is a direct modal.
-
-                                        </p>
-                                        <input type="text" class="form-control" name="avail_date" value="{{$position->avail_date}}"  {{$readonly}}>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                    </th>
-                    <th width="1%"></th>
-                  </tr>
-                </thead>
-                  <tr>
-                    <td></td>
-                    <td>
-                      @if ($position->reptoposno=="")
-                        Not Assigned
-                      @else
-                        {{$position->reptocomp}} / {{$position->reptoposno}}, {{$position->reptodesc}}
-                      @endif
-                    </td>
-                    <td></td>
-                  </tr>
-              </table>
-            </div>
-            <div class="col-md-1"></div>
-
-          <div class="col-md-5"  style="border: 1px solid grey;">
-            <table class="table table-condensed">
-              <thead>
-                <tr>
-                  <th width="1%"></th>
-                  <th width="68%">Reports Inirectly To:</th>
-                  <th width="30%">
-                    <!-- Modal -->
-                    <!-- Trigger the modal with a button -->
-                    <button type="button" class="btn btn-info btn" data-toggle="modal" data-target="#indirectReportingModal">Assign</button>
-                    <!-- This is the modal istself -->
-                    <div class="modal fade" id="indirectReportingModal" role="dialog">
-                      <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Modal Header</h4>
-                          </div>
-                          <div class="modal-body">
-                            <p>This is a indirect modal.
-
-                                      </p>
-                                      <input type="text" class="form-control" name="avail_date" value="{{$position->avail_date}}" >
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                  </th>
-                  <th width="1%"></th>
-                </tr>
-              </thead>
-                <tr>
-                  <td></td>
-                  <td>
-                    @if ($position->reptopos2=="")
-                      None Assigned
-                    @else
-                      {{$position->reptocom2}} / {{$position->reptopos2}}, {{$position->reptodesc2}}
-                    @endif
-                  </td>
-
-
-
-                  <td></td>
-                </tr>
-            </table>
-          </div>
-          <div class="col-md-1"></div>
-        </div>
-
-
-            <!-- *************************** -->
-            <!-- "divider section with lines" -->
-          <div class="row">
-            <div class="col-md-5"  align="center">
-              <img src="/images/ArrowUp.jpg" width="15" height="50">
-            </div>
-            <div class="col-md-1"></div>
-            <div class="col-md-5"></div>
-            <div class="col-md-1"></div>
-          </div>
-
-          <div class="row">
-            <!-- *************************** -->
-            <!-- "THIS POSITION" -->
-            <div class="col-md-5"  style="border: 1px solid grey;">
-              <table class="table table-condensed">
-                <thead>
-                  <tr>
-                    <th width="1%"></th>
-                    <th width="98%">This Position</th>
-                    <th width="1%"></th>
-                  </tr>
-                </thead>
-                  <tr>
-                    <td></td>
-                    <td>{{$position->company}} / {{$position->posno}}, {{$position->descr}}</td>
-                    <td></td>
-                  </tr>
-              </table>
-            </div>
-            <div class="col-md-7" align="left">
-              <img src="/images/ArrowDottedUpUp.jpg" width="50" height="120">
-            </div>
-          </div>
-
-
-            <!-- *************************** -->
-            <!-- "divider section with lines" -->
-            <div class="row">
-              <div class="col-md-5"  align="center">
-                <img src="/images/ArrowUp.jpg" width="15" height="50">
-              </div>
-              <div class="col-md-1"></div>
-              <div class="col-md-5"></div>
-              <div class="col-md-1"></div>
-            </div>
-
-          <div class="row">
-            <!-- *************************** -->
-            <!-- "REPORTS TO THIS POSITION" -->
-            <div class="col-md-5"  style="border: 1px solid grey;">
-              <table class="table table-condensed">
-                <thead>
-                  <tr>
-                    <th width="1%"></th>
-                    <th width="98%">Direct Reports</th>
-                    <th width="1%"></th>
-                  </tr>
-                </thead>
-
-                    @foreach($directReports as $dirrep)
-                      <tr>
-                          <td></td>
-                          <td>{{$dirrep->company.'/'.$dirrep->posno.', '.$dirrep->descr}}</td>
-                          <td></td>
-                      </tr>
-                    @endforeach
-
-              </table>
-            </div>
-            <div class="col-md-1"></div>
-            <div class="col-md-5"  style="border: 1px solid grey;">
-              <table class="table table-condensed">
-                <thead>
-                  <tr>
-                    <th width="1%"></th>
-                    <th width="98%">Indirect Reports</th>
-                    <th width="1%"></th>
-                  </tr>
-                </thead>
-                  <tr>
-                    @foreach($indirectReports as $indirrep)
-                      <tr>
-                          <td></td>
-                          <td>{{$indirrep->company.'/'.$indirrep->posno.', '.$indirrep->descr}}</td>
-                          <td></td>
-                      </tr>
-                    @endforeach
-                  </tr>
-              </table>
-            </div>
-            <div class="col-md-1"></div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- ************************** -->
     <!-- ************************** -->
@@ -894,7 +949,7 @@
         </h4>
       </div>
 
-      <div id="collapse4" class="panel-collapse collapse">
+      <div id="collapse4" class="panel-collapse">
         <div class="panel-body">
           <div class="row">
             <div class="col-md-6">
@@ -1038,36 +1093,13 @@
           </div>
         </h4>
       </div>
-      <div id="collapse9" class="panel-collapse">
+      <div id="collapse9" class="panel-collapse collapse">
         <div class="panel-body">Reserved for future functionality
 
         </div>
       </div>
     </div>
 
-    <!-- ************************** -->
-    <!-- ************************** -->
-    <!-- testing collapsible panels -->
-    <!-- ************************** -->
-    <!-- ************************** -->
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <div class="row">
-            <div class="col-md-2">
-              <a data-toggle="collapse" href="#collapseTEST">TEST TEST TEST</a>
-            </div>
-            <div class="col-md-10">
-            </div>
-          </div>
-        </h4>
-      </div>
-      <div id="collapseTEST" class="panel-collapse in">
-        <div class="panel-body">Reserved for future functionality
-
-        </div>
-      </div>
-    </div>
   <!-- </div> -->
 </div>
 
