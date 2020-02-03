@@ -82,6 +82,26 @@
         document.getElementById("result").innerHTML = "Sorry, your browser does not support web storage...";
       }
     }
+
+    function myFunction() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+
   </script>
 
 
@@ -529,10 +549,75 @@ sessionStorage.getItem("expandStatus")
                               <h4 class="modal-title">Modal Header</h4>
                             </div>
                             <div class="modal-body">
-                              <p>This is a direct modal.
+                              <p>This is a direct modal.</p>
+                                <!-- <input type="text" class="form-control" name="avail_date" value="{{$position->avail_date}}"  {{$readonly}}>
 
-                                        </p>
-                                        <input type="text" class="form-control" name="avail_date" value="{{$position->avail_date}}"  {{$readonly}}>
+
+                                <select>
+                                  <option value="volvo">Volvo</option>
+                                  <option value="saab">Saab</option>
+                                  <option value="opel">Opel</option>
+                                  <option value="audi">Audi</option>
+                                </select> -->
+
+                                <h2>My Customers</h2>
+
+                                <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table id="myTable">
+                                  <tr class="header">
+                                    <th style="width:60%;">Name</th>
+                                    <th style="width:40%;">Country</th>
+                                  </tr>
+
+
+                                  @foreach($reportsToSource as $RTS)
+                                    <tr>
+
+                                        <td>{{$RTS->descr}}</td>
+                                        <td>{{$RTS->posno}}</td>
+
+                                      </tr>
+                                  @endforeach
+</div>
+
+
+
+                                  <!-- <tr>
+                                    <td>Alfreds Futterkiste</td>
+                                    <td>Germany</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Berglunds snabbkop</td>
+                                    <td>Sweden</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Island Trading</td>
+                                    <td>UK</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Koniglich Essen</td>
+                                    <td>Germany</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Laughing Bacchus Winecellars</td>
+                                    <td>Canada</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Magazzini Alimentari Riuniti</td>
+                                    <td>Italy</td>
+                                  </tr>
+                                  <tr>
+                                    <td>North/South</td>
+                                    <td>UK</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Paris specialites</td>
+                                    <td>France</td>
+                                  </tr> -->
+                                </table>
+
+
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -565,7 +650,7 @@ sessionStorage.getItem("expandStatus")
               <thead>
                 <tr>
                   <th width="1%"></th>
-                  <th width="68%">Reports Inirectly To:</th>
+                  <th width="68%">Reports Indirectly To:</th>
                   <th width="30%">
                     <!-- Modal -->
                     <!-- Trigger the modal with a button -->

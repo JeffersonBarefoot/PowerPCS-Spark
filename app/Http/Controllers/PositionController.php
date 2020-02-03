@@ -52,7 +52,7 @@ class PositionController extends Controller
         // $descr = $request->input('descr');
 //      dd($company);
 //      dd($posno);
-// dump('positioncontroller.index');
+ dump('positioncontroller.index');
 
         $positions = Position::all();
         //$positionsnavbar = Position::all();
@@ -273,6 +273,17 @@ class PositionController extends Controller
 
       $dirRepCount = count($directReports);
       $indirRepCount = count($indirectReports);
+
+      // get a collection of position names to use as a list to select "reports to" positions
+      // will only need this in "editable" queries
+      $reportsToSource = \DB::table('positions')
+        ->select('id','company','posno','descr')
+        ->where('company','=',$company)
+        ->orderby("descr")
+        ->get();
+
+
+
 //dump($dirRepCount);
 // dump("$posno");
 // dump("$company");
@@ -306,6 +317,7 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
         ->with(compact('directReports'))
         ->with(compact('indirectReports'))
         ->with(compact('posHistRecs'))
+        ->with(compact('reportsToSource'))
         ->with('dirRepCount',$dirRepCount)
         ->with('indirRepCount',$indirRepCount)
         ->with('activeincumbentcount',$activeincumbentcount)
