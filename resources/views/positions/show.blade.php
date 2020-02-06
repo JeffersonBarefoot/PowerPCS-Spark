@@ -550,20 +550,11 @@ sessionStorage.getItem("expandStatus")
                             </div>
                             <div class="modal-body">
                               <p>This is a direct modal.</p>
-                                <!-- <input type="text" class="form-control" name="avail_date" value="{{$position->avail_date}}"  {{$readonly}}>
 
+                              <h2>My Customers</h2>
 
-                                <select>
-                                  <option value="volvo">Volvo</option>
-                                  <option value="saab">Saab</option>
-                                  <option value="opel">Opel</option>
-                                  <option value="audi">Audi</option>
-                                </select> -->
-
-                                <h2>My Customers</h2>
-
-                                <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
-<div class="table-wrapper-scroll-y my-custom-scrollbar">
+                              <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+                              <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                 <table id="myTable">
                                   <tr class="header">
                                     <th style="width:60%;">Name</th>
@@ -572,58 +563,18 @@ sessionStorage.getItem("expandStatus")
 
 
                                   @foreach($reportsToSource as $RTS)
-                                    <tr>
-
-                                        <td>{{$RTS->descr}}</td>
-                                        <td>{{$RTS->posno}}</td>
-
-                                      </tr>
+                                    <tr><td>{{$RTS->posno}}  /  {{$RTS->descr}}</td></tr>
                                   @endforeach
-</div>
-
-
-
-                                  <!-- <tr>
-                                    <td>Alfreds Futterkiste</td>
-                                    <td>Germany</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Berglunds snabbkop</td>
-                                    <td>Sweden</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Island Trading</td>
-                                    <td>UK</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Koniglich Essen</td>
-                                    <td>Germany</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Laughing Bacchus Winecellars</td>
-                                    <td>Canada</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Magazzini Alimentari Riuniti</td>
-                                    <td>Italy</td>
-                                  </tr>
-                                  <tr>
-                                    <td>North/South</td>
-                                    <td>UK</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Paris specialites</td>
-                                    <td>France</td>
-                                  </tr> -->
                                 </table>
-
-
+                              </div>
                             </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
+
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                           </div>
                         </div>
+                      </div>
                       </div>
 
                     </th>
