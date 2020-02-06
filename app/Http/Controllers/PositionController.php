@@ -162,6 +162,36 @@ class PositionController extends Controller
       }
       $position = Position::find($id);
 
+      // if sess var positionID is null, then this is a fresh launch.  Save the current ID to the session variable
+      $sessionPositionID = Session::get('positionID');
+      if (is_null($sessionPositionID)) {
+        $sessionPositionID = $id;
+        Session::put('positionID', $id);
+      }
+
+      //\/\/\/\/\/\/\/\/\/\/\
+      // if this is a newly selected ID, then clear out position specific session variables
+      //\/\/\/\/\/\/\/\/\/\/\
+      // reports to
+      // incumbents, incumbent history
+      // position history
+      //
+      //newly selected position
+      if ($sessionPositionID <> $id) {
+        // code...
+        Session::put('positionID', $id);
+        $viewincid = '' ;
+        //dump($sessionPositionID);
+        //dump($id);
+      } else {
+        $viewincid = Session::get('viewincid') ;
+      }
+      dump($viewincid);
+
+
+
+
+
       //gather general info
       $posno = $position->posno;
       $company = $position->company;
@@ -187,7 +217,15 @@ class PositionController extends Controller
       //****************************
       // I N C U M B E N T S
       // gather all incumbents related to this position
-      $viewincid = $request->input('viewincid');
+
+      // we passed a new viewincid, so need to update the variable
+      // otherwise keep the one that we have been using
+      if (!empty($request->input('viewincid'))) {
+        $viewincid = $request->input('viewincid');
+        dump('test');
+      }
+
+
       $viewinchistid = $request->input('viewinchistid');
 
       $incumbentsinposition = \DB::table('incumbents')

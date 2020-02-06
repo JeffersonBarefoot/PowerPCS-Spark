@@ -563,7 +563,10 @@ sessionStorage.getItem("expandStatus")
 
 
                                   @foreach($reportsToSource as $RTS)
-                                    <tr><td>{{$RTS->posno}}  /  {{$RTS->descr}}</td></tr>
+                                    <!-- <tr><td>{{$RTS->posno}}  /  {{$RTS->descr}}</td></tr> -->
+                                    <tr>
+                                      <td><a href={{route('positions.show',$position->id)}}?reportsdirto={{$RTS->id}}> {{$RTS->company}}  //  {{$RTS->posno}}  //  {{$RTS->descr}}</td>
+                                    </tr>
                                   @endforeach
                                 </table>
                               </div>
