@@ -170,23 +170,43 @@ class PositionController extends Controller
       }
 
       //\/\/\/\/\/\/\/\/\/\/\
-      // if this is a newly selected ID, then clear out position specific session variables
+      // Restore all variables as they were on last SHOW. could be NULL if first time
+      //\/\/\/\/\/\/\/\/\/\/\
+
+      //\/\/\/\/\/\/\/\/\/\/\
+      // if we just selected a new position, then clear out position specific session variables
       //\/\/\/\/\/\/\/\/\/\/\
       // reports to
       // incumbents, incumbent history
       // position history
       //
       //newly selected position
-      if ($sessionPositionID <> $id) {
+
+
+      if ($sessionPositionID <> $id) { // not on the same position as last time
         // code...
         Session::put('positionID', $id);
         $viewincid = '' ;
+        dump('New position!!');
         //dump($sessionPositionID);
         //dump($id);
+        // clear out all session variables.  If applicable, reset to the current position
+        Session::put('reportsDirTo', '');
+        Session::put('reportsIndirTo', '');
+        Session::put('viewincid', '');
+        Session::put('viewinchistid', '');
+        $viewinchistid='';
+        Session::put('viewPosHistId', '');
+
       } else {
+        dump('Same Position');
         $viewincid = Session::get('viewincid') ;
+        $viewinchistid = Session::get('viewinchistid') ;
+        $reportsDirTo = Session::get('reportsDirTo');
+        $reportsIndirTo = Session::get('reportsIndirTo');
+
       }
-      dump($viewincid);
+      dump('checking whether session variable was set ... ' . $viewincid);
 
 
 
@@ -222,11 +242,13 @@ class PositionController extends Controller
       // otherwise keep the one that we have been using
       if (!empty($request->input('viewincid'))) {
         $viewincid = $request->input('viewincid');
-        dump('test');
       }
+      dump('$viewincid = '.$viewincid);
 
-
-      $viewinchistid = $request->input('viewinchistid');
+      if (!empty($request->input('viewinchistid'))) {
+        $viewinchistid = $request->input('viewinchistid');
+      }
+      dump('$viewinchistid = '.$viewinchistid);
 
       $incumbentsinposition = \DB::table('incumbents')
         ->where('posno','=',$posno)
@@ -289,9 +311,6 @@ class PositionController extends Controller
         ->orderby('trans_date','desc')
         ->get();
 
-
-
-
       //****************************
       // REPORTS TO data
       // "reports to" position is directly available in the positions table
@@ -342,6 +361,12 @@ Session::put('mykey', '12345');
 Session::put('expandIncumbents', 'xHere is how you return a session variable into a blade...JLB 200113');
 //TestOnclickFunction();
 
+      // save all session variables prior to returning to the blade
+      Session::put('reportsDirTo', '');
+      Session::put('reportsIndirTo', '');
+      Session::put('viewincid', $viewincid);
+      Session::put('viewinchistid', $viewinchistid);
+      Session::put('viewPosHistId', '');
 
       //****************************
       // R E T U R N   T O   positions.show
