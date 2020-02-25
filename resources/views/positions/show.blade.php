@@ -800,14 +800,14 @@ sessionStorage.getItem("expandStatus")
           <!-- *************************** -->
           <!-- Left div contains list of all incumbents -->
           <div class="row">
-            <div class="col-md-4">Incumbents that have been in this position
+            <div class="col-md-3">Incumbents that have been in this position
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="30%">Started</th>
+                    <th width="40%">Started</th>
                     <th width="10%">Status</th>
                     <th width="10%">FTE</th>
-                    <th width="50%">Name</th>
+                    <th width="40%">Name</th>
                     <!-- <th width="15%"></th>
                     <th width="30%"></th> -->
                   </tr>
@@ -818,8 +818,8 @@ sessionStorage.getItem("expandStatus")
                     <tr>
                       <td>{{$incumbent->posstart}}</td>
                       <td>{{$incumbent->active_pos}}</td>
-                      <td>{{$incumbent->fulltimeequiv}}</td>
-                      <td><a href={{route('positions.show',$position->id)}}?viewincid={{$incumbent->id}}>{{$incumbent->lname.', '.$incumbent->fname}}</td>
+                      <td>{{round($incumbent->fulltimeequiv,3)}}</td>
+                      <td><a href={{route('positions.show',$position->id)}}?viewincid={{$incumbent->id}}>{{substr($incumbent->fname,0,1).' '.$incumbent->lname}}</td>
 
                     </tr>
                   @endforeach
@@ -838,9 +838,9 @@ sessionStorage.getItem("expandStatus")
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="30%">Started</th>
-                    <th width="15%">Status</th>
-                    <th width="15%">FTE</th>
+                    <th width="40%">Started</th>
+                    <th width="10%">Status</th>
+                    <th width="10%">FTE</th>
                     <th width="40%">Ann Cost</th>
                   </tr>
                 </thead>
@@ -848,10 +848,11 @@ sessionStorage.getItem("expandStatus")
                     @foreach($viewincumbent as $viewinc)
                     @foreach($viewIncumbentHistory as $incHistory)
                       <tr>
-                        <td><a href={{route('positions.show',$position->id)}}?viewincid={{$viewinc->id}}&viewinchistid={{$incHistory->id}}>{{$incHistory->posstart}}</td>
+                        <!-- <td><a href={{route('positions.show',$position->id)}}?viewincid={{$viewinc->id}}&viewinchistid={{$incHistory->id}}>{{$incHistory->posstart}}</td> -->
+                        <td><a href={{route('positions.show',$position->id)}}?viewinchistid={{$incHistory->id}}>{{$incHistory->posstart}}</td>
                         <td>{{$incHistory->active_pos}}</td>
-                        <td>{{$incHistory->fulltimeequiv}}</td>
-                        <td>{{$incHistory->ann_cost}}</td>
+                        <td>{{round($incHistory->fulltimeequiv,3)}}</td>
+                        <td>{{FormatDollars($incHistory->ann_cost)}}</td>
                       </tr>
                     @endforeach
                     @endforeach
@@ -863,7 +864,10 @@ sessionStorage.getItem("expandStatus")
 
             <!-- *************************** -->
             <!-- Right div contains details of selected incumbent -->
-            <div class="col-md-5">Details, Selected History Record
+            <div class="col-md-5">Details:
+              @foreach($viewIncumbentDetails as $vd)
+                {{$vd->fname.' '.$vd->lname.', '.$vd->trans_date.', '.FormatDollars($vd->ann_cost)}}
+              @endforeach
               <table class="table table-condensed">
                 <thead>
                   <tr>
@@ -884,18 +888,10 @@ sessionStorage.getItem("expandStatus")
                   </tr>
 
                   <tr>
-                    <td>This record effective as of:</td>
-                    <td>{{$IncDet->trans_date}}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-
-                  <tr>
-                    <td>Pos Start Date</td>
+                    <td>Started in Pos:</td>
                     <td>{{$IncDet->posstart}}</td>
                     <td></td>
-                    <td>Pos End Date</td>
+                    <td>Ended in Pos:</td>
                     <td>{{$IncDet->posstop}}</td>
                   </tr>
 
@@ -907,6 +903,7 @@ sessionStorage.getItem("expandStatus")
                     <td></td>
                   </tr>
 
+                  
                   <tr>
                     <td></td>
                     <td></td>

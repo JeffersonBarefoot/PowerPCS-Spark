@@ -238,17 +238,27 @@ class PositionController extends Controller
       // I N C U M B E N T S
       // gather all incumbents related to this position
 
-      // we passed a new viewincid, so need to update the variable
-      // otherwise keep the one that we have been using
-      if (!empty($request->input('viewincid'))) {
-        $viewincid = $request->input('viewincid');
-      }
-      dump('$viewincid = '.$viewincid);
+
 
       if (!empty($request->input('viewinchistid'))) {
         $viewinchistid = $request->input('viewinchistid');
+
+      //what if this is a new incHistId?  Do we blank out the details, or return first record?
+      //jlb 20200225
+
       }
+
+
+
+      // see if we passed a new viewincid, so need to update the variable
+      // otherwise keep the one that we have been using
+      if (!empty($request->input('viewincid'))) {
+        $viewincid = $request->input('viewincid');
+        $viewinchistid = '';
+      }
+      dump('$viewincid = '.$viewincid);
       dump('$viewinchistid = '.$viewinchistid);
+
 
       $incumbentsinposition = \DB::table('incumbents')
         ->where('posno','=',$posno)
