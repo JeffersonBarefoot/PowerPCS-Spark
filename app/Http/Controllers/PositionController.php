@@ -187,7 +187,7 @@ class PositionController extends Controller
         // code...
         Session::put('positionID', $id);
         $viewincid = '' ;
-        dump('New position!!');
+        //dump('New position!!');
         //dump($sessionPositionID);
         //dump($id);
         // clear out all session variables.  If applicable, reset to the current position
@@ -199,14 +199,14 @@ class PositionController extends Controller
         Session::put('viewPosHistId', '');
 
       } else {
-        dump('Same Position');
+        //dump('Same Position');
         $viewincid = Session::get('viewincid') ;
         $viewinchistid = Session::get('viewinchistid') ;
         $reportsDirTo = Session::get('reportsDirTo');
         $reportsIndirTo = Session::get('reportsIndirTo');
 
       }
-      dump('checking whether session variable was set ... ' . $viewincid);
+      //dump('checking whether session variable was set ... ' . $viewincid);
 
 
 
@@ -256,8 +256,8 @@ class PositionController extends Controller
         $viewincid = $request->input('viewincid');
         $viewinchistid = '';
       }
-      dump('$viewincid = '.$viewincid);
-      dump('$viewinchistid = '.$viewinchistid);
+      //dump('$viewincid = '.$viewincid);
+      //dump('$viewinchistid = '.$viewinchistid);
 
 
       $incumbentsinposition = \DB::table('incumbents')
@@ -272,6 +272,7 @@ class PositionController extends Controller
         ->where('active_pos','=','A')
         ->orderby("posstart","desc")
         ->get();
+
 
       // build a text element that can be displayed on the incumbents tab
       $activeincumbentlist = '';
@@ -300,7 +301,7 @@ class PositionController extends Controller
         ->where('posno','=',$posno)
         ->where('company','=',$incumbentCompany)
         ->where('empno','=',$incumbentEmpno)
-        ->orderby('posstart','desc')
+        ->orderby('trans_date','desc')
         ->get();
 
       // pull the specific history record that we are currently dealing wih
@@ -324,6 +325,50 @@ class PositionController extends Controller
       //****************************
       // REPORTS TO data
       // "reports to" position is directly available in the positions table
+
+      // check to see if reportsdirto was included in the request string.  If so, reset the Reports To Fields
+      if (!empty($request->input('reportsdirto'))) {
+        //dump('requested a new reports to');
+        $reportsdirtoid = $request->input('reportsdirto');
+
+        $reportsdirtocursor = \DB::table('positions')
+          ->where('id','=',$reportsdirtoid)
+          ->get();
+
+        foreach ($reportsdirtocursor as $rdt){
+          $rdtcompany=$rdt->company;
+          $rdtposno=$rdt->posno;
+          $rdtdescr=$rdt->descr;
+
+        $position->reptocomp=$rdtcompany;
+        $position->reptoposno=$rdtposno;
+        $position->reptodesc=$rdtdescr;
+        $position->save();
+        }
+      }
+
+      // check to see if reportsdirto was included in the request string.  If so, reset the Reports To Fields
+      if (!empty($request->input('reportsindirto'))) {
+        //dump('requested a new reports to');
+        $reportsindirtoid = $request->input('reportsindirto');
+
+        $reportsindirtocursor = \DB::table('positions')
+          ->where('id','=',$reportsindirtoid)
+          ->get();
+
+        foreach ($reportsindirtocursor as $rit){
+          $ritcompany=$rit->company;
+          $ritposno=$rit->posno;
+          $ritdescr=$rit->descr;
+
+        $position->reptocom2=$ritcompany;
+        $position->reptopos2=$ritposno;
+        $position->reptodesc2=$ritdescr;
+        $position->save();
+        }
+      }
+
+
       // Direct Reports will reference this position in their positions.reptocomp / reptoposno
       // Dotted lines will have this position number in reptocom2 / reptopos2
       $directReports = \DB::table('positions')

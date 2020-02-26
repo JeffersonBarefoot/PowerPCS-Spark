@@ -284,22 +284,23 @@ sessionStorage.getItem("expandStatus")
 
               <tr>
                 <td>Last Became Vacant</td>
-                <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_vac}}" {{$readonly}}></td>
+                <td><input type="text" class="form-control" name="last_vac" value="{{$position->last_vac}}" {{$readonly}}></td>
                 <td>@if ($position->curstatus=='VACANT') *** Current Status:  Vacant   @endif</td>
               </tr>
               <tr>
                 <td>Last Became Partially Filled</td>
-                <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_par}}" {{$readonly}}></td>
+                <td><input type="text" class="form-control" name="last_par" value="{{$position->last_par}}" {{$readonly}}></td>
+                <!-- <td><input type="text" class="form-control" name="last_par" value="{{$position->last_par}}" {{$readonly}}></td> -->
                 <td>@if ($position->curstatus=='PARTIALLYFILLED') *** Current Status:  Partially Filled   @endif</td>
               </tr>
               <tr>
                 <td>Last Became Filled</td>
-                <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_fil}}" {{$readonly}}></td>
+                <td><input type="text" class="form-control" name="last_fil" value="{{$position->last_fil}}" {{$readonly}}></td>
                 <td>@if ($position->curstatus=='FILLED') *** Current Status:  Filled  @endif</td>
               </tr>
               <tr>
                 <td>Last Became Overfilled</td>
-                <td><input type="text" class="form-control" name="annftehour" value="{{$position->last_fpl}}" {{$readonly}}></td>
+                <td><input type="text" class="form-control" name="last_fpl" value="{{$position->last_fpl}}" {{$readonly}}></td>
                 <td>@if ($position->curstatus=='OVERFILLED') *** Current Status:  Overfilled  @endif</td>
               </tr>
             </table>
@@ -397,13 +398,13 @@ sessionStorage.getItem("expandStatus")
 
                 <tr>
                   <td>x Budgeted Hours</td>
-                  <td><input type="text" class="form-control" name="annftehour" value="{{$position->ftehours}}"></td>
+                  <td><input type="text" class="form-control" name="annftehour" value="{{round($position->ftehours,3)}}"></td>
 
                 </tr>
 
                 <tr>
                   <td>/ Basis ) = FTEs</td>
-                  <td><input type="text" class="form-control" name="annftehour" value="{{$position->fulltimeequiv}}"></td>
+                  <td><input type="text" class="form-control" name="annftehour" value="{{round($position->fulltimeequiv,3)}}"></td>
                   <td></td>
                   <td><img src="/images/ArrowRight.jpg" width="50" height="15"></td>
 
@@ -429,19 +430,19 @@ sessionStorage.getItem("expandStatus")
                   </tr> -->
                   <tr>
                     <td>x Budgeted Pay Rate</td>
-                    <td><input type="text" class="form-control" name="payrate" value="{{$position->payrate}}"></td>
+                    <td><input type="text" class="form-control" name="payrate" value="{{FormatDollars($position->payrate)}}"></td>
                     <td></td>
                   </tr>
 
                   <tr>
                     <td>x Budgeted FTEs</td>
-                    <td><input type="text" class="form-control" name="dummyfulltimeequiv" value="{{$position->fulltimeequiv}}"></td>
+                    <td><input type="text" class="form-control" name="dummyfulltimeequiv" value="{{round($position->fulltimeequiv,3)}}"></td>
                     <td></td>
                   </tr>
 
                   <tr>
                     <td>= Budgeted Annual Cost</td>
-                    <td><input type="text" class="form-control" name="budgsal" value="{{$position->budgsal}}"></td>
+                    <td><input type="text" class="form-control" name="budgsal" value="{{FormatDollars($position->budgsal)}}"></td>
                     <td></td>
                   </tr>
 
@@ -514,11 +515,18 @@ sessionStorage.getItem("expandStatus")
             <div class="col-md-2">
               <a data-toggle="collapse" href="#collapse7">Reports to</a>
             </div>
-            <div class="col-md-10">
+            <div class="col-md-5">
               @if ($position->reptoposno=="")
                 Not Assigned
               @else
-                {{$position->reptocomp}} / {{$position->reptoposno}}, {{$position->reptodesc}}
+                Directly:  {{$position->reptocomp}} / {{$position->reptoposno}}, {{$position->reptodesc}}
+              @endif
+            </div>
+            <div class="col-md-5">
+              @if ($position->reptopos2=="")
+                Not Assigned
+              @else
+                Indirectly:  {{$position->reptocom2}} / {{$position->reptopos2}}, {{$position->reptodesc2}}
               @endif
             </div>
           </div>
@@ -546,19 +554,14 @@ sessionStorage.getItem("expandStatus")
                           <div class="modal-content">
                             <div class="modal-header">
                               <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              <h4 class="modal-title">Modal Header</h4>
                             </div>
                             <div class="modal-body">
-                              <p>This is a direct modal.</p>
-
-                              <h2>My Customers</h2>
-
-                              <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+                              <h2>Directly Reports To:</h2>
+                              <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for Descr or #" title="Type in a name">
                               <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                 <table id="myTable">
                                   <tr class="header">
-                                    <th style="width:60%;">Name</th>
-                                    <th style="width:40%;">Country</th>
+                                    <th style="width:60%;">Position Company // Number // Description</th>
                                   </tr>
 
 
@@ -608,26 +611,42 @@ sessionStorage.getItem("expandStatus")
                   <th width="30%">
                     <!-- Modal -->
                     <!-- Trigger the modal with a button -->
-                    <button type="button" class="btn btn-info btn" data-toggle="modal" data-target="#indirectReportingModal">Assign</button>
+                    <button type="button" class="btn btn-info btn" data-toggle="modal" data-target="#directReportingModal2">Assign</button>
                     <!-- This is the modal istself -->
-                    <div class="modal fade" id="indirectReportingModal" role="dialog">
+                    <div class="modal fade" id="directReportingModal2" role="dialog">
                       <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Modal Header</h4>
+
                           </div>
                           <div class="modal-body">
-                            <p>This is a indirect modal.
+                            <h2>Indirectly Reports to:</h2>
+                            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for Descr or #" title="Type in a name">
+                            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                              <table id="myTable">
+                                <tr class="header">
+                                  <th style="width:60%;">Name</th>
+                                  <th style="width:40%;">Country</th>
+                                </tr>
 
-                                      </p>
-                                      <input type="text" class="form-control" name="avail_date" value="{{$position->avail_date}}" >
+
+                                @foreach($reportsToSource as $RTS)
+                                  <!-- <tr><td>{{$RTS->posno}}  /  {{$RTS->descr}}</td></tr> -->
+                                  <tr>
+                                    <td><a href={{route('positions.show',$position->id)}}?reportsindirto={{$RTS->id}}> {{$RTS->company}}  //  {{$RTS->posno}}  //  {{$RTS->descr}}</td>
+                                  </tr>
+                                @endforeach
+                              </table>
+                            </div>
                           </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          </div>
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                       </div>
+                    </div>
                     </div>
 
                   </th>
@@ -849,7 +868,7 @@ sessionStorage.getItem("expandStatus")
                     @foreach($viewIncumbentHistory as $incHistory)
                       <tr>
                         <!-- <td><a href={{route('positions.show',$position->id)}}?viewincid={{$viewinc->id}}&viewinchistid={{$incHistory->id}}>{{$incHistory->posstart}}</td> -->
-                        <td><a href={{route('positions.show',$position->id)}}?viewinchistid={{$incHistory->id}}>{{$incHistory->posstart}}</td>
+                        <td><a href={{route('positions.show',$position->id)}}?viewinchistid={{$incHistory->id}}>{{$incHistory->trans_date}}</td>
                         <td>{{$incHistory->active_pos}}</td>
                         <td>{{round($incHistory->fulltimeequiv,3)}}</td>
                         <td>{{FormatDollars($incHistory->ann_cost)}}</td>
@@ -864,46 +883,82 @@ sessionStorage.getItem("expandStatus")
 
             <!-- *************************** -->
             <!-- Right div contains details of selected incumbent -->
-            <div class="col-md-5">Details:
+            <div class="col-md-6">Details:
               @foreach($viewIncumbentDetails as $vd)
-                {{$vd->fname.' '.$vd->lname.', '.$vd->trans_date.', '.FormatDollars($vd->ann_cost)}}
+                {{$vd->fname.' '.$vd->lname.' @ '.$vd->trans_date.', annual cost '.FormatDollars($vd->ann_cost)}}
               @endforeach
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="30%">History</th>
-                    <th width="20%"></th>
+                    <th width="25%">Status</th>
+                    <th width="25%"></th>
                     <th width="0%"></th>
-                    <th width="30%"></th>
-                    <th width="20%"></th>
+                    <th width="25%"></th>
+                    <th width="25%"></th>
                   </tr>
                 </thead>
                 @foreach($viewIncumbentDetails as $IncDet)
+
                   <tr>
-                    <td>DATES:</td>
+                    <td>Status in Pos:</td>
+                    <td>{{$IncDet->active_pos}}</td>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>Employment Status:</td>
+                    <td>{{$IncDet->active}}</td>
                   </tr>
 
                   <tr>
                     <td>Started in Pos:</td>
-                    <td>{{$IncDet->posstart}}</td>
+                    <td style="text-align:left">{{$IncDet->posstart}}</td>
                     <td></td>
                     <td>Ended in Pos:</td>
                     <td>{{$IncDet->posstop}}</td>
                   </tr>
 
                   <tr>
-                    <td>Last Hire Date</td>
+                    <td>Last Hire Date:</td>
                     <td>{{$IncDet->lasthire}}</td>
                     <td></td>
                     <td></td>
                     <td></td>
                   </tr>
+              </table>
 
-                  
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="25%">Budget</th>
+                    <th width="25%"></th>
+                    <th width="0%"></th>
+                    <th width="25%"></th>
+                    <th width="25%"></th>
+                  </tr>
+                </thead>
+
+                  <tr>
+                    <td>Hourly Rate</td>
+                    <td>{{FormatMoney($IncDet->unitrate)}}</td>
+                    <td></td>
+                    <td>Annualized Rate</td>
+                    <td>{{FormatDollars($IncDet->annual)}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Pay Frequency</td>
+                    <td>{{$IncDet->payfreq}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+
+                  <tr>
+                    <td>FTEs in this Pos:</td>
+                    <td>{{round($IncDet->fulltimeequiv,3)}}</td>
+                    <td></td>
+                    <td>Annual Cost</td>
+                    <td>{{FormatDollars($IncDet->ann_cost)}}</td>
+                  </tr>
+
                   <tr>
                     <td></td>
                     <td></td>
@@ -911,14 +966,18 @@ sessionStorage.getItem("expandStatus")
                     <td></td>
                     <td></td>
                   </tr>
+                </table>
 
+              <table class="table table-condensed">
+                <thead>
                   <tr>
-                    <td>ORGANIZATION</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <th width="25%">Organization</th>
+                    <th width="25%"></th>
+                    <th width="0%"></th>
+                    <th width="25%"></th>
+                    <th width="25%"></th>
                   </tr>
+                </thead>
 
                   <tr>
                     <td>Org Level 1</td>
@@ -951,6 +1010,36 @@ sessionStorage.getItem("expandStatus")
                     <td></td>
                     <td></td>
                   </tr>
+                </table>
+
+                <table class="table table-condensed">
+                  <thead>
+                    <tr>
+                      <th width="25%">Data Updates</th>
+                      <th width="25%"></th>
+                      <th width="0%"></th>
+                      <th width="25%"></th>
+                      <th width="25%"></th>
+                    </tr>
+                  </thead>
+
+                    <tr>
+                      <td>Update Effective:</td>
+                      <td>{{$IncDet->hrmsdate}}</td>
+                      <td></td>
+                      <td>Update Reason</td>
+                      <td>{{$IncDet->hrmsreas}}</td>
+                    </tr>
+
+                    <tr>
+                      <td>Update Actual Date</td>
+                      <td>{{$IncDet->trans_date}}</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+
+                  </table>
 
 
                 @endforeach
