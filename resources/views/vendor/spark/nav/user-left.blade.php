@@ -8,11 +8,11 @@
 
 
 <li>
-    <a href="/PosMain" href="#">Positions</a>
+    <a href="/positions/1" href="#">Positions</a>
 </li>
 
 <li>
-    <a href="/PosMain" href="#">Reports</a>
+    <a href="/reports/1" href="#">Reports</a>
 </li>
 
 <li>
