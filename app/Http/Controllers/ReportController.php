@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Schema\columns;
 use Illuminate\Support\Facades\DB;
 
 
-class PositionController extends Controller
+class ReportController extends Controller
 {
   /**
    * Create a new controller instance.

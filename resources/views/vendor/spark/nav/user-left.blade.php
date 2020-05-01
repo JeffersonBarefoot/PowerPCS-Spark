@@ -12,7 +12,7 @@
 </li>
 
 <li>
-    <a href="/reports/1" href="#">Reports</a>
+    <a href="/reports/2" href="#">Reports</a>
 </li>
 
 <li>
