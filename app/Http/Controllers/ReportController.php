@@ -426,7 +426,7 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
 
       //****************************
       // R E T U R N   T O   positions.show
-      return View('positions.show')
+      return View('reports.show')
         ->with(compact('position'))
         ->with(compact('viewincumbent'))
         ->with(compact('viewIncumbentHistory'))

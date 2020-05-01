@@ -16,7 +16,7 @@
 <div class="row">
     <!-- <div class="col-sm-8 offset-sm-0"> -->
     <div class="col-md-12">
-        <h1 class="display-5">&nbsp;&nbsp;&nbsp;{{$position->descr}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{$position->company}} / {{$position->posno}}</small></h1>
+        <h1 class="display-5">&nbsp;&nbsp;&nbsp;Reports</small></h1>
 
         <form action={{route('positions.show',$position->id)}} method="get">
 

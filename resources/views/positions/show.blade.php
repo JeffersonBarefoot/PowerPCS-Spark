@@ -124,7 +124,7 @@ sessionStorage.getItem("expandStatus")
         <h4 class="panel-title">
           <div class="row">
             <div class="col-md-2">
-              <a href="#collapse1" data-toggle="collapse" >TEST DESCRIPTION - Status</a>
+              <a href="#collapse1" data-toggle="collapse" >Status</a>
               <!-- <a class="btn btn-primary" onclick="expandStatus()" data-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1"> -->
                 <!-- Status
               </a> -->
