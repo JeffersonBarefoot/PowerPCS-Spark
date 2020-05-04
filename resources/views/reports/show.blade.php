@@ -1,4 +1,4 @@
-@extends('navbar')
+@extends('navbarreports')
 @section('main')
 
 <head>
