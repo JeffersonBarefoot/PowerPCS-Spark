@@ -12,7 +12,8 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
-        "laravel/spark-aurelius": "*@dev"
+        "laravel/spark-aurelius": "~9.0",
+        "cartalyst/data-grid-laravel": "^3.0"
     },
     "require-dev": {
         "facade/ignition": "^1.4",
@@ -66,6 +67,10 @@
         {
             "type": "path",
             "url": "./spark"
+        },
+        {
+            "type": "composer",
+            "url": "https://packages.cartalyst.com"
         }
     ]
 }
