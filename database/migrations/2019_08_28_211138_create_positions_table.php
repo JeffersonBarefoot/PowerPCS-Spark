@@ -58,7 +58,7 @@ class CreatePositionsTable extends Migration
        $table->decimal('payrate',10,2)->default(0);
        $table->string('paytype',10)->default('');
        $table->string('reason',10)->default('');
-       $table->string('reptocomp',3)->default('');
+       $table->string('reptocomp',10)->default('');
        $table->string('reptodesc',75)->default('');
        $table->string('reptoposno',20)->default('');
        $table->string('salgrade',20)->default('');
@@ -67,7 +67,7 @@ class CreatePositionsTable extends Migration
        $table->string('salfreq',1)->default('');
        $table->string('curstatus',20)->default('VACANT');
        $table->date('startdate',)->default('2999-12-31');
-       $table->string('supcompany',3)->default('');
+       $table->string('supcompany',10)->default('');
        $table->string('supempno',9)->default('');
        $table->string('supname',50)->default('');
        $table->date('trans_date',)->default('2999-12-31');
@@ -79,7 +79,7 @@ class CreatePositionsTable extends Migration
        $table->string('userdef6',50)->default('');
        $table->decimal('vac_times',10,0)->default(0);
        $table->decimal('vac_months',10,2)->default(0);
-       $table->string('reptocom2',3)->default('');
+       $table->string('reptocom2',10)->default('');
        $table->string('reptopos2',20)->default('');
        $table->string('reptodesc2',75)->default('');
     });

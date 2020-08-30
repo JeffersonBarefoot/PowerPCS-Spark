@@ -3,7 +3,7 @@
 @section('main')
 <div class="row">
 <div class="col-sm-12">
-    <h1 class="display-3">Positions Index.Blade.php</h1>
+    <h1 class="display-3">Reports Index.Blade.php, using Position data as of 2020-08</h1>
 
     <div>
         <a style="margin: 19px;" href="{{ route('positions.create')}}" class="btn btn-primary">New position</a>
@@ -16,7 +16,7 @@
   <table class="table table-striped">
     <thead>
         <tr>
-          <td>Company</td>
+          <td>xxxCompany</td>
           <td>Position Number</td>
           <td>Position Description/Name</td>
           <td colspan = 2>Actions</td>

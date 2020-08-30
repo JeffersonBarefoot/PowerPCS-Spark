@@ -57,16 +57,17 @@ class ReportController extends Controller
         // $descr = $request->input('descr');
 //      dd($company);
 //      dd($posno);
- dump('is this report controller??? positioncontroller.index');
+ dump('ReportController.index');
 
         $positions = Position::all();
         //$positionsnavbar = Position::all();
 //        $positionsnavbar = GetPositions('company','=','SAMPLE');
+        $reports = Report::all();
 
         $company = $request->input('company');
-        $posno = $request->input('posno');
+        $report = $request->input('posno');
         $descr = $request->input('descr');
-        $positionsnavbar = Position::where('company','like',"%$company%")
+        $reportsnavbar = Position::where('company','like',"%$company%")
                             ->where('posno','like',"%$posno%")
                             ->where('descr','like',"%$descr%")
                             ->get();
@@ -82,9 +83,12 @@ class ReportController extends Controller
 //$test = "test message";
 //$company = "ZSI";
 //dd($test);
-        return view("positions.index",
-          compact('positions'),
-          compact('positionsnavbar'));
+        return view("reports.index",
+          compact('reports'),
+          compact('reportsnavbar'));
+
+        // return view("reports.index");
+
     }
 
     /**

@@ -40,7 +40,7 @@
 
           <h2>Report Queries</h2>
 
-          <form action={{route('positions.show',$position->id)}} method="get">
+          
 
           <table>
             <col>

@@ -18,10 +18,9 @@
     <div class="col-md-12">
         <h1 class="display-5">&nbsp;&nbsp;&nbsp;Reports</small></h1>
 
-        <form action={{route('positions.show',$report->id)}} method="get">
 
-        <!-- <input type="checkbox" name="mycheckbox" value="myvalue" onclick={{route('positions.show',$position->id)}}>TestCheckBox</input><br>
-        <input type="checkbox" name="mycheckbox" value="myvalue" onclick=“this.form.submit()”>TestCheckBox</input><br> -->
+
+
 
         @if ($errors->any())
         <div class="alert alert-danger">

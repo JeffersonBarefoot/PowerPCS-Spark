@@ -17,9 +17,9 @@ class CreatePcincumhTable extends Migration
           $table->bigIncrements('id');
           $table->unsignedInteger('teamid')->default(999999999);
           $table->timestamps();
-          $table->string('poscompany',3);
+          $table->string('poscompany',10);
           $table->string('posno',20);
-          $table->string('company',3);
+          $table->string('company',10);
           $table->string('empno',9);
           $table->string('fname',30);
           $table->string('mi',30);
