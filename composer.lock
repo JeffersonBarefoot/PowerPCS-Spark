@@ -4,8 +4,180 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e31ec73fe5ffbb648dd97b8dc3b8dbd3",
+    "content-hash": "960389eb98d24b8371cd514333962665",
     "packages": [
+        {
+            "name": "cartalyst/data-grid",
+            "version": "v5.0.1",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:cartalyst/data-grid.git",
+                "reference": "4cfd1fd2c99859ae474824673f96c45760dec582"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cartalyst/data-grid/zipball/4cfd1fd2c99859ae474824673f96c45760dec582",
+                "reference": "4cfd1fd2c99859ae474824673f96c45760dec582",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^6.0",
+                "php": "^7.2",
+                "symfony/http-foundation": "^4.3"
+            },
+            "require-dev": {
+                "cartalyst/php-cs-fixer-config": "^1.0",
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "suggest": {
+                "cartalyst/data-grid-export": "Export your data as PDF files, JSON or CSV. (^2.0)",
+                "cartalyst/data-grid-laravel": "Laravel implementation for Data Grid. (^2.0)"
+            },
+            "type": "library",
+            "extra": {
+                "component": "package",
+                "branch-alias": {
+                    "dev-master": "5.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Cartalyst\\DataGrid\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Cartalyst\\DataGrid\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "cs:check": [
+                    "./vendor/bin/php-cs-fixer fix --verbose --ansi --show-progress=estimating --diff --dry-run --config .php_cs.php"
+                ],
+                "cs:fix": [
+                    "./vendor/bin/php-cs-fixer fix --verbose --ansi --show-progress=estimating --config .php_cs.php"
+                ],
+                "test": [
+                    "./vendor/bin/phpunit --verbose --colors=always"
+                ]
+            },
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Cartalyst LLC",
+                    "email": "help@cartalyst.com",
+                    "homepage": "https://cartalyst.com"
+                }
+            ],
+            "description": "HTML markup templating on the client side, simple API on the server side. Incredibly simple and easy to use.",
+            "keywords": [
+                "cartalyst",
+                "data",
+                "data-grid",
+                "filter",
+                "grid",
+                "pagination",
+                "php",
+                "search"
+            ],
+            "support": {
+                "source": "https://github.com/cartalyst/data-grid/tree/v5.0.1",
+                "issues": "https://github.com/cartalyst/data-grid/issues"
+            },
+            "time": "2019-09-11T13:34:25+00:00"
+        },
+        {
+            "name": "cartalyst/data-grid-laravel",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:cartalyst/data-grid-laravel.git",
+                "reference": "6907ab079c0b2f3de296c8fed5ae53a425f962b8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cartalyst/data-grid-laravel/zipball/6907ab079c0b2f3de296c8fed5ae53a425f962b8",
+                "reference": "6907ab079c0b2f3de296c8fed5ae53a425f962b8",
+                "shasum": ""
+            },
+            "require": {
+                "cartalyst/data-grid": "^5.0",
+                "illuminate/support": "^6.0",
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "cartalyst/attributes": "^3.0",
+                "cartalyst/php-cs-fixer-config": "^1.0",
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "component": "package",
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Cartalyst\\DataGrid\\Laravel\\DataGridServiceProvider"
+                    ],
+                    "aliases": {
+                        "DataGrid": "Cartalyst\\DataGrid\\Laravel\\Facades\\DataGrid"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Cartalyst\\DataGrid\\Laravel\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Cartalyst\\DataGrid\\Laravel\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "cs:check": [
+                    "./vendor/bin/php-cs-fixer fix --verbose --ansi --show-progress=estimating --diff --dry-run --config .php_cs.php"
+                ],
+                "cs:fix": [
+                    "./vendor/bin/php-cs-fixer fix --verbose --ansi --show-progress=estimating --config .php_cs.php"
+                ],
+                "test": [
+                    "./vendor/bin/phpunit --verbose --colors=always"
+                ]
+            },
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Cartalyst LLC",
+                    "email": "help@cartalyst.com",
+                    "homepage": "https://cartalyst.com"
+                }
+            ],
+            "description": "Laravel integration for the Cartalyst Data Grid package.",
+            "keywords": [
+                "cartalyst",
+                "data",
+                "data-grid",
+                "filter",
+                "grid",
+                "laravel",
+                "pagination",
+                "php",
+                "search"
+            ],
+            "support": {
+                "source": "https://github.com/cartalyst/data-grid-laravel/tree/v2.0.0",
+                "issues": "https://github.com/cartalyst/data-grid-laravel/issues"
+            },
+            "time": "2019-09-11T17:48:39+00:00"
+        },
         {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "0.1",
@@ -789,6 +961,7 @@
                     "email": "jakub.onderka@gmail.com"
                 }
             ],
+            "abandoned": "php-parallel-lint/php-console-color",
             "time": "2018-09-29T17:23:10+00:00"
         },
         {
@@ -835,6 +1008,7 @@
                 }
             ],
             "description": "Highlight PHP code in terminal",
+            "abandoned": "php-parallel-lint/php-console-highlighter",
             "time": "2018-09-29T18:48:56+00:00"
         },
         {
@@ -5863,5 +6037,6 @@
     "platform": {
         "php": "^7.2"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

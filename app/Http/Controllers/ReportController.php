@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+// require("vendor/autoload.php");
+
+use Cartalyst\DataGrid\DataHandlers\CollectionHandler;
+use Cartalyst\DataGrid\Environment;
+
 use Illuminate\Http\Request;
 use App\Position;
 use App\HPosition;
@@ -52,7 +57,7 @@ class ReportController extends Controller
         // $descr = $request->input('descr');
 //      dd($company);
 //      dd($posno);
- dump('positioncontroller.index');
+ dump('is this report controller??? positioncontroller.index');
 
         $positions = Position::all();
         //$positionsnavbar = Position::all();
@@ -153,294 +158,37 @@ class ReportController extends Controller
     //***************************************************
     public function show($id,Request $request)
     {
-      // dump('positioncontroller.show');
-      // dump($id);
-      // dump("end");
 
-      if (is_null($id)) {
-        $id=1;
-      }
-      $position = Position::find($id);
+      // $object = new stdClass;
+      // $object->title = 'foo';
+      // $object->age = 20;
 
-      // if sess var positionID is null, then this is a fresh launch.  Save the current ID to the session variable
-      $sessionPositionID = Session::get('positionID');
-      if (is_null($sessionPositionID)) {
-        $sessionPositionID = $id;
-        Session::put('positionID', $id);
-      }
+      $data = [
+          [
+              'title' => 'bar',
+              'age'   => 34,
+          ],
+          [
+              'foo',
+              '20',
+          ],
+      ];
 
-      //\/\/\/\/\/\/\/\/\/\/\
-      // Restore all variables as they were on last SHOW. could be NULL if first time
-      //\/\/\/\/\/\/\/\/\/\/\
+      $settings = [
+          'columns' => [
+              'title',
+              'age',
+          ]
+      ];
 
-      //\/\/\/\/\/\/\/\/\/\/\
-      // if we just selected a new position, then clear out position specific session variables
-      //\/\/\/\/\/\/\/\/\/\/\
-      // reports to
-      // incumbents, incumbent history
-      // position history
-      //
-      //newly selected position
-
-
-      if ($sessionPositionID <> $id) { // not on the same position as last time
-        // code...
-        Session::put('positionID', $id);
-        $viewincid = '' ;
-        //dump('New position!!');
-        //dump($sessionPositionID);
-        //dump($id);
-        // clear out all session variables.  If applicable, reset to the current position
-        Session::put('reportsDirTo', '');
-        Session::put('reportsIndirTo', '');
-        Session::put('viewincid', '');
-        Session::put('viewinchistid', '');
-        $viewinchistid='';
-        Session::put('viewPosHistId', '');
-
-      } else {
-        //dump('Same Position');
-        $viewincid = Session::get('viewincid') ;
-        $viewinchistid = Session::get('viewinchistid') ;
-        $reportsDirTo = Session::get('reportsDirTo');
-        $reportsIndirTo = Session::get('reportsIndirTo');
-
-      }
-      //dump('checking whether session variable was set ... ' . $viewincid);
-
-
-
-
-
-      //gather general info
-      $posno = $position->posno;
-      $company = $position->company;
-
-
-      //****************************
-      // N A V B A R
-      // these variables are used to populate the NavBar, not the main portion of Positions.Show
-      $navbarcompany = $request->input('company');
-      $navbarposno = $request->input('posno');
-      $navbardescr = $request->input('descr');
-
-      $testAriaCollapse = $request->input('testArial');
-//dump($testAriaCollapse);
-//dump($navbarposno);
-
-      $positionsnavbar = Position::where('company','like',"$navbarcompany%")
-                          ->where('posno','like',"$navbarposno%")
-                          ->where('descr','like',"%$navbardescr%")
-                          ->orderby("company")
-                          ->orderby("descr")
-                          ->get();
-
-      //****************************
-      // I N C U M B E N T S
-      // gather all incumbents related to this position
-
-
-
-      if (!empty($request->input('viewinchistid'))) {
-        $viewinchistid = $request->input('viewinchistid');
-
-      //what if this is a new incHistId?  Do we blank out the details, or return first record?
-      //jlb 20200225
-
-      }
-
-
-
-      // see if we passed a new viewincid, so need to update the variable
-      // otherwise keep the one that we have been using
-      if (!empty($request->input('viewincid'))) {
-        $viewincid = $request->input('viewincid');
-        $viewinchistid = '';
-      }
-      //dump('$viewincid = '.$viewincid);
-      //dump('$viewinchistid = '.$viewinchistid);
-
-
-      $incumbentsinposition = \DB::table('incumbents')
-        ->where('posno','=',$posno)
-        ->orderby("active_pos","asc")
-        ->orderby("posstart","desc")
-        ->get();
-
-      // determine all ACTIVE incumbents related to this position
-      $activeincumbentsinposition = \DB::table('incumbents')
-        ->where('posno','=',$posno)
-        ->where('active_pos','=','A')
-        ->orderby("posstart","desc")
-        ->get();
-
-
-      // build a text element that can be displayed on the incumbents tab
-      $activeincumbentlist = '';
-      foreach ($activeincumbentsinposition as $ActInc){
-        $activeincumbentlist = $activeincumbentlist.substr($ActInc->fname,0,1).' '.$ActInc->lname.', ' ;
-      }
-
-      $activeincumbentcount = $activeincumbentsinposition->count();
-
-      // pull all details for a selected incumbent.
-      // this is used to identify the empno and company, for the history query
-      $viewincumbent = \DB::table('incumbents')
-        ->where('id','=',$viewincid)
-        ->get();
-      $incumbentCompany='';
-      $incumbentEmpno='';
-      foreach ($viewincumbent as $vi){
-        $incumbentCompany=$vi->company;
-        $incumbentEmpno=$vi->empno;
-      }
-
-      // pull all history records for a selected incumbents
-      // this will populate the middle column of incumbent history, showing all hist records
-      $viewIncumbentHistory = \DB::table('hincumbents')
-        ->where('poscompany','=',$company)
-        ->where('posno','=',$posno)
-        ->where('company','=',$incumbentCompany)
-        ->where('empno','=',$incumbentEmpno)
-        ->orderby('trans_date','desc')
-        ->get();
-
-      // pull the specific history record that we are currently dealing wih
-      // IMPORTANT:  need a way to incorporate the CURRENT record into the SHOW blade
-        $viewIncumbentDetails = \DB::table('hincumbents')
-          ->where('id','=',$viewinchistid)
-          ->get();
-
-//var_dump("$viewIncumbentDetails");
-      // pull all details for the selected incumbent-history record.
-      // this can be used to show details of a "selected incumbent"
-
-      //****************************
-      // P O S I T I O N   H I S T O R Y
-      $posHistRecs = \DB::table('hpositions')
-        ->where('posno','=',$posno)
-        ->where('company','=',$company)
-        ->orderby('trans_date','desc')
-        ->get();
-
-      //****************************
-      // REPORTS TO data
-      // "reports to" position is directly available in the positions table
-
-      // check to see if reportsdirto was included in the request string.  If so, reset the Reports To Fields
-      if (!empty($request->input('reportsdirto'))) {
-        //dump('requested a new reports to');
-        $reportsdirtoid = $request->input('reportsdirto');
-
-        $reportsdirtocursor = \DB::table('positions')
-          ->where('id','=',$reportsdirtoid)
-          ->get();
-
-        foreach ($reportsdirtocursor as $rdt){
-          $rdtcompany=$rdt->company;
-          $rdtposno=$rdt->posno;
-          $rdtdescr=$rdt->descr;
-
-        $position->reptocomp=$rdtcompany;
-        $position->reptoposno=$rdtposno;
-        $position->reptodesc=$rdtdescr;
-        $position->save();
-        }
-      }
-
-      // check to see if reportsdirto was included in the request string.  If so, reset the Reports To Fields
-      if (!empty($request->input('reportsindirto'))) {
-        //dump('requested a new reports to');
-        $reportsindirtoid = $request->input('reportsindirto');
-
-        $reportsindirtocursor = \DB::table('positions')
-          ->where('id','=',$reportsindirtoid)
-          ->get();
-
-        foreach ($reportsindirtocursor as $rit){
-          $ritcompany=$rit->company;
-          $ritposno=$rit->posno;
-          $ritdescr=$rit->descr;
-
-        $position->reptocom2=$ritcompany;
-        $position->reptopos2=$ritposno;
-        $position->reptodesc2=$ritdescr;
-        $position->save();
-        }
-      }
-
-
-      // Direct Reports will reference this position in their positions.reptocomp / reptoposno
-      // Dotted lines will have this position number in reptocom2 / reptopos2
-      $directReports = \DB::table('positions')
-        ->where('reptoposno','=',$posno)
-        ->where('reptocomp','=',$company)
-        ->orderby("posno")
-        ->get();
-
-      $indirectReports = \DB::table('positions')
-        ->where('reptopos2','=',$posno)
-        ->where('reptocom2','=',$company)
-        ->orderby("posno")
-        ->get();
-
-      $dirRepCount = count($directReports);
-      $indirRepCount = count($indirectReports);
-
-      // get a collection of position names to use as a list to select "reports to" positions
-      // will only need this in "editable" queries
-      $reportsToSource = \DB::table('positions')
-        ->select('id','company','posno','descr')
-        ->where('company','=',$company)
-        ->orderby("descr")
-        ->get();
-
-
-
-//dump($dirRepCount);
-// dump("$posno");
-// dump("$company");
-// dump($directReports);
-// importpositions('');
-// importhpositions('');
-// importincumbents('');
-// importhincumbents('');
-// dump($viewincumbent);
-// $user = Auth::user();
-// $id = Auth::id();
-// dump($id);
-// dump($user->currentTeam->name);
-// dump($user->currentTeam->id);
-
-//experiment with session variables, 2020-01-01
-Session::put('mykey', '12345');
-Session::put('expandIncumbents', 'xHere is how you return a session variable into a blade...JLB 200113');
-//TestOnclickFunction();
-
-      // save all session variables prior to returning to the blade
-      Session::put('reportsDirTo', '');
-      Session::put('reportsIndirTo', '');
-      Session::put('viewincid', $viewincid);
-      Session::put('viewinchistid', $viewinchistid);
-      Session::put('viewPosHistId', '');
+      $handler = new CollectionHandler($data, $settings);
+      // $dataGrid = DataGrid::make($handler);
 
       //****************************
       // R E T U R N   T O   positions.show
-      return View('positions.show')
-        ->with(compact('position'))
-        ->with(compact('viewincumbent'))
-        ->with(compact('viewIncumbentHistory'))
-        ->with(compact('viewIncumbentDetails'))
-        ->with(compact('positionsnavbar'))
-        ->with(compact('incumbentsinposition'))
-        ->with(compact('directReports'))
-        ->with(compact('indirectReports'))
-        ->with(compact('posHistRecs'))
-        ->with(compact('reportsToSource'))
-        ->with('dirRepCount',$dirRepCount)
-        ->with('indirRepCount',$indirRepCount)
-        ->with('activeincumbentcount',$activeincumbentcount)
-        ->with('activeincumbentlist',$activeincumbentlist);
+      return View('reports.show');
+        // ->with(compact('dataGrid'));
+
 
     }
 

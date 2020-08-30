@@ -52,7 +52,7 @@ class PositionController extends Controller
         // $descr = $request->input('descr');
 //      dd($company);
 //      dd($posno);
- dump('positioncontroller.index');
+ dump('xxpositioncontroller.index');
 
         $positions = Position::all();
         //$positionsnavbar = Position::all();
