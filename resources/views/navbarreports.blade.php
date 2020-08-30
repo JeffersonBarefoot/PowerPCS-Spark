@@ -40,7 +40,7 @@
 
           <h2>Report Queries</h2>
 
-          
+
 
           <table>
             <col>
@@ -92,11 +92,36 @@
                     <a data-toggle="collapse" href="#collapseRep01">Positions - Current</a>
                   </div>
 
+
+
                 </div>
               </h4>
             </div>
             <div id="collapseRep01" class="panel-collapse collapse">
-              <div class="panel-body">Reserved for future functionality
+              <div class="panel-body">
+
+                <table class="table table-condensed">
+                  <tr>
+                    @foreach($availablereports as $rep)
+                      <tr>
+                        <td>{{$rep->descr}}</td>
+                        <!-- <td>{{$rep->descr}}</td> -->
+
+                      </tr>
+                    @endforeach
+                  </tr>
+                </table>
+
+
+
+
+
+
+
+
+
+
+
 
               </div>
             </div>

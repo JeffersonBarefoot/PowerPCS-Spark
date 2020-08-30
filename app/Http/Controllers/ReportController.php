@@ -167,6 +167,13 @@ class ReportController extends Controller
       // $object->title = 'foo';
       // $object->age = 20;
 
+      $availablereports = \DB::table('reports')
+        ->where('active','=',"A")
+        ->orderby("group1","asc")
+        ->orderby("group2","asc")
+        ->orderby("sortorder","asc")
+        ->get();
+
       $data = [
           [
               'title' => 'bar',
@@ -190,8 +197,8 @@ class ReportController extends Controller
 
       //****************************
       // R E T U R N   T O   positions.show
-      return View('reports.show');
-        // ->with(compact('dataGrid'));
+      return View('reports.show')
+        ->with(compact('availablereports'));
 
 
     }
