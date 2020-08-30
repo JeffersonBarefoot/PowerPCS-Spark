@@ -23,25 +23,28 @@ class CreateReportsTable extends Migration
             $table->string('sortorder',10)->default('');
             $table->string('descr',75)->default('');
             $table->string('notes',250)->default('');
+            $table->binary('sqlselect');
         });
 
         DB::table('reports')->insert([
           ['active' => 'A'
-          ,'group1' => '1'
+          ,'group1' => 'POS'
           ,'group2'=>'1'
           ,'sortorder'=>'1'
           ,'descr'=>'Position Listing'
           ,'notes'=>'Summary listing of positions'
+          ,'sqlselect'=>'Select Posno,company'
           ],
         ]);
 
         DB::table('reports')->insert([
           ['active' => 'A'
-          ,'group1' => '2'
+          ,'group1' => 'INC'
           ,'group2'=>'1'
           ,'sortorder'=>'1'
           ,'descr'=>'Incumbent Listing'
           ,'notes'=>'Summary listing of incumbents'
+          ,'sqlselect'=>'Select Empno,company'
           ],
         ]);
     }

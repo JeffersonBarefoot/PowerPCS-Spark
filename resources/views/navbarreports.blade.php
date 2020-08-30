@@ -91,18 +91,14 @@
                   <div class="col-md-12">
                     <a data-toggle="collapse" href="#collapseRep01">Positions - Current</a>
                   </div>
-
-
-
                 </div>
               </h4>
             </div>
             <div id="collapseRep01" class="panel-collapse collapse">
               <div class="panel-body">
-
                 <table class="table table-condensed">
                   <tr>
-                    @foreach($availablereports as $rep)
+                    @foreach($availablereportsPOS as $rep)
                       <tr>
                         <td>{{$rep->descr}}</td>
                         <!-- <td>{{$rep->descr}}</td> -->
@@ -111,18 +107,6 @@
                     @endforeach
                   </tr>
                 </table>
-
-
-
-
-
-
-
-
-
-
-
-
               </div>
             </div>
           </div>
@@ -144,8 +128,17 @@
               </h4>
             </div>
             <div id="collapseRep02" class="panel-collapse collapse">
-              <div class="panel-body">Reserved for future functionality
-
+              <div class="panel-body">
+                <table class="table table-condensed">
+                  <tr>
+                    @foreach($availablereportsPOSH as $rep)
+                      <tr>
+                        <td>{{$rep->descr}}</td>
+                        <!-- <td>{{$rep->descr}}</td> -->
+                      </tr>
+                    @endforeach
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
@@ -167,8 +160,17 @@
               </h4>
             </div>
             <div id="collapseRep03" class="panel-collapse collapse">
-              <div class="panel-body">Reserved for future functionality
-
+              <div class="panel-body">
+                <table class="table table-condensed">
+                  <tr>
+                    @foreach($availablereportsINC as $rep)
+                      <tr>
+                        <td>{{$rep->descr}}</td>
+                        <!-- <td>{{$rep->descr}}</td> -->
+                      </tr>
+                    @endforeach
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
@@ -190,8 +192,17 @@
               </h4>
             </div>
             <div id="collapseRep04" class="panel-collapse collapse">
-              <div class="panel-body">Reserved for future functionality
-
+              <div class="panel-body">
+                <table class="table table-condensed">
+                  <tr>
+                    @foreach($availablereportsINCH as $rep)
+                      <tr>
+                        <td>{{$rep->descr}}</td>
+                        <!-- <td>{{$rep->descr}}</td> -->
+                      </tr>
+                    @endforeach
+                  </tr>
+                </table>
               </div>
             </div>
           </div>

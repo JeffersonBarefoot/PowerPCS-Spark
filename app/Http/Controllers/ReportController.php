@@ -167,8 +167,33 @@ class ReportController extends Controller
       // $object->title = 'foo';
       // $object->age = 20;
 
-      $availablereports = \DB::table('reports')
+      $availablereportsPOS = \DB::table('reports')
         ->where('active','=',"A")
+        ->where('group1','=',"POS")
+        ->orderby("group1","asc")
+        ->orderby("group2","asc")
+        ->orderby("sortorder","asc")
+        ->get();
+
+      $availablereportsPOSH = \DB::table('reports')
+        ->where('active','=',"A")
+        ->where('group1','=',"POSH")
+        ->orderby("group1","asc")
+        ->orderby("group2","asc")
+        ->orderby("sortorder","asc")
+        ->get();
+
+      $availablereportsINC = \DB::table('reports')
+        ->where('active','=',"A")
+        ->where('group1','=',"INC")
+        ->orderby("group1","asc")
+        ->orderby("group2","asc")
+        ->orderby("sortorder","asc")
+        ->get();
+
+      $availablereportsINCH = \DB::table('reports')
+        ->where('active','=',"A")
+        ->where('group1','=',"INCH")
         ->orderby("group1","asc")
         ->orderby("group2","asc")
         ->orderby("sortorder","asc")
@@ -198,7 +223,10 @@ class ReportController extends Controller
       //****************************
       // R E T U R N   T O   positions.show
       return View('reports.show')
-        ->with(compact('availablereports'));
+        ->with(compact('availablereportsPOS'))
+        ->with(compact('availablereportsPOSH'))
+        ->with(compact('availablereportsINC'))
+        ->with(compact('availablereportsINCH'));
 
 
     }
