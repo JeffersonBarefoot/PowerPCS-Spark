@@ -35,45 +35,7 @@
 
 
     <div class="row">
-        <div class="col-md-3" style="background-color:#aaa;">
-
-
-          <h2>Report Queries</h2>
-
-
-
-          <table>
-            <col>
-            <col>
-            <tr>
-              <td>Query 1:</td>
-              <td><input type="text" class="form-control" style="font-size:11pt;" name="company"/></td>
-            </tr>
-
-            <tr>
-              <td>Query 2:</td>
-              <td><input type="text" class="form-control" name="posno"/></td>
-            </tr>
-
-            <tr>
-              <td>Query 3:</td>
-              <td><input type="text" class="form-control" name="descr"/></td>
-            </tr>
-
-
-          </table>
-
-          <table>
-            <tr>
-              <td></td>
-            </tr>
-          </table>
-
-
-          <!-- <input type="submit" name="submit" value="Submit (blank queries return all records)"> -->
-          <br>
-          <button type="submit" class="btn btn-primary btn-sm">Submit (blank queries return all records)</button>
-          <br>
+        <div class="col-md-2" style="background-color:#aaa;">
 
           <h2>Available Reports:</h2>
 
@@ -101,6 +63,8 @@
                     @foreach($availablereportsPOS as $rep)
                       <tr>
                         <td>{{$rep->descr}}</td>
+                        <td height="25"><a href={{route('reports.show',$rep->id)}}>{{$rep->descr}}</td>
+
                         <!-- <td>{{$rep->descr}}</td> -->
 
                       </tr>
@@ -134,6 +98,7 @@
                     @foreach($availablereportsPOSH as $rep)
                       <tr>
                         <td>{{$rep->descr}}</td>
+                        <td height="25"><a href={{route('reports.show',$rep->id)}}>{{$rep->descr}}</td>
                         <!-- <td>{{$rep->descr}}</td> -->
                       </tr>
                     @endforeach
@@ -166,6 +131,7 @@
                     @foreach($availablereportsINC as $rep)
                       <tr>
                         <td>{{$rep->descr}}</td>
+                        <td height="25"><a href={{route('reports.show',$rep->id)}}>{{$rep->descr}}</td>
                         <!-- <td>{{$rep->descr}}</td> -->
                       </tr>
                     @endforeach
@@ -198,6 +164,7 @@
                     @foreach($availablereportsINCH as $rep)
                       <tr>
                         <td>{{$rep->descr}}</td>
+                        <td height="25"><a href={{route('reports.show',$rep->id)}}>{{$rep->descr}}</td>
                         <!-- <td>{{$rep->descr}}</td> -->
                       </tr>
                     @endforeach
@@ -209,7 +176,7 @@
 
           <!-- ************************** -->
           <!-- ************************** -->
-          <!-- Positions -->
+          <!-- Budgets -->
           <!-- ************************** -->
           <!-- ************************** -->
           <div class="panel panel-default">
@@ -217,7 +184,7 @@
               <h4 class="panel-title">
                 <div class="row">
                   <div class="col-md-12">
-                    <a data-toggle="collapse" href="#collapseRep05">Allocations</a>
+                    <a data-toggle="collapse" href="#collapseRep05">Budgets</a>
                   </div>
 
                 </div>
@@ -232,7 +199,7 @@
 
           <!-- ************************** -->
           <!-- ************************** -->
-          <!-- Positions -->
+          <!-- Vacancies -->
           <!-- ************************** -->
           <!-- ************************** -->
           <div class="panel panel-default">
@@ -240,7 +207,7 @@
               <h4 class="panel-title">
                 <div class="row">
                   <div class="col-md-12">
-                    <a data-toggle="collapse" href="#collapseRep06">Allocations</a>
+                    <a data-toggle="collapse" href="#collapseRep06">Vacancies</a>
                   </div>
 
                 </div>
