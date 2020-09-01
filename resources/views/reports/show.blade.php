@@ -135,7 +135,7 @@ sessionStorage.getItem("expandStatus")
     $handler = new CollectionHandler($data, $settings);
     $dataGrid = DataGrid::make($handler); -->
 
-    {{$report->sqlselect}}
+
 
     <div class="grid__wrapper">
         {{-- Loader --}}
@@ -148,19 +148,54 @@ sessionStorage.getItem("expandStatus")
         {{-- Results container --}}
         <section data-grid-layout="results"></section>
         <form action="/action_page.php">
-          <input type="date" id="birthday" name="birthday"> to <input type="date" id="birthday" name="birthday">
 
-          <table>
-          @foreach($reportqueries as $query)
-            <tr>
-              <td>{{$query->table}}</td>
-              <td>{{$query->field}}</td>
-              <td>{{$query->datatype}}</td>
-              <td>{{$query->descr}}</td>
 
-            </tr>
-          @endforeach
-        </table>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <div class="row">
+                  <div class="col-md-12">
+                    <a data-toggle="collapse" href="#collapseRep07">Report Parameters</a>
+                  </div>
+
+                </div>
+              </h4>
+            </div>
+            <div id="collapseRep07" class="panel-collapse collapse">
+              <div class="panel-body">
+{{$report->sqlselect}}
+
+
+
+                <table class="table table-condensed">
+                  @foreach($reportqueries as $query)
+                    <tr>
+
+                      <td>{{$query->descr}}</td>
+                      <td><input type="date" id="birthday" name="birthday"></td>
+                      <td>to</td>
+                      <td><input type="date" id="birthday" name="birthday"></td>
+
+                      <!-- <td>{{$query->table}}</td>
+                      <td>{{$query->field}}</td>
+                      <td>{{$query->datatype}}</td>
+                      <td>{{$query->descr}}</td> -->
+
+                    </tr>
+                  @endforeach
+                </table>
+
+
+
+              </div>
+            </div>
+          </div>
+
+
+
+
+
 
         </form>
         {{-- Pagination container --}}
