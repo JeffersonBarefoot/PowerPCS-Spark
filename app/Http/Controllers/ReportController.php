@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Position;
 use App\HPosition;
 use App\Incumbent;
+use App\Report;
 use Session;
 use Auth;
 use Illuminate\Support\Facades\Schema\columns;
@@ -167,6 +168,8 @@ class ReportController extends Controller
       // $object->title = 'foo';
       // $object->age = 20;
 
+      $report = Report::find($id);
+
       $availablereportsPOS = \DB::table('reports')
         ->where('active','=',"A")
         ->where('group1','=',"POS")
@@ -223,12 +226,11 @@ class ReportController extends Controller
       //****************************
       // R E T U R N   T O   positions.show
       return View('reports.show')
+        ->with(compact('report'))
         ->with(compact('availablereportsPOS'))
         ->with(compact('availablereportsPOSH'))
         ->with(compact('availablereportsINC'))
         ->with(compact('availablereportsINCH'));
-
-
     }
 
     /**

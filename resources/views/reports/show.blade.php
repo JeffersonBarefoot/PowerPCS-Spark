@@ -135,17 +135,23 @@ sessionStorage.getItem("expandStatus")
     $handler = new CollectionHandler($data, $settings);
     $dataGrid = DataGrid::make($handler); -->
 
+    {{$report->sqlselect}}
+
     <div class="grid__wrapper">
         {{-- Loader --}}
         <div class="progress__wrapper">
             <div class="progress">
               <div class="indeterminate"></div>
+              1
             </div>
         </div>
 
         {{-- Results container --}}
         <section data-grid-layout="results"></section>
+        <form action="/action_page.php">
+          <input type="date" id="birthday" name="birthday"> to <input type="date" id="birthday" name="birthday">
 
+        </form>
         {{-- Pagination container --}}
         <footer data-grid-layout="pagination"></footer>
     </div>
