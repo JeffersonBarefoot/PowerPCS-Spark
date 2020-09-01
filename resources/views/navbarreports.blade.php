@@ -62,7 +62,7 @@
                   <tr>
                     @foreach($availablereportsPOS as $rep)
                       <tr>
-                        <td>{{$rep->descr}}</td>
+
                         <td height="25"><a href={{route('reports.show',$rep->id)}}>{{$rep->descr}}</td>
 
                         <!-- <td>{{$rep->descr}}</td> -->
@@ -97,7 +97,7 @@
                   <tr>
                     @foreach($availablereportsPOSH as $rep)
                       <tr>
-                        <td>{{$rep->descr}}</td>
+
                         <td height="25"><a href={{route('reports.show',$rep->id)}}>{{$rep->descr}}</td>
                         <!-- <td>{{$rep->descr}}</td> -->
                       </tr>
@@ -130,7 +130,7 @@
                   <tr>
                     @foreach($availablereportsINC as $rep)
                       <tr>
-                        <td>{{$rep->descr}}</td>
+
                         <td height="25"><a href={{route('reports.show',$rep->id)}}>{{$rep->descr}}</td>
                         <!-- <td>{{$rep->descr}}</td> -->
                       </tr>
@@ -163,7 +163,7 @@
                   <tr>
                     @foreach($availablereportsINCH as $rep)
                       <tr>
-                        <td>{{$rep->descr}}</td>
+                        
                         <td height="25"><a href={{route('reports.show',$rep->id)}}>{{$rep->descr}}</td>
                         <!-- <td>{{$rep->descr}}</td> -->
                       </tr>

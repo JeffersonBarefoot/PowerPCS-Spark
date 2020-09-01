@@ -215,6 +215,10 @@ class ReportController extends Controller
         ->orderby("sortorder","asc")
         ->get();
 
+      $reportdata = \DB::table('positions')
+        ->where('active','=',"A")
+        ->get();
+
       $data = [
           [
               'title' => 'bar',
@@ -241,6 +245,7 @@ class ReportController extends Controller
       return View('reports.show')
         ->with(compact('report'))
         ->with(compact('reportqueries'))
+        ->with(compact('reportdata'))
         ->with(compact('availablereportsPOS'))
         ->with(compact('availablereportsPOSH'))
         ->with(compact('availablereportsINC'))

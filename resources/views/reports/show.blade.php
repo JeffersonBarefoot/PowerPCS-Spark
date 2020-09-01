@@ -16,7 +16,7 @@
 <div class="row">
     <!-- <div class="col-sm-8 offset-sm-0"> -->
     <div class="col-md-12">
-        <h1 class="display-5">&nbsp;&nbsp;&nbsp;xyzReports</small></h1>
+        <h1 class="display-5">&nbsp;&nbsp;&nbsp;Report:  {{$report->descr}}</small></h1>
 
 
 
@@ -164,19 +164,41 @@ sessionStorage.getItem("expandStatus")
             </div>
             <div id="collapseRep07" class="panel-collapse collapse">
               <div class="panel-body">
-{{$report->sqlselect}}
+                {{$report->notes}}<br>
 
 
 
                 <table class="table table-condensed">
+                  <thead>
+                    <tr>
+                      <th width="20%">Field</th>
+                      <th width="10%">Start</th>
+                      <th width="5%"></th>
+                      <th width="10%">End</th>
+                      <th width="55%"></th>
+
+                    </tr>
+                  </thead>
                   @foreach($reportqueries as $query)
                     <tr>
 
                       <td>{{$query->descr}}</td>
-                      <td><input type="date" id="birthday" name="birthday"></td>
-                      <td>to</td>
-                      <td><input type="date" id="birthday" name="birthday"></td>
 
+                      @if ($query->datatype=="DATE")
+                        <td><input type="date" id=beg|{{$query->table}}||{{$query->field}}||| name=beg|{{$query->table}}||{{$query->field}}|||></td>
+                      @else
+                        <td><input id=beg|{{$query->table}}||{{$query->field}}||| name=beg|{{$query->table}}||{{$query->field}}|||></td>
+                      @endif
+
+                      <td>to</td>
+
+                      @if ($query->datatype=="DATE")
+                        <td><input type="date" id=end|{{$query->table}}||{{$query->field}}||| name=end|{{$query->table}}||{{$query->field}}|||></td>
+                      @else
+                        <td><input id=end|{{$query->table}}||{{$query->field}}||| name=end|{{$query->table}}||{{$query->field}}|||></td>
+                      @endif
+
+                      <td>{{$query->options}}</td>
                       <!-- <td>{{$query->table}}</td>
                       <td>{{$query->field}}</td>
                       <td>{{$query->datatype}}</td>
@@ -186,7 +208,7 @@ sessionStorage.getItem("expandStatus")
                   @endforeach
                 </table>
 
-
+{{reportdata}}
 
               </div>
             </div>
