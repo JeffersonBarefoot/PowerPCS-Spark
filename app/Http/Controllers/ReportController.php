@@ -12,6 +12,7 @@ use App\Position;
 use App\HPosition;
 use App\Incumbent;
 use App\Report;
+use App\ReportQueries;
 use Session;
 use Auth;
 use Illuminate\Support\Facades\Schema\columns;
@@ -164,11 +165,25 @@ class ReportController extends Controller
     public function show($id,Request $request)
     {
 
-      // $object = new stdClass;
-      // $object->title = 'foo';
-      // $object->age = 20;
+      if (is_null($id)) {
+        $id=1;
+      }
 
       $report = Report::find($id);
+      // $reportid = $report->id;
+      // find the report type, i.e. POS, from $report.group1
+      $reporttype = $report->group1;
+
+
+      // include all queries for this reporttype (all standard POS or POSH or INC queries), and for this specific report
+      $reportqueries = \DB::table('reportqueries')
+        ->where(function ($query) use ($id,$reporttype) {
+            $query->where('reportid','=',$id)
+              ->orwhere('reportid','=',$reporttype);
+            })
+        ->where('active','=',"A")
+        ->orderby("sortorder","asc")
+        ->get();
 
       $availablereportsPOS = \DB::table('reports')
         ->where('active','=',"A")
@@ -227,6 +242,7 @@ class ReportController extends Controller
       // R E T U R N   T O   positions.show
       return View('reports.show')
         ->with(compact('report'))
+        ->with(compact('reportqueries'))
         ->with(compact('availablereportsPOS'))
         ->with(compact('availablereportsPOSH'))
         ->with(compact('availablereportsINC'))

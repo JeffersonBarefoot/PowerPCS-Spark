@@ -142,7 +142,6 @@ sessionStorage.getItem("expandStatus")
         <div class="progress__wrapper">
             <div class="progress">
               <div class="indeterminate"></div>
-              1
             </div>
         </div>
 
@@ -150,6 +149,18 @@ sessionStorage.getItem("expandStatus")
         <section data-grid-layout="results"></section>
         <form action="/action_page.php">
           <input type="date" id="birthday" name="birthday"> to <input type="date" id="birthday" name="birthday">
+
+          <table>
+          @foreach($reportqueries as $query)
+            <tr>
+              <td>{{$query->table}}</td>
+              <td>{{$query->field}}</td>
+              <td>{{$query->datatype}}</td>
+              <td>{{$query->descr}}</td>
+
+            </tr>
+          @endforeach
+        </table>
 
         </form>
         {{-- Pagination container --}}
