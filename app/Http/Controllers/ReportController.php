@@ -219,26 +219,32 @@ class ReportController extends Controller
         ->where('active','=',"A")
         ->get();
 
-      $data = [
-          [
-              'title' => 'bar',
-              'age'   => 34,
-          ],
-          [
-              'foo',
-              '20',
-          ],
-      ];
+// trying to get cartalyst data grid to work, 2020-09-01
+        $object = new \StdClass;
+        $object->title = 'foo';
+        $object->age = 20;
 
-      $settings = [
-          'columns' => [
-              'title',
-              'age',
-          ]
-      ];
+        $data = [
+            [
+                'title' => 'bar',
+                'age'   => 34,
+            ],
+            $object,
+        ];
 
-      $handler = new CollectionHandler($data, $settings);
-      // $dataGrid = DataGrid::make($handler);
+        $settings = [
+            'columns' => [
+                'title',
+                'age',
+            ]
+        ];
+
+        $handler = new CollectionHandler($data, $settings);
+        // the line below throws an error
+        // $dataGrid = \DataGrid::make($handler);
+
+
+
 
       //****************************
       // R E T U R N   T O   positions.show

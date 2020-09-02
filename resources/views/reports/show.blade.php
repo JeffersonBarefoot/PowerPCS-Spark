@@ -208,7 +208,7 @@ sessionStorage.getItem("expandStatus")
                   @endforeach
                 </table>
 
-{{reportdata}}
+
 
               </div>
             </div>
