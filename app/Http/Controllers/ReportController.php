@@ -306,175 +306,233 @@ $text = "<h1>Basic grid example</h1>";
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-$grid = new Grid(
-            (new GridConfig)
-                ->setDataProvider(
-                    new EloquentDataProvider(Position::query())
-                )
-                ->setName('example_grid4')
-                ->setPageSize(15)
-                ->setColumns([
-                    (new FieldConfig)
-                        ->setName('company')
-                        ->setLabel('company')
-                        ->setSortable(true)
-                        ->setSorting(Grid::SORT_ASC)
-                    ,
-                    (new FieldConfig)
-                        ->setName('posno')
-                        ->setLabel('posno')
-                        ->setCallback(function ($val) {
-                            return "<span class='glyphicon glyphicon-user'></span>{$val}";
-                        })
-                        ->setSortable(true)
-                        ->addFilter(
-                            (new FilterConfig)
-                                ->setOperator(FilterConfig::OPERATOR_LIKE)
-                        )
-                    ,
-                    (new FieldConfig)
-                        ->setName('descr')
-                        ->setLabel('descr')
-                        ->setCallback(function ($val) {
-                            return "<span class='glyphicon glyphicon-user'></span>{$val}";
-                        })
-                        ->setSortable(true)
-                        ->addFilter(
-                            (new FilterConfig)
-                                ->setOperator(FilterConfig::OPERATOR_LIKE)
-                        )
-                    ,
-                    // (new FieldConfig)
-                    //     ->setName('descr`')
-                    //     ->setLabel('descr')
-                    //     ->setSortable(true)
-                    //     ->setCallback(function ($val) {
-                    //         $icon = '<span class="glyphicon glyphicon-envelope"></span>&nbsp;';
-                    //         return
-                    //             '<small>'
-                    //             . $icon
-                    //             . HTML::link("mailto:$val", $val)
-                    //             . '</small>';
-                    //     })
-                    //     ->addFilter(
-                    //         (new FilterConfig)
-                    //             ->setOperator(FilterConfig::OPERATOR_LIKE)
-                    //     )
-                    // ,
-                    // (new FieldConfig)
-                    //     ->setName('phone_number')
-                    //     ->setLabel('Phone')
-                    //     ->setSortable(true)
-                    //     ->addFilter(
-                    //         (new FilterConfig)
-                    //             ->setOperator(FilterConfig::OPERATOR_LIKE)
-                    //     )
-                    // ,
-                    // (new FieldConfig)
-                    //     ->setName('country')
-                    //     ->setLabel('Country')
-                    //     ->setSortable(true)
-                    // ,
-                    // (new FieldConfig)
-                    //     ->setName('company')
-                    //     ->setLabel('Company')
-                    //     ->setSortable(true)
-                    //     ->addFilter(
-                    //         (new FilterConfig)
-                    //             ->setOperator(FilterConfig::OPERATOR_LIKE)
-                    //     )
-                    // ,
-                    // (new FieldConfig)
-                    //     ->setName('birthday')
-                    //     ->setLabel('Birthday')
-                    //     ->setSortable(true)
-                    // ,
-                    // (new FieldConfig)
-                    //     ->setName('posts_count')
-                    //     ->setLabel('Posts')
-                    //     ->setSortable(true)
-                    // ,
-                    // (new FieldConfig)
-                    //     ->setName('comments_count')
-                    //     ->setLabel('Comments')
-                    //     ->setSortable(true)
-                    // ,
-                ])
-                ->setComponents([
-                    (new THead)
-                        ->setComponents([
-                            (new ColumnHeadersRow),
-                            (new FiltersRow)
-                                ->addComponents([
-                                    // (new RenderFunc(function () {
-                                    //     return HTML::style('js/daterangepicker/daterangepicker-bs3.css')
-                                    //     . HTML::script('js/moment/moment-with-locales.js')
-                                    //     . HTML::script('js/daterangepicker/daterangepicker.js')
-                                    //     . "<style>
-                                    //             .daterangepicker td.available.active,
-                                    //             .daterangepicker li.active,
-                                    //             .daterangepicker li:hover {
-                                    //                 color:black !important;
-                                    //                 font-weight: bold;
-                                    //             }
-                                    //        </style>";
-                                    // }))
-                                    // ->setRenderSection('filters_row_column_birthday'),
-                                    // (new DateRangePicker)
-                                    //     ->setName('birthday')
-                                    //     ->setRenderSection('filters_row_column_birthday')
-                                    //     ->setDefaultValue(['1990-01-01', date('Y-m-d')])
-                                ])
-                            ,
-                            (new OneCellRow)
-                                ->setRenderSection(RenderableRegistry::SECTION_END)
-                                ->setComponents([
-                                    new RecordsPerPage,
-                                    new ColumnsHider,
-                                    (new CsvExport)
-                                        ->setFileName('my_report' . date('Y-m-d'))
-                                    ,
-                                    new ExcelExport(),
-                                    (new HtmlTag)
-                                        ->setContent('<span class="glyphicon glyphicon-refresh"></span> Filter')
-                                        ->setTagName('button')
-                                        ->setRenderSection(RenderableRegistry::SECTION_END)
-                                        ->setAttributes([
-                                            'class' => 'btn btn-success btn-sm'
-                                        ])
-                                ])
+// this is Nayjest Data Grid "Example 4", which has a ton of features, sorting, filtering, etc.
+// ran into some problems, and posted a ticket on Nayjest's github site.
+// these features are NOT important for my MVP.  Will wait for a response, but don't slow down work.
 
-                        ])
-                    ,
-                    // (new TFoot)
-                    //     ->setComponents([
-                    //         (new TotalsRow(['posts_count', 'comments_count'])),
-                    //         (new TotalsRow(['posts_count', 'comments_count']))
-                    //             ->setFieldOperations([
-                    //                 'posts_count' => TotalsRow::OPERATION_AVG,
-                    //                 'comments_count' => TotalsRow::OPERATION_AVG,
-                    //             ])
-                    //         ,
-                    //         (new OneCellRow)
-                    //             ->setComponents([
-                    //                 new Pager,
-                    //                 (new HtmlTag)
-                    //                     ->setAttributes(['class' => 'pull-right'])
-                    //                     ->addComponent(new ShowingRecords)
-                    //                 ,
-                    //             ])
-                    //     ])
-                    // ,
-                ])
-        );
-        $grid = $grid->render();
-        // return view('demo.default', compact('grid'));
+// $grid = new Grid(
+//             (new GridConfig)
+//                 ->setDataProvider(
+//                     new EloquentDataProvider(Position::query())
+//                 )
+//                 ->setName('example_grid4')
+//                 ->setPageSize(5)
+//                 ->setColumns([
+//                     (new FieldConfig)
+//                         ->setName('company')
+//                         ->setLabel('Company')
+//                         ->setSortable(true)
+//                         ->setSorting(Grid::SORT_ASC)
+//                     ,
+//                     (new FieldConfig)
+//                         ->setName('posno')
+//                         ->setLabel('posno')
+//                         ->setCallback(function ($val) {
+//                             return "<span class='glyphicon glyphicon-user'></span>{$val}";
+//                         })
+//                         ->setSortable(true)
+//                         ->addFilter(
+//                             (new FilterConfig)
+//                                 ->setOperator(FilterConfig::OPERATOR_LIKE)
+//                         )
+//                     ,
+//                     (new FieldConfig)
+//                         ->setName('descr')
+//                         ->setLabel('descr')
+//                         ->setCallback(function ($val) {
+//                             return "<span class='glyphicon glyphicon-user'></span>{$val}";
+//                         })
+//                         ->setSortable(true)
+//                         ->addFilter(
+//                             (new FilterConfig)
+//                                 ->setOperator(FilterConfig::OPERATOR_LIKE)
+//                         )
+//                     ,
+//                     // (new FieldConfig)
+//                     //     ->setName('descr`')
+//                     //     ->setLabel('descr')
+//                     //     ->setSortable(true)
+//                     //     ->setCallback(function ($val) {
+//                     //         $icon = '<span class="glyphicon glyphicon-envelope"></span>&nbsp;';
+//                     //         return
+//                     //             '<small>'
+//                     //             . $icon
+//                     //             . HTML::link("mailto:$val", $val)
+//                     //             . '</small>';
+//                     //     })
+//                     //     ->addFilter(
+//                     //         (new FilterConfig)
+//                     //             ->setOperator(FilterConfig::OPERATOR_LIKE)
+//                     //     )
+//                     // ,
+//                     // (new FieldConfig)
+//                     //     ->setName('phone_number')
+//                     //     ->setLabel('Phone')
+//                     //     ->setSortable(true)
+//                     //     ->addFilter(
+//                     //         (new FilterConfig)
+//                     //             ->setOperator(FilterConfig::OPERATOR_LIKE)
+//                     //     )
+//                     // ,
+//                     // (new FieldConfig)
+//                     //     ->setName('country')
+//                     //     ->setLabel('Country')
+//                     //     ->setSortable(true)
+//                     // ,
+//                     // (new FieldConfig)
+//                     //     ->setName('company')
+//                     //     ->setLabel('Company')
+//                     //     ->setSortable(true)
+//                     //     ->addFilter(
+//                     //         (new FilterConfig)
+//                     //             ->setOperator(FilterConfig::OPERATOR_LIKE)
+//                     //     )
+//                     // ,
+//                     // (new FieldConfig)
+//                     //     ->setName('birthday')
+//                     //     ->setLabel('Birthday')
+//                     //     ->setSortable(true)
+//                     // ,
+//                     // (new FieldConfig)
+//                     //     ->setName('posts_count')
+//                     //     ->setLabel('Posts')
+//                     //     ->setSortable(true)
+//                     // ,
+//                     // (new FieldConfig)
+//                     //     ->setName('comments_count')
+//                     //     ->setLabel('Comments')
+//                     //     ->setSortable(true)
+//                     // ,
+//                 ])
+//                 ->setComponents([
+//                     (new THead)
+//                         ->setComponents([
+//                             (new ColumnHeadersRow),
+//                             (new FiltersRow)
+//                                 ->addComponents([
+//                                     // (new RenderFunc(function () {
+//                                     //     return HTML::style('js/daterangepicker/daterangepicker-bs3.css')
+//                                     //     . HTML::script('js/moment/moment-with-locales.js')
+//                                     //     . HTML::script('js/daterangepicker/daterangepicker.js')
+//                                     //     . "<style>
+//                                     //             .daterangepicker td.available.active,
+//                                     //             .daterangepicker li.active,
+//                                     //             .daterangepicker li:hover {
+//                                     //                 color:black !important;
+//                                     //                 font-weight: bold;
+//                                     //             }
+//                                     //        </style>";
+//                                     // }))
+//                                     // ->setRenderSection('filters_row_column_birthday'),
+//                                     // (new DateRangePicker)
+//                                     //     ->setName('birthday')
+//                                     //     ->setRenderSection('filters_row_column_birthday')
+//                                     //     ->setDefaultValue(['1990-01-01', date('Y-m-d')])
+//                                 ])
+//                             ,
+//                             (new OneCellRow)
+//                                 ->setRenderSection(RenderableRegistry::SECTION_END)
+//                                 ->setComponents([
+//                                     new RecordsPerPage,
+//                                     new ColumnsHider,
+//                                     (new CsvExport)
+//                                         ->setFileName('my_report' . date('Y-m-d'))
+//                                     ,
+//                                     new ExcelExport(),
+//                                     (new HtmlTag)
+//                                         ->setContent('<span class="glyphicon glyphicon-refresh"></span> Filter')
+//                                         ->setTagName('button')
+//                                         ->setRenderSection(RenderableRegistry::SECTION_END)
+//                                         ->setAttributes([
+//                                             'class' => 'btn btn-success btn-sm'
+//                                         ])
+//                                 ])
+//
+//                         ])
+//                     ,
+//                     // (new TFoot)
+//                     //     ->setComponents([
+//                     //         (new TotalsRow(['posts_count', 'comments_count'])),
+//                     //         (new TotalsRow(['posts_count', 'comments_count']))
+//                     //             ->setFieldOperations([
+//                     //                 'posts_count' => TotalsRow::OPERATION_AVG,
+//                     //                 'comments_count' => TotalsRow::OPERATION_AVG,
+//                     //             ])
+//                     //         ,
+//                     //         (new OneCellRow)
+//                     //             ->setComponents([
+//                     //                 new Pager,
+//                     //                 (new HtmlTag)
+//                     //                     ->setAttributes(['class' => 'pull-right'])
+//                     //                     ->addComponent(new ShowingRecords)
+//                     //                 ,
+//                     //             ])
+//                     //     ])
+//                     // ,
+//                 ])
+//         );
+//         $grid = $grid->render();
+
     //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+    // try to super simplify the Nayjest grid to be easy to build and maintain reportsnavbar
+    // starting with the example above
 
+    // $grid = new Grid(
+    //             (new GridConfig)
+    //                 ->setDataProvider(
+    //                     new EloquentDataProvider(Position::query())
+    //                 )
+    //                 ->setName('example_grid4')
+    //                 ->setPageSize(5)
+    //                 ->setColumns([
+    //                     (new FieldConfig) ->setName('company')  ->setLabel('Company'),
+    //                     (new FieldConfig) ->setName('posno')    ->setLabel('posno'),
+    //                     (new FieldConfig) ->setName('descr')    ->setLabel('descr')
+    //                 ])
+    //
+    //                 ->setComponents([
+    //                     (new THead)
+    //                         ->setComponents([
+    //                             (new ColumnHeadersRow),
+    //                             (new OneCellRow)
+    //                                 ->setRenderSection(RenderableRegistry::SECTION_END)
+    //                                 ->setComponents([
+    //                                    new RecordsPerPage,
+    //                                   (new CsvExport) ->setFileName('my_report' . date('Y-m-d')),
+    //                                    new ExcelExport(),
+    //                                 ])
+    //                         ])
+    //                     ,
+    //                     // (new TFoot)
+    //                     //     ->setComponents([
+    //                     //         (new TotalsRow(['company_count', 'company_count'])),
+    //                     //         (new TotalsRow(['company_count', 'company_count']))
+    //                     //             ->setFieldOperations([
+    //                     //                 'company_count' => TotalsRow::OPERATION_AVG,
+    //                     //                 'company_count' => TotalsRow::OPERATION_AVG,
+    //                     //             ])
+    //                     //         ,
+    //                     //         (new OneCellRow)
+    //                     //             ->setComponents([
+    //                     //                 new Pager,
+    //                     //                 (new HtmlTag)
+    //                     //                     ->setAttributes(['class' => 'pull-right'])
+    //                     //                     ->addComponent(new ShowingRecords)
+    //                     //                 ,
+    //                     //             ])
+    //                     //     ])
+    //                     // )
+    //                 ])
+    //         );
+    //         $grid = $grid->render();
 
+            //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+$grid = BuildPositionList('');
 
 
 
