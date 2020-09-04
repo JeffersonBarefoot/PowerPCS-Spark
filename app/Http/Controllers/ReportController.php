@@ -241,14 +241,15 @@ class ReportController extends Controller
 
         $handler = new CollectionHandler($data, $settings);
         // the line below throws an error
-        // $dataGrid = \DataGrid::make($handler);
+        $dataGrid = \DataGrid::make($handler);
 
-
+dump($dataGrid);
 
 
       //****************************
       // R E T U R N   T O   positions.show
       return View('reports.show')
+        ->with(compact('dataGrid'))
         ->with(compact('report'))
         ->with(compact('reportqueries'))
         ->with(compact('reportdata'))

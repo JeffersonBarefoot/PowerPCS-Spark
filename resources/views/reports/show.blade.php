@@ -13,6 +13,49 @@
 
 </head>
 
+
+<script>
+$(function () {
+    var dg = new DataGridManager();
+
+    var grid = dg.create('apricots', {
+        source:  '{{$dataGrid}}',
+        pagination: {
+            method: 'infinite',
+            threshold: '10',
+            throttle: '10'
+        },
+        loader: {
+            element: '.progress'
+        }
+    });
+});
+</script>
+
+<script type="text/template" data-grid="apricots" data-grid-template="results" data-grid-action="append">
+
+    <% var results = response.results; %>
+
+    <% if (_.isEmpty(results)) { %>
+
+        <div>No Results</div>
+
+    <% } else { %>
+
+        <% _.each(results, function (r) { %>
+
+            <div>
+
+                <div><%- r.title %></div>
+
+            </div>
+
+        <% }); %>
+
+    <% } %>
+
+</script>
+
 <div class="row">
     <!-- <div class="col-sm-8 offset-sm-0"> -->
     <div class="col-md-12">
@@ -214,14 +257,62 @@ sessionStorage.getItem("expandStatus")
             </div>
           </div>
 
+<table>
+          @foreach($dataGrid as $dg)
+            <tr>
+
+              <td height="25">{{$dg->title}}</td>
+              <!-- <td>{{$rep->descr}}</td> -->
+            </tr>
+          @endforeach
+
+          
+</table>
 
 
+
+Put a grid here
+<div data-example="apricots" data-grid="apricots">
+
+    <header>
+
+        <h3>Apricot Harvests <span>Production quantities by country, 2010-2013</span></h3>
+
+        {{-- Filters --}}
+        <nav data-grid-group="examples" data-grid-reset-group>
+            <button data-grid-reset-group="examples">Reset</button>
+            <button data-grid-filter="Eygpt" data-grid-query="country:=:egypt">Egypt</button>
+            <button data-grid-filter="less-than-10000" data-grid-query="value:<:10000">< 10k</button>
+            <button data-grid-filter="2013" data-grid-query="date:=:2013-01-01">2013</button>
+        </nav>
+
+    </header>
+
+    <div>
+
+        {{-- Loader --}}
+        <div>
+            <div>
+              <div>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+            </div>
+        </div>
+
+        {{-- Results container --}}
+        <section data-grid-layout="results"></section>
+
+        {{-- Pagination container --}}
+        <footer data-grid-layout="pagination"></footer>
+
+    </div>
+
+</div>
+
+{{-- Templates --}}
 
 
 
         </form>
-        {{-- Pagination container --}}
-        <footer data-grid-layout="pagination"></footer>
+
     </div>
 
   <!-- </div> -->
