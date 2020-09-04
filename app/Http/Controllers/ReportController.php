@@ -18,6 +18,34 @@ use Auth;
 use Illuminate\Support\Facades\Schema\columns;
 use Illuminate\Support\Facades\DB;
 
+// below are related to Nayjest Data Grid
+use App\User;
+use Grids;
+use HTML;
+use Illuminate\Support\Facades\Config;
+use Nayjest\Grids\Components\Base\RenderableRegistry;
+use Nayjest\Grids\Components\ColumnHeadersRow;
+use Nayjest\Grids\Components\ColumnsHider;
+use Nayjest\Grids\Components\CsvExport;
+use Nayjest\Grids\Components\ExcelExport;
+use Nayjest\Grids\Components\Filters\DateRangePicker;
+use Nayjest\Grids\Components\FiltersRow;
+use Nayjest\Grids\Components\HtmlTag;
+use Nayjest\Grids\Components\Laravel5\Pager;
+use Nayjest\Grids\Components\OneCellRow;
+use Nayjest\Grids\Components\RecordsPerPage;
+use Nayjest\Grids\Components\RenderFunc;
+use Nayjest\Grids\Components\ShowingRecords;
+use Nayjest\Grids\Components\TFoot;
+use Nayjest\Grids\Components\THead;
+use Nayjest\Grids\Components\TotalsRow;
+use Nayjest\Grids\DbalDataProvider;
+use Nayjest\Grids\EloquentDataProvider;
+use Nayjest\Grids\FieldConfig;
+use Nayjest\Grids\FilterConfig;
+use Nayjest\Grids\Grid;
+use Nayjest\Grids\GridConfig;
+
 
 class ReportController extends Controller
 {
@@ -219,37 +247,283 @@ class ReportController extends Controller
         ->where('active','=',"A")
         ->get();
 
-// trying to get cartalyst data grid to work, 2020-09-01
-        $object = new \StdClass;
-        $object->title = 'foo';
-        $object->age = 20;
 
-        $data = [
-            [
-                'title' => 'bar',
-                'age'   => 34,
-            ],
-            $object,
-        ];
 
-        $settings = [
-            'columns' => [
-                'title',
-                'age',
-            ]
-        ];
 
-        $handler = new CollectionHandler($data, $settings);
-        // the line below throws an error
-        $dataGrid = \DataGrid::make($handler);
+        // $cfg = [
+        //     'src' => 'App\User',
+        //     'columns' => [
+        //             'id',
+        //             'name',
+        //             'email',
+        //             'country'
+        //     ]
+        // ];
+        // echo \Grids::make($cfg);
 
-dump($dataGrid);
+
+//######################################
+// This block returns a useable grid to Reports.Blade.Show
+// Nayjest Data Grids
+// JLB 2020-09-04
+//######################################
+        // $cfg = [
+        //     'src' => 'App\User',
+        //     'columns' => [
+        //         'id',
+        //         'name',
+        //         'email',
+        //         'country'
+        //     ]
+        // ];
+        // $grid = Grids::make($cfg);
+        // $text = "<h1>Basic grid example</h1>";
+//######################################
+
+//######################################
+// This block returns a Position Listing grid to Reports.Blade.Show
+// Nayjest Data Grids
+// JLB 2020-09-04
+//######################################
+$cfg = [
+    'src' => 'App\Position',
+    'columns' => [
+        'company',
+        'posno',
+        'descr',
+        'level1'
+    ]
+];
+$grid = Grids::make($cfg);
+$text = "<h1>Basic grid example</h1>";
+//######################################
+
+
+
+
+
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+$grid = new Grid(
+            (new GridConfig)
+                ->setDataProvider(
+                    new EloquentDataProvider(Position::query())
+                )
+                ->setName('example_grid4')
+                ->setPageSize(15)
+                ->setColumns([
+                    (new FieldConfig)
+                        ->setName('company')
+                        ->setLabel('company')
+                        ->setSortable(true)
+                        ->setSorting(Grid::SORT_ASC)
+                    ,
+                    (new FieldConfig)
+                        ->setName('posno')
+                        ->setLabel('posno')
+                        ->setCallback(function ($val) {
+                            return "<span class='glyphicon glyphicon-user'></span>{$val}";
+                        })
+                        ->setSortable(true)
+                        ->addFilter(
+                            (new FilterConfig)
+                                ->setOperator(FilterConfig::OPERATOR_LIKE)
+                        )
+                    ,
+                    (new FieldConfig)
+                        ->setName('descr')
+                        ->setLabel('descr')
+                        ->setCallback(function ($val) {
+                            return "<span class='glyphicon glyphicon-user'></span>{$val}";
+                        })
+                        ->setSortable(true)
+                        ->addFilter(
+                            (new FilterConfig)
+                                ->setOperator(FilterConfig::OPERATOR_LIKE)
+                        )
+                    ,
+                    // (new FieldConfig)
+                    //     ->setName('descr`')
+                    //     ->setLabel('descr')
+                    //     ->setSortable(true)
+                    //     ->setCallback(function ($val) {
+                    //         $icon = '<span class="glyphicon glyphicon-envelope"></span>&nbsp;';
+                    //         return
+                    //             '<small>'
+                    //             . $icon
+                    //             . HTML::link("mailto:$val", $val)
+                    //             . '</small>';
+                    //     })
+                    //     ->addFilter(
+                    //         (new FilterConfig)
+                    //             ->setOperator(FilterConfig::OPERATOR_LIKE)
+                    //     )
+                    // ,
+                    // (new FieldConfig)
+                    //     ->setName('phone_number')
+                    //     ->setLabel('Phone')
+                    //     ->setSortable(true)
+                    //     ->addFilter(
+                    //         (new FilterConfig)
+                    //             ->setOperator(FilterConfig::OPERATOR_LIKE)
+                    //     )
+                    // ,
+                    // (new FieldConfig)
+                    //     ->setName('country')
+                    //     ->setLabel('Country')
+                    //     ->setSortable(true)
+                    // ,
+                    // (new FieldConfig)
+                    //     ->setName('company')
+                    //     ->setLabel('Company')
+                    //     ->setSortable(true)
+                    //     ->addFilter(
+                    //         (new FilterConfig)
+                    //             ->setOperator(FilterConfig::OPERATOR_LIKE)
+                    //     )
+                    // ,
+                    // (new FieldConfig)
+                    //     ->setName('birthday')
+                    //     ->setLabel('Birthday')
+                    //     ->setSortable(true)
+                    // ,
+                    // (new FieldConfig)
+                    //     ->setName('posts_count')
+                    //     ->setLabel('Posts')
+                    //     ->setSortable(true)
+                    // ,
+                    // (new FieldConfig)
+                    //     ->setName('comments_count')
+                    //     ->setLabel('Comments')
+                    //     ->setSortable(true)
+                    // ,
+                ])
+                ->setComponents([
+                    (new THead)
+                        ->setComponents([
+                            (new ColumnHeadersRow),
+                            (new FiltersRow)
+                                ->addComponents([
+                                    // (new RenderFunc(function () {
+                                    //     return HTML::style('js/daterangepicker/daterangepicker-bs3.css')
+                                    //     . HTML::script('js/moment/moment-with-locales.js')
+                                    //     . HTML::script('js/daterangepicker/daterangepicker.js')
+                                    //     . "<style>
+                                    //             .daterangepicker td.available.active,
+                                    //             .daterangepicker li.active,
+                                    //             .daterangepicker li:hover {
+                                    //                 color:black !important;
+                                    //                 font-weight: bold;
+                                    //             }
+                                    //        </style>";
+                                    // }))
+                                    // ->setRenderSection('filters_row_column_birthday'),
+                                    // (new DateRangePicker)
+                                    //     ->setName('birthday')
+                                    //     ->setRenderSection('filters_row_column_birthday')
+                                    //     ->setDefaultValue(['1990-01-01', date('Y-m-d')])
+                                ])
+                            ,
+                            (new OneCellRow)
+                                ->setRenderSection(RenderableRegistry::SECTION_END)
+                                ->setComponents([
+                                    new RecordsPerPage,
+                                    new ColumnsHider,
+                                    (new CsvExport)
+                                        ->setFileName('my_report' . date('Y-m-d'))
+                                    ,
+                                    new ExcelExport(),
+                                    (new HtmlTag)
+                                        ->setContent('<span class="glyphicon glyphicon-refresh"></span> Filter')
+                                        ->setTagName('button')
+                                        ->setRenderSection(RenderableRegistry::SECTION_END)
+                                        ->setAttributes([
+                                            'class' => 'btn btn-success btn-sm'
+                                        ])
+                                ])
+
+                        ])
+                    ,
+                    // (new TFoot)
+                    //     ->setComponents([
+                    //         (new TotalsRow(['posts_count', 'comments_count'])),
+                    //         (new TotalsRow(['posts_count', 'comments_count']))
+                    //             ->setFieldOperations([
+                    //                 'posts_count' => TotalsRow::OPERATION_AVG,
+                    //                 'comments_count' => TotalsRow::OPERATION_AVG,
+                    //             ])
+                    //         ,
+                    //         (new OneCellRow)
+                    //             ->setComponents([
+                    //                 new Pager,
+                    //                 (new HtmlTag)
+                    //                     ->setAttributes(['class' => 'pull-right'])
+                    //                     ->addComponent(new ShowingRecords)
+                    //                 ,
+                    //             ])
+                    //     ])
+                    // ,
+                ])
+        );
+        $grid = $grid->render();
+        // return view('demo.default', compact('grid'));
+    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // trying to get cartalyst data grid to work, 2020-09-01
+//         $object = new \StdClass;
+//         $object->title = 'foo';
+//         $object->age = 20;
+//
+//         $data = [
+//             [
+//                 'title' => 'bar',
+//                 'age'   => 34,
+//             ],
+//             $object,
+//         ];
+//
+//         $settings = [
+//             'columns' => [
+//                 'title',
+//                 'age',
+//             ]
+//         ];
+//
+//         $handler = new CollectionHandler($data, $settings);
+//         // the line below throws an error
+//         $dataGrid = \DataGrid::make($handler);
+//
+// dump($grid);
 
 
       //****************************
       // R E T U R N   T O   positions.show
       return View('reports.show')
-        ->with(compact('dataGrid'))
+        // ->with(compact('dataGrid'))
+        ->with(compact('grid'))
+        ->with(compact('text'))
         ->with(compact('report'))
         ->with(compact('reportqueries'))
         ->with(compact('reportdata'))

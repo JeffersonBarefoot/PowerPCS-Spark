@@ -9,11 +9,13 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "cartalyst/data-grid-laravel": "^2.0",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.0",
-        "laravel/tinker": "^1.0",
         "laravel/spark-aurelius": "*@dev",
-        "cartalyst/data-grid-laravel": "^2.0"
+        "laravel/tinker": "^1.0",
+        "laravelcollective/html": "^6.1",
+        "nayjest/grids": "^2.0.0"
     },
     "require-dev": {
         "facade/ignition": "^1.4",

@@ -162,6 +162,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Cartalyst\DataGrid\Laravel\DataGridServiceProvider::class,
+        'Nayjest\Grids\ServiceProvider',
 
         /*
          * Package Service Providers...
@@ -178,6 +179,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        // next 2 lines are for Nayjest Data Grid, 2020-09-04 JLB
+        'Nayjest\Grids\ServiceProvider',
+        'Collective\Html\HtmlServiceProvider',
 
     ],
 
@@ -230,6 +234,10 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'DataGrid' => Cartalyst\DataGrid\Laravel\Facades\DataGrid::class,
+        // next 3 lines are for Nayjest data grid, 2020-09-04 JLB
+        'Form'  => 'Collective\Html\FormFacade',
+        'HTML'  => 'Collective\Html\HtmlFacade',
+        'Grids'     => 'Nayjest\Grids\Grids',
 
     ],
 
