@@ -285,17 +285,17 @@ class ReportController extends Controller
 // Nayjest Data Grids
 // JLB 2020-09-04
 //######################################
-$cfg = [
-    'src' => 'App\Position',
-    'columns' => [
-        'company',
-        'posno',
-        'descr',
-        'level1'
-    ]
-];
-$grid = Grids::make($cfg);
-$text = "<h1>Basic grid example</h1>";
+// $cfg = [
+//     'src' => 'App\Position',
+//     'columns' => [
+//         'company',
+//         'posno',
+//         'descr',
+//         'level1'
+//     ]
+// ];
+// $grid = Grids::make($cfg);
+// $text = "<h1>Basic grid example</h1>";
 //######################################
 
 
@@ -533,7 +533,7 @@ $text = "<h1>Basic grid example</h1>";
             //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
             //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 $grid = BuildPositionList('');
-
+dump($grid);
 
 
 
@@ -581,7 +581,7 @@ $grid = BuildPositionList('');
       return View('reports.show')
         // ->with(compact('dataGrid'))
         ->with(compact('grid'))
-        ->with(compact('text'))
+        // ->with(compact('text'))
         ->with(compact('report'))
         ->with(compact('reportqueries'))
         ->with(compact('reportdata'))
