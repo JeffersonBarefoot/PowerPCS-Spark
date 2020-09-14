@@ -42,107 +42,22 @@ use Nayjest\Grids\GridConfig;
 // leave namespace out so that functions are global
 //namespace App\Http\Middleware;
 
-
-
-if (!function_exists('BuildPositionListxxxxx')) {
-    function BuildPositionListxxxxx()
-    {
-      $grid = new Grid(
-        (new GridConfig)
-          ->setDataProvider(
-              new EloquentDataProvider(Position::query())
-          )
-          ->setName('example_grid44')
-          ->setPageSize(5)
-          ->setColumns([
-              (new FieldConfig) ->setName('company')  ->setLabel('xCompany'),
-              (new FieldConfig) ->setName('posno')    ->setLabel('Pos #'),
-              (new FieldConfig) ->setName('descr')    ->setLabel('Descr')
-          ])
-
-          ->setComponents([
-            (new THead)
-              ->setComponents([
-                (new ColumnHeadersRow),
-                (new OneCellRow)
-                  ->setRenderSection(RenderableRegistry::SECTION_END)
-                  ->setComponents([
-                     new RecordsPerPage,
-                    (new CsvExport) ->setFileName('my_report' . date('Y-m-d')),
-                    new ExcelExport(),
-                  ])
-              ])
-            ,
-          ])
-        );
-      $grid = $grid->render();
-      return $grid;
-    }
-}
-
-
-
-// if (!function_exists('zzzzxxxxxBuildPositionList')) {
-//     function BuildPositionList()
-//     {
-//       $grid = new Grid(
-//         (new GridConfig)
-//           ->setDataProvider(
-//               new EloquentDataProvider(Position::query())
-//           )
-//           ->setName('example_grid44')
-//           ->setPageSize(5)
-//           ->setColumns([
-//               (new FieldConfig) ->setName('company')  ->setLabel('xCompany'),
-//               (new FieldConfig) ->setName('posno')    ->setLabel('Pos #'),
-//               (new FieldConfig) ->setName('descr')    ->setLabel('Descr')
-//           ])
-//
-//           ->setComponents([
-//             (new THead)
-//               ->setComponents([
-//                 (new ColumnHeadersRow),
-//                 (new OneCellRow)
-//                   // ->setRenderSection(RenderableRegistry::SECTION_END)
-//                   ->setComponents([
-//                      new RecordsPerPage,
-//                     (new CsvExport) ->setFileName('my_report' . date('Y-m-d')),
-//                      new ExcelExport(),
-//                   ])
-//               ])
-//             ,
-//
-// // (new TFoot)
-// //     ->setComponents([
-// //         (new TotalsRow(['posno_count', 'company_count'])),
-// //         (new TotalsRow(['posno_count', 'company_count']))
-//             // ->setFieldOperations([
-//             //     'posno_count' => TotalsRow::OPERATION_AVG,
-//             //     'company_count' => TotalsRow::OPERATION_AVG,
-//             // ])
-//         ,
-//         // (new OneCellRow)
-//         //     ->setComponents([
-//         //         new Pager,
-//         //         (new HtmlTag)
-//         //             ->setAttributes(['class' => 'pull-right'])
-//         //             ->addComponent(new ShowingRecords)
-//         //         ,
-//         //     ])
-//             ])
-//             // ])
-//             ,
-//         );
-//
-//       $grid = $grid->render();
-//
-//       return $grid;
-//     }
-// }
-
 if (!function_exists('BuildPositionList')) {
     function BuildPositionList()
     {
+      $ColCount = 3
+      $Col1 = 'company';
+      $Label1 = 'Company';
+
+      $Col2 = 'posno';
+      $Label2 = 'Pos #';
+
+      $Col3 = 'descr';
+      $Label3 = 'Description';
+
+      $Col4 = 'company';
+      $Label4 = '"xxyyzzCompany';
+
       $grid = new Grid(
         (new GridConfig)
           ->setDataProvider(
@@ -151,9 +66,14 @@ if (!function_exists('BuildPositionList')) {
           ->setName('example_grid44')
           ->setPageSize(5)
           ->setColumns([
-              (new FieldConfig) ->setName('company')  ->setLabel('xCompany'),
+              (new FieldConfig) ->setName($Col1)  ->setLabel($Label1),
               (new FieldConfig) ->setName('posno')    ->setLabel('Pos #'),
-              (new FieldConfig) ->setName('descr')    ->setLabel('Descr')
+              (new FieldConfig) ->setName('')    ->setLabel(''),
+              (new FieldConfig) ->setName('')    ->setLabel(''),
+              (new FieldConfig) ->setName('')    ->setLabel(''),
+              (new FieldConfig) ->setName('')    ->setLabel(''),
+              (new FieldConfig) ->setName('descr')    ->setLabel('Descr'),
+              (new FieldConfig) ->setName('level1')    ->setLabel('level1')
           ])
 
           ->setComponents([
@@ -172,8 +92,6 @@ if (!function_exists('BuildPositionList')) {
           ])
         );
 
-      // $grid = $grid->render();
-      // $grid->getConfig()->getDataProvider()->setPageSize(4);
       $grid = $grid->render();
 
       return $grid;
