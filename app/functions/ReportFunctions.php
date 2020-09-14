@@ -44,6 +44,102 @@ use Nayjest\Grids\GridConfig;
 
 
 
+if (!function_exists('BuildPositionListxxxxx')) {
+    function BuildPositionListxxxxx()
+    {
+      $grid = new Grid(
+        (new GridConfig)
+          ->setDataProvider(
+              new EloquentDataProvider(Position::query())
+          )
+          ->setName('example_grid44')
+          ->setPageSize(5)
+          ->setColumns([
+              (new FieldConfig) ->setName('company')  ->setLabel('xCompany'),
+              (new FieldConfig) ->setName('posno')    ->setLabel('Pos #'),
+              (new FieldConfig) ->setName('descr')    ->setLabel('Descr')
+          ])
+
+          ->setComponents([
+            (new THead)
+              ->setComponents([
+                (new ColumnHeadersRow),
+                (new OneCellRow)
+                  ->setRenderSection(RenderableRegistry::SECTION_END)
+                  ->setComponents([
+                     new RecordsPerPage,
+                    (new CsvExport) ->setFileName('my_report' . date('Y-m-d')),
+                    new ExcelExport(),
+                  ])
+              ])
+            ,
+          ])
+        );
+      $grid = $grid->render();
+      return $grid;
+    }
+}
+
+
+
+// if (!function_exists('zzzzxxxxxBuildPositionList')) {
+//     function BuildPositionList()
+//     {
+//       $grid = new Grid(
+//         (new GridConfig)
+//           ->setDataProvider(
+//               new EloquentDataProvider(Position::query())
+//           )
+//           ->setName('example_grid44')
+//           ->setPageSize(5)
+//           ->setColumns([
+//               (new FieldConfig) ->setName('company')  ->setLabel('xCompany'),
+//               (new FieldConfig) ->setName('posno')    ->setLabel('Pos #'),
+//               (new FieldConfig) ->setName('descr')    ->setLabel('Descr')
+//           ])
+//
+//           ->setComponents([
+//             (new THead)
+//               ->setComponents([
+//                 (new ColumnHeadersRow),
+//                 (new OneCellRow)
+//                   // ->setRenderSection(RenderableRegistry::SECTION_END)
+//                   ->setComponents([
+//                      new RecordsPerPage,
+//                     (new CsvExport) ->setFileName('my_report' . date('Y-m-d')),
+//                      new ExcelExport(),
+//                   ])
+//               ])
+//             ,
+//
+// // (new TFoot)
+// //     ->setComponents([
+// //         (new TotalsRow(['posno_count', 'company_count'])),
+// //         (new TotalsRow(['posno_count', 'company_count']))
+//             // ->setFieldOperations([
+//             //     'posno_count' => TotalsRow::OPERATION_AVG,
+//             //     'company_count' => TotalsRow::OPERATION_AVG,
+//             // ])
+//         ,
+//         // (new OneCellRow)
+//         //     ->setComponents([
+//         //         new Pager,
+//         //         (new HtmlTag)
+//         //             ->setAttributes(['class' => 'pull-right'])
+//         //             ->addComponent(new ShowingRecords)
+//         //         ,
+//         //     ])
+//             ])
+//             // ])
+//             ,
+//         );
+//
+//       $grid = $grid->render();
+//
+//       return $grid;
+//     }
+// }
+
 if (!function_exists('BuildPositionList')) {
     function BuildPositionList()
     {
@@ -61,31 +157,23 @@ if (!function_exists('BuildPositionList')) {
           ])
 
           ->setComponents([
-              (new THead)
+            (new THead)
+              ->setComponents([
+                (new ColumnHeadersRow),
+                (new OneCellRow)
+                  ->setRenderSection(RenderableRegistry::SECTION_END)
                   ->setComponents([
-                      (new ColumnHeadersRow),
-                      (new OneCellRow)
-                          ->setRenderSection(RenderableRegistry::SECTION_END)
-                          ->setComponents([
-                             new RecordsPerPage,
-                            (new CsvExport) ->setFileName('my_report' . date('Y-m-d')),
-                             new ExcelExport(),
-                          ])
+                     new RecordsPerPage,
+                    (new CsvExport) ->setFileName('my_report' . date('Y-m-d')),
+                     new ExcelExport(),
                   ])
-              ,
-
-
-
-])
-
-
-
-
-
+              ])
+            ,
+          ])
         );
 
       // $grid = $grid->render();
-      $grid->getConfig()->getDataProvider()->setPageSize(4);
+      // $grid->getConfig()->getDataProvider()->setPageSize(4);
       $grid = $grid->render();
 
       return $grid;
