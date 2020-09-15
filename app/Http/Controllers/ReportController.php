@@ -534,7 +534,7 @@ class ReportController extends Controller
             //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // $grid = BuildPositionList('');
 $grid = BuildPositionList('');
-dump($grid);
+//dump($grid);
 
 
 

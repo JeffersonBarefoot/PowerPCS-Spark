@@ -83,31 +83,45 @@ use Nayjest\Grids\GridConfig;
 if (!function_exists('BuildPositionList')) {
     function BuildPositionList()
     {
-
-      // $provider = new EloquentDataProvider(Position::query());
-
+      // set data provider
       $config = new GridConfig();
 
+      #######################
+      // this works...simple, one table
+      #######################
+      // $query = (new Position)
+      //     ->newQuery()
+      //     ->where('Active', '=', 'A');
+      // $dp = new EloquentDataProvider($query);
+      // $config->setDataProvider($dp);
+      #######################
 
-      // set data provider
-      // $config->setDataProvider(new EloquentDataProvider(Position::query()));
-       $dp = new EloquentDataProvider(Position::query());
+      #######################
+      // this works...adds in JOIN
+      #######################
+      $query = (new Position)
+          ->newQuery()
+          ->join('incumbents', 'positions.posno', '=', 'incumbents.posno')
+          ->where('positions.Active', '=', 'A');
+      $dp = new EloquentDataProvider($query);
       $config->setDataProvider($dp);
+      #######################
 
+      // add columns from the AddColumns() custom function
+      AddColumns($config);
 
-
-
-      // add columns
-      $config->addColumn((new FieldConfig())->setName("company")->setSortable(true));
-
-
-
-
-
+      // render the grid, and send it to the HTML
       $grid = new Grid($config);
-
       $grid = $grid->render();
-
       return $grid;
+    }
+}
+
+if (!function_exists('AddColumns')) {
+    function AddColumns($config)
+    {
+      $config->addColumn((new FieldConfig())->setName("company")->setLabel('xyCompany')->setSortable(true));
+      $config->addColumn((new FieldConfig())->setName("posno")->setSortable(true));
+      $config->addColumn((new FieldConfig())->setName("lname")->setSortable(true));
     }
 }
