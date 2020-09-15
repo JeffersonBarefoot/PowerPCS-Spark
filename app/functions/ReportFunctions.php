@@ -42,55 +42,69 @@ use Nayjest\Grids\GridConfig;
 // leave namespace out so that functions are global
 //namespace App\Http\Middleware;
 
+// if (!function_exists('BuildPositionList')) {
+//     function BuildPositionList()
+//     {
+//       $grid = new Grid(
+//         (new GridConfig)
+//           ->setDataProvider(
+//               new EloquentDataProvider(Position::query())
+//           )
+//           ->setName('example_grid44')
+//           ->setPageSize(5)
+//           ->setColumns([
+//               (new FieldConfig) ->setName('company')  ->setLabel('xCompany'),
+//               (new FieldConfig) ->setName('posno')    ->setLabel('Pos #'),
+//               (new FieldConfig) ->setName('descr')    ->setLabel('Descr')
+//           ])
+//
+//           ->setComponents([
+//             (new THead)
+//               ->setComponents([
+//                 (new ColumnHeadersRow),
+//                 (new OneCellRow)
+//                   ->setRenderSection(RenderableRegistry::SECTION_END)
+//                   ->setComponents([
+//                      new RecordsPerPage,
+//                     (new CsvExport) ->setFileName('my_report' . date('Y-m-d')),
+//                      new ExcelExport(),
+//                   ])
+//               ])
+//             ,
+//           ])
+//         );
+//
+//       $grid = $grid->render();
+//
+//       return $grid;
+//     }
+// }
+
 if (!function_exists('BuildPositionList')) {
     function BuildPositionList()
     {
-      $ColCount = 3
-      $Col1 = 'company';
-      $Label1 = 'Company';
 
-      $Col2 = 'posno';
-      $Label2 = 'Pos #';
+      // $provider = new EloquentDataProvider(Position::query());
 
-      $Col3 = 'descr';
-      $Label3 = 'Description';
+      $config = new GridConfig();
 
-      $Col4 = 'company';
-      $Label4 = '"xxyyzzCompany';
 
-      $grid = new Grid(
-        (new GridConfig)
-          ->setDataProvider(
-              new EloquentDataProvider(Position::query())
-          )
-          ->setName('example_grid44')
-          ->setPageSize(5)
-          ->setColumns([
-              (new FieldConfig) ->setName($Col1)  ->setLabel($Label1),
-              (new FieldConfig) ->setName('posno')    ->setLabel('Pos #'),
-              (new FieldConfig) ->setName('')    ->setLabel(''),
-              (new FieldConfig) ->setName('')    ->setLabel(''),
-              (new FieldConfig) ->setName('')    ->setLabel(''),
-              (new FieldConfig) ->setName('')    ->setLabel(''),
-              (new FieldConfig) ->setName('descr')    ->setLabel('Descr'),
-              (new FieldConfig) ->setName('level1')    ->setLabel('level1')
-          ])
+      // set data provider
+      // $config->setDataProvider(new EloquentDataProvider(Position::query()));
+       $dp = new EloquentDataProvider(Position::query());
+      $config->setDataProvider($dp);
 
-          ->setComponents([
-            (new THead)
-              ->setComponents([
-                (new ColumnHeadersRow),
-                (new OneCellRow)
-                  ->setRenderSection(RenderableRegistry::SECTION_END)
-                  ->setComponents([
-                     new RecordsPerPage,
-                    (new CsvExport) ->setFileName('my_report' . date('Y-m-d')),
-                     new ExcelExport(),
-                  ])
-              ])
-            ,
-          ])
-        );
+
+
+
+      // add columns
+      $config->addColumn((new FieldConfig())->setName("company")->setSortable(true));
+
+
+
+
+
+      $grid = new Grid($config);
 
       $grid = $grid->render();
 
