@@ -42,49 +42,56 @@ use Nayjest\Grids\GridConfig;
 // leave namespace out so that functions are global
 //namespace App\Http\Middleware;
 
-// if (!function_exists('BuildPositionList')) {
-//     function BuildPositionList()
-//     {
-//       $grid = new Grid(
-//         (new GridConfig)
-//           ->setDataProvider(
-//               new EloquentDataProvider(Position::query())
-//           )
-//           ->setName('example_grid44')
-//           ->setPageSize(5)
-//           ->setColumns([
-//               (new FieldConfig) ->setName('company')  ->setLabel('xCompany'),
-//               (new FieldConfig) ->setName('posno')    ->setLabel('Pos #'),
-//               (new FieldConfig) ->setName('descr')    ->setLabel('Descr')
-//           ])
-//
-//           ->setComponents([
-//             (new THead)
-//               ->setComponents([
-//                 (new ColumnHeadersRow),
-//                 (new OneCellRow)
-//                   ->setRenderSection(RenderableRegistry::SECTION_END)
-//                   ->setComponents([
-//                      new RecordsPerPage,
-//                     (new CsvExport) ->setFileName('my_report' . date('Y-m-d')),
-//                      new ExcelExport(),
-//                   ])
-//               ])
-//             ,
-//           ])
-//         );
-//
-//       $grid = $grid->render();
-//
-//       return $grid;
-//     }
-// }
 
-if (!function_exists('BuildPositionList')) {
-    function BuildPositionList()
+if (!function_exists('BuildReport')) {
+    function BuildReport($reportId,$reportType)
     {
+
+      //######################################
+      // build $query
+      //######################################
+      switch ($reportType) {
+        case "POS":
+          // code for pos
+          $query = (new Position)
+            ->newQuery()
+            ->select('company as poscomp','posno','descr','level1')
+            ->where('positions.Active', '=', 'A');
+
+          break;
+
+        case "POSH":
+          // code
+
+          break;
+
+        case "INC":
+          // code
+          $query = (new Incumbent)
+            ->newQuery()
+            ->select('incumbents.company as inccomp'
+                ,'positions.company as poscomp'
+                ,'incumbents.posno'
+                ,'unitrate'
+                ,DB::raw('(unitrate + 1) as newrate')
+                ,'positions.descr'
+                ,'positions.level1')
+            ->join('positions', 'incumbents.posno', '=', 'positions.posno')
+            ->where('positions.Active', '=', 'A');
+
+          break;
+
+        case "INCH":
+          // code
+
+          break;
+
+          default:
+
+      }
+
       // set data provider
-      $config = new GridConfig();
+      // $config = new GridConfig();
 
       #######################
       // this works...simple, one table
@@ -99,16 +106,22 @@ if (!function_exists('BuildPositionList')) {
       #######################
       // this works...adds in JOIN
       #######################
-      $query = (new Position)
-          ->newQuery()
-          ->join('incumbents', 'positions.posno', '=', 'incumbents.posno')
-          ->where('positions.Active', '=', 'A');
+      // $query = (new Position)
+      //     ->newQuery()
+      //     ->join('incumbents', 'positions.posno', '=', 'incumbents.posno')
+      //     ->where('positions.Active', '=', 'A');
+      // $dp = new EloquentDataProvider($query);
+      // $config->setDataProvider($dp);
+      #######################
+
+      // instantiate grid configuration object, set data provider
+      $config = new GridConfig();
       $dp = new EloquentDataProvider($query);
       $config->setDataProvider($dp);
-      #######################
 
       // add columns from the AddColumns() custom function
       AddColumns($config);
+      // dump($config);
 
       // render the grid, and send it to the HTML
       $grid = new Grid($config);
@@ -120,8 +133,11 @@ if (!function_exists('BuildPositionList')) {
 if (!function_exists('AddColumns')) {
     function AddColumns($config)
     {
-      $config->addColumn((new FieldConfig())->setName("company")->setLabel('xyCompany')->setSortable(true));
+      $config->addColumn((new FieldConfig())->setName("poscomp")->setLabel('Pos Comp')->setSortable(true));
+      $config->addColumn((new FieldConfig())->setName("inccomp")->setLabel('Inc Company')->setSortable(true));
       $config->addColumn((new FieldConfig())->setName("posno")->setSortable(true));
-      $config->addColumn((new FieldConfig())->setName("lname")->setSortable(true));
+      $config->addColumn((new FieldConfig())->setName("level1")->setSortable(true));
+      $config->addColumn((new FieldConfig())->setName("unitrate")->setSortable(true));
+      $config->addColumn((new FieldConfig())->setName("newrate")->setSortable(true));
     }
 }
