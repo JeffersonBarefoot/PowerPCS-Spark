@@ -16,6 +16,8 @@ class CreatePcincumhTable extends Migration
         Schema::create('hincumbents', function (Blueprint $table) {
           $table->bigIncrements('id');
           $table->unsignedInteger('teamid')->default(999999999);
+          $table->unsignedInteger('posid')->default(999999999);
+          $table->unsignedInteger('incid')->default(999999999);
           $table->timestamps();
           $table->string('poscompany',10);
           $table->string('posno',20);

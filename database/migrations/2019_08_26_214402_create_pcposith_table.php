@@ -16,6 +16,7 @@ class CreatePcposithTable extends Migration
         Schema::create('hpositions', function (Blueprint $table) {
           $table->bigIncrements('id');
           $table->unsignedInteger('teamid')->default(999999999);
+          $table->unsignedInteger('posid')->default(999999999);
           $table->timestamps();
            $table->string('company',10)->default('SAMPLE');
            $table->string('posno',20)->default('');

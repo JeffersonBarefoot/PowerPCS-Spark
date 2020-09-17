@@ -121,7 +121,7 @@ if (!function_exists('BuildReport')) {
 
       // add columns from the AddColumns() custom function
       AddColumns($config);
-      // dump($config);
+      dump($config);
 
       // render the grid, and send it to the HTML
       $grid = new Grid($config);

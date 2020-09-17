@@ -16,7 +16,7 @@ class CreateReportqueriesTable extends Migration
       Schema::create('reportqueries', function (Blueprint $table) {
           $table->bigIncrements('id');
           $table->timestamps();
-          $table->string('reportid',20);
+          $table->unsignedbiginteger('reportid');
           $table->string('company',10)->default('SAMPLE');
           $table->string('active',1)->default('A');
           $table->string('sortorder',10)->default('');

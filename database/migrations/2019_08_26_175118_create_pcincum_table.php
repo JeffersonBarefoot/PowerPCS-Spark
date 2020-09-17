@@ -16,6 +16,7 @@ class CreatePcincumTable extends Migration
         Schema::create('incumbents', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('teamid')->default(999999999);
+            $table->unsignedInteger('posid')->default(999999999);
             $table->timestamps();
             $table->string('poscompany',10)->default('SAMPLE');
             $table->string('posno',20)->default('');
@@ -63,10 +64,10 @@ class CreatePcincumTable extends Migration
         });
 
         DB::table('incumbents')->insert([
-          ['posno' => '10275','poscompany' => 'SAMPLE','empno' => '10321','company' => 'SAMPLE','lname' => 'Bandana'],
-          ['posno' => '10275','poscompany' => 'SAMPLE','empno' => '10322','company' => 'SAMPLE','lname' => 'Daniels'],
-          ['posno' => '10275','poscompany' => 'SAMPLE','empno' => '10323','company' => 'SAMPLE','lname' => 'Smith'],
-          ['posno' => '10275','poscompany' => 'SAMPLE','empno' => '10324','company' => 'SAMPLE','lname' => 'Jones'],
+          ['posno'=>'10275', 'poscompany'=>'SAMPLE', 'posid'=>'1', 'empno'=>'10321', 'company'=>'SAMPLE', 'lname'=>'Bandana'],
+          ['posno'=>'10275', 'poscompany'=>'SAMPLE', 'posid'=>'1', 'empno'=>'10322', 'company'=>'SAMPLE', 'lname'=>'Daniels'],
+          ['posno'=>'10275', 'poscompany'=>'SAMPLE', 'posid'=>'1', 'empno'=>'10323', 'company'=>'SAMPLE', 'lname'=>'Smith'],
+          ['posno'=>'10275', 'poscompany'=>'SAMPLE', 'posid'=>'1', 'empno'=>'10324', 'company'=>'SAMPLE', 'lname'=>'Jones'],
         ]);
 
         Schema::table('incumbents', function (Blueprint $table) {
