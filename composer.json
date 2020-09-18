@@ -15,6 +15,7 @@
         "laravel/spark-aurelius": "*@dev",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^6.1",
+        "maatwebsite/excel": "^3.1",
         "nayjest/grids": "^2.0"
     },
     "require-dev": {

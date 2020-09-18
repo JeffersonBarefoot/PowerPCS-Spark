@@ -163,6 +163,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Cartalyst\DataGrid\Laravel\DataGridServiceProvider::class,
         'Nayjest\Grids\ServiceProvider',
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -237,7 +238,8 @@ return [
         // next 3 lines are for Nayjest data grid, 2020-09-04 JLB
         'Form'  => 'Collective\Html\FormFacade',
         'HTML'  => 'Collective\Html\HtmlFacade',
-        'Grids'     => 'Nayjest\Grids\Grids',
+        'Grids' => 'Nayjest\Grids\Grids',
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 
