@@ -55,7 +55,7 @@ if (!function_exists('BuildReport')) {
           // code for pos
           $query = (new Position)
             ->newQuery()
-            ->select('company as poscomp','posno','descr','level1')
+            ->select('*')
             ->where('positions.Active', '=', 'A');
 
           break;
@@ -118,10 +118,84 @@ if (!function_exists('BuildReport')) {
       $config = new GridConfig();
       $dp = new EloquentDataProvider($query);
       $config->setDataProvider($dp);
+      $config->setPageSize(10);
+
+
+
+      $config->setComponents([
+       (new THead)
+         ->setComponents([
+
+           new ShowingRecords,
+           new Pager,
+           (new ColumnHeadersRow),
+           (new FiltersRow)
+
+           ->addComponents([
+             (new RenderFunc(function () {
+               return HTML::style('js/daterangepicker/daterangepicker-bs3.css')
+               . HTML::script('js/moment/moment-with-locales.js')
+               . HTML::script('js/daterangepicker/daterangepicker.js')
+               . "<style>
+                       .daterangepicker td.available.active,
+                       .daterangepicker li.active,
+                       .daterangepicker li:hover {
+                           color:black !important;
+                           font-weight: bold;
+                       }
+                  </style>";
+                 }))
+                 //     ->setRenderSection('filters_row_column_birthday'),
+                 // (new DateRangePicker)
+                 //     ->setName('birthday')
+                 //     ->setRenderSection('filters_row_column_birthday')
+                 //     ->setDefaultValue(['1990-01-01', date('Y-m-d')])
+               ])
+             ,
+
+             (new OneCellRow)
+                 ->setRenderSection(RenderableRegistry::SECTION_END)
+                 ->setComponents([
+                    new RecordsPerPage,
+                    new ColumnsHider,
+                   (new CsvExport) ->setFileName('my_report' . date('Y-m-d')),
+                    // Nayjest excel export is not compatible with Maatwebsite excel function_exists
+                    // https://github.com/Nayjest/Grids/issues/211
+                    // new ExcelExport(),
+                    // (new HtmlTag)
+                    //     ->setContent('<span class="glyphicon glyphicon-refresh"></span> Filter')
+                    //     ->setTagName('button')
+                    //     ->setRenderSection(RenderableRegistry::SECTION_END)
+                    //     ->setAttributes(['class' => 'btn btn-success btn-sm'])
+                      ])
+
+              // (new TFoot)
+              //   ->setComponents([
+              //       (new TotalsRow(['posts_count', 'comments_count'])),
+              //       (new TotalsRow(['posts_count', 'comments_count']))
+              //           ->setFieldOperations([
+              //               'posts_count' => TotalsRow::OPERATION_AVG,
+              //               'comments_count' => TotalsRow::OPERATION_AVG,
+              //           ])
+              //       ,
+              //       (new OneCellRow)
+              //           ->setComponents([
+              //               new Pager,
+              //               (new HtmlTag)
+              //                   ->setAttributes(['class' => 'pull-right'])
+              //                   ->addComponent(new ShowingRecords)
+              //               ,
+              //           ])
+              //
+              //         ])
+          ]) // end set components
+        ]);
+
+
 
       // add columns from the AddColumns() custom function
-      AddColumns($config);
-      dump($config);
+      AddColumns($config,$reportId);
+      // dump($config);
 
       // render the grid, and send it to the HTML
       $grid = new Grid($config);
@@ -131,13 +205,49 @@ if (!function_exists('BuildReport')) {
 }
 
 if (!function_exists('AddColumns')) {
-    function AddColumns($config)
+    function AddColumns($config,$reportId)
     {
-      $config->addColumn((new FieldConfig())->setName("poscomp")->setLabel('Pos Comp')->setSortable(true));
-      $config->addColumn((new FieldConfig())->setName("inccomp")->setLabel('Inc Company')->setSortable(true));
-      $config->addColumn((new FieldConfig())->setName("posno")->setSortable(true));
-      $config->addColumn((new FieldConfig())->setName("level1")->setSortable(true));
-      $config->addColumn((new FieldConfig())->setName("unitrate")->setSortable(true));
-      $config->addColumn((new FieldConfig())->setName("newrate")->setSortable(true));
+      $availablereportcolumns = \DB::table('reportcolumns')
+        ->where('reportid','=',$reportId)
+        ->orderby("columnorder","asc")
+        ->orderby("header","asc")
+        ->get();
+
+        foreach ($availablereportcolumns as $repcols){
+          $colField       =$repcols->field;
+          $colHeader      =$repcols->header;
+          $colSortable    =$repcols->sortable;
+          $colSortOrder   =$repcols->sortorder;
+          $colGroupOrder  =$repcols->grouporder;
+          $colSubtotal    =$repcols->subtotal;
+          $colTotal       =$repcols->total;
+          $colCount       =$repcols->count;
+          $colHidden      =$repcols->hidden;
+
+          if ($ColSortable = "Y") {
+            $colSortable = "TRUE";
+          } else {
+            $colSortable = "FALSE";
+          }
+
+          $config->addColumn((new FieldConfig())
+            ->setName($colField)
+            ->setLabel($colHeader)
+            ->setSortable($colSortable));
+
+
+
+
+
+
+
+          // $config->addColumn((new FieldConfig())->setName("inccomp")->setLabel('Inc Company')->setSortable(true));
+          // $config->addColumn((new FieldConfig())->setName("posno")->setSortable(true));
+          // $config->addColumn((new FieldConfig())->setName("level1")->setSortable(true));
+          // $config->addColumn((new FieldConfig())->setName("unitrate")->setSortable(true));
+          // $config->addColumn((new FieldConfig())->setName("newrate")->setSortable(true));
+        }
+
+
     }
 }
