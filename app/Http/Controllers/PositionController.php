@@ -401,10 +401,6 @@ class PositionController extends Controller
 // dump("$posno");
 // dump("$company");
 // dump($directReports);
-// importpositions('');
-// importhpositions('');
-// importincumbents('');
-// importhincumbents('');
 // dump($viewincumbent);
 // $user = Auth::user();
 // $id = Auth::id();
@@ -416,6 +412,15 @@ class PositionController extends Controller
 Session::put('mykey', '12345');
 Session::put('expandIncumbents', 'xHere is how you return a session variable into a blade...JLB 200113');
 //TestOnclickFunction();
+
+//######################
+// IMPORT Data
+// execute these lines to import sample data
+//######################
+// importpositions('');
+// importhpositions('');
+// importincumbents('');
+// importhincumbents('');
 
       // save all session variables prior to returning to the blade
       Session::put('reportsDirTo', '');
