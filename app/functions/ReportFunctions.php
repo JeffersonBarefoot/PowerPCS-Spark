@@ -123,73 +123,18 @@ if (!function_exists('BuildReport')) {
 
 
       $config->setComponents([
-       (new THead)
-         ->setComponents([
+         (new THead)
+           ->setComponents([
+             (new ColumnHeadersRow),
+]),
 
-           new ShowingRecords,
-           new Pager,
-           (new ColumnHeadersRow),
-           (new FiltersRow)
+             (new OneCellRow),
+              new ShowingRecords,
+             new Pager,
+             (new CsvExport)->setFileName('my_report' . date('Y-m-d')),
+             // ])
 
-           ->addComponents([
-             (new RenderFunc(function () {
-               return HTML::style('js/daterangepicker/daterangepicker-bs3.css')
-               . HTML::script('js/moment/moment-with-locales.js')
-               . HTML::script('js/daterangepicker/daterangepicker.js')
-               . "<style>
-                       .daterangepicker td.available.active,
-                       .daterangepicker li.active,
-                       .daterangepicker li:hover {
-                           color:black !important;
-                           font-weight: bold;
-                       }
-                  </style>";
-                 }))
-                 //     ->setRenderSection('filters_row_column_birthday'),
-                 // (new DateRangePicker)
-                 //     ->setName('birthday')
-                 //     ->setRenderSection('filters_row_column_birthday')
-                 //     ->setDefaultValue(['1990-01-01', date('Y-m-d')])
-               ])
-             ,
-
-             (new OneCellRow)
-                 ->setRenderSection(RenderableRegistry::SECTION_END)
-                 ->setComponents([
-                    new RecordsPerPage,
-                    new ColumnsHider,
-                   (new CsvExport) ->setFileName('my_report' . date('Y-m-d')),
-                    // Nayjest excel export is not compatible with Maatwebsite excel function_exists
-                    // https://github.com/Nayjest/Grids/issues/211
-                    // new ExcelExport(),
-                    // (new HtmlTag)
-                    //     ->setContent('<span class="glyphicon glyphicon-refresh"></span> Filter')
-                    //     ->setTagName('button')
-                    //     ->setRenderSection(RenderableRegistry::SECTION_END)
-                    //     ->setAttributes(['class' => 'btn btn-success btn-sm'])
-                      ])
-
-              // (new TFoot)
-              //   ->setComponents([
-              //       (new TotalsRow(['posts_count', 'comments_count'])),
-              //       (new TotalsRow(['posts_count', 'comments_count']))
-              //           ->setFieldOperations([
-              //               'posts_count' => TotalsRow::OPERATION_AVG,
-              //               'comments_count' => TotalsRow::OPERATION_AVG,
-              //           ])
-              //       ,
-              //       (new OneCellRow)
-              //           ->setComponents([
-              //               new Pager,
-              //               (new HtmlTag)
-              //                   ->setAttributes(['class' => 'pull-right'])
-              //                   ->addComponent(new ShowingRecords)
-              //               ,
-              //           ])
-              //
-              //         ])
-          ]) // end set components
-        ]);
+          ]);
 
 
 
@@ -233,7 +178,10 @@ if (!function_exists('AddColumns')) {
           $config->addColumn((new FieldConfig())
             ->setName($colField)
             ->setLabel($colHeader)
-            ->setSortable($colSortable));
+            ->setSortable($colSortable)
+            // next line adds filter boxes, but doesn't work.  Clicking FILTER button returns "input file not specified"
+            // ->addFilter((new FilterConfig)->setOperator(FilterConfig::OPERATOR_LIKE))
+          );
 
 
 
