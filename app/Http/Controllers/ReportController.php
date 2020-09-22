@@ -534,6 +534,7 @@ class ReportController extends Controller
             //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // $grid = BuildPositionList('');
 $grid = BuildReport($id,$reporttype);
+$gridSummary = BuildReportSummary($id,$reporttype);
 //dump($grid);
 // dump($reporttype);
 // dump($id);
@@ -585,6 +586,7 @@ $grid = BuildReport($id,$reporttype);
       return View('reports.show')
         // ->with(compact('dataGrid'))
         ->with(compact('grid'))
+        ->with(compact('gridSummary'))
         // ->with(compact('text'))
         ->with(compact('report'))
         ->with(compact('reportqueries'))

@@ -69,22 +69,15 @@ if (!function_exists('BuildReport')) {
           // code
           $query = (new Incumbent)
             ->newQuery()
-            ->selectRaw('count(*) as curstatus, positions.company, positions.level1')
-            ->groupBy('positions.company','positions.level1')
+            ->select('incumbents.company as inccomp'
+                ,'positions.company as poscomp'
+                ,'incumbents.posno'
+                ,'unitrate'
+                ,DB::raw('(unitrate + 1) as newrate')
+                ,'positions.descr'
+                ,'positions.level1')
             ->join('positions', 'incumbents.posno', '=', 'positions.posno')
             ->where('positions.Active', '=', 'A');
-
-          // $query = (new Incumbent)
-          //   ->newQuery()
-          //   ->select('incumbents.company as inccomp'
-          //       ,'positions.company as poscomp'
-          //       ,'incumbents.posno'
-          //       ,'unitrate'
-          //       ,DB::raw('(unitrate + 1) as newrate')
-          //       ,'positions.descr'
-          //       ,'positions.level1')
-          //   ->join('positions', 'incumbents.posno', '=', 'positions.posno')
-          //   ->where('positions.Active', '=', 'A');
 
           break;
 
@@ -97,47 +90,12 @@ if (!function_exists('BuildReport')) {
 
       }
 
-      // set data provider
-      // $config = new GridConfig();
-
-      #######################
-      // this works...simple, one table
-      #######################
-      // $query = (new Position)
-      //     ->newQuery()
-      //     ->where('Active', '=', 'A');
-      // $dp = new EloquentDataProvider($query);
-      // $config->setDataProvider($dp);
-      #######################
-
-      #######################
-      // this works...adds in JOIN
-      #######################
-      // $query = (new Position)
-      //     ->newQuery()
-      //     ->join('incumbents', 'positions.posno', '=', 'incumbents.posno')
-      //     ->where('positions.Active', '=', 'A');
-      // $dp = new EloquentDataProvider($query);
-      // $config->setDataProvider($dp);
-      #######################
-
       // instantiate grid configuration object, set data provider
       $config = new GridConfig();
       $dp = new EloquentDataProvider($query);
       $config->setDataProvider($dp);
       $config->setPageSize(50);
 
-
-
-
-
-
-
-      // $config->setComponents([(new THead)->setComponents([
-      //     new Pager
-      //     new ShowingRecords
-      //     // new ColumnHeadersRow
-      //     ])]);
 
       $config->setComponents([
 
@@ -165,54 +123,7 @@ if (!function_exists('BuildReport')) {
                  ]), //end ->setComponenets
                  (new ColumnHeadersRow),
           ]) //end ->setComponents
-
-
-
         ]); //end $config->setComponents
-
-
-
-
-
-
-
-      // $config->setComponents([(new OneCellRow)
-      //   ->setComponents([
-      //     new ShowingRecords,
-      //
-      //     (new CsvExport)->setFileName('my_report' . date('Y-m-d')),
-      //      ]),
-
-// ->setComponents([(new ColumnHeadersRow)->setComponents([(new ColumnHeadersRow)])])
-
-
-        // ]);
-
-      // $config->setComponents([(new THead)->setComponents([(
-      //     new ColumnHeadersRow
-      //     )])]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       // add columns from the AddColumns() custom function
       AddColumns($config,$reportId);
@@ -221,7 +132,94 @@ if (!function_exists('BuildReport')) {
       // render the grid, and send it to the HTML
       $grid = new Grid($config);
       $grid = $grid->render();
+
       return $grid;
+    }
+}
+
+if (!function_exists('BuildReportSummary')) {
+    function BuildReportSummary($reportId,$reportType)
+    {
+
+      //######################################
+      // build $query
+      //######################################
+      switch ($reportType) {
+        case "POS":
+          // code for pos
+          $query = (new Position)
+            ->newQuery()
+            ->select('*')
+            ->where('positions.Active', '=', 'A');
+
+          break;
+
+        case "POSH":
+          // code
+
+          break;
+
+        case "INC":
+          // code
+          $querySummary = (new Incumbent)
+            ->newQuery()
+            ->selectRaw('count(*) as curstatus, positions.company, positions.level1,positions.level2')
+            ->groupBy('positions.company','positions.level1','positions.level2')
+            ->join('positions', 'incumbents.posno', '=', 'positions.posno')
+            ->where('positions.Active', '=', 'A');
+
+          break;
+
+        case "INCH":
+          // code
+
+          break;
+
+          default:
+      }
+
+      // instantiate grid configuration object, set data provider
+      $configSummary = new GridConfig();
+      $dp = new EloquentDataProvider($querySummary);
+      $configSummary->setDataProvider($dp);
+      $configSummary->setPageSize(50);
+
+      $configSummary->setComponents([
+
+        (new THead)
+          ->setComponents([
+            // (new ColumnHeadersRow),
+
+            // (new FiltersRow)
+            //     ->addComponents([]),
+
+             (new OneCellRow)
+              ->setRenderSection(RenderableRegistry::SECTION_END)
+              ->setComponents([
+                  (new CsvExport)->setFileName('my_report' . date('Y-m-d')),
+                  (new HtmlTag)
+                     ->setAttributes(['class' => 'pull-right'])
+                     ->addComponent(new ShowingRecords)
+                  ]), //end ->setComponenets
+
+              (new OneCellRow)
+               ->setRenderSection(RenderableRegistry::SECTION_END)
+               ->setComponents([
+                   new Pager,
+                 ]), //end ->setComponenets
+                 (new ColumnHeadersRow),
+          ]) //end ->setComponents
+        ]); //end $config->setComponents
+
+      // add columns from the AddColumns() custom function
+      AddColumns($configSummary,$reportId);
+      // dump($config);
+
+      // render the grid, and send it to the HTML
+      $gridSummary = new Grid($configSummary);
+      $gridSummary = $gridSummary->render();
+
+      return $gridSummary;
     }
 }
 

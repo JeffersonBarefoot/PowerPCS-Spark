@@ -219,6 +219,30 @@ sessionStorage.getItem("expandStatus")
             </div>
           </div>
 
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <div class="row">
+                  <div class="col-md-12">
+                    <a data-toggle="collapse" href="#collapseSummary">Summary</a>
+                  </div>
+
+                </div>
+              </h4>
+            </div>
+            <div id="collapseSummary" class="panel-collapse collapse">
+              <div class="panel-body">
+                {{$report->notes}}<br>
+
+                <div>
+                {!! $gridSummary !!}
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
 <div>
 {!! $grid !!}
 </div>
