@@ -147,9 +147,11 @@ if (!function_exists('BuildReportSummary')) {
       switch ($reportType) {
         case "POS":
           // code for pos
-          $query = (new Position)
+          $querySummary = (new Incumbent)
             ->newQuery()
-            ->select('*')
+            ->selectRaw('count(*) as curstatus, positions.company, positions.level1,positions.level2')
+            ->groupBy('positions.company','positions.level1','positions.level2')
+            ->join('positions', 'incumbents.posno', '=', 'positions.posno')
             ->where('positions.Active', '=', 'A');
 
           break;
