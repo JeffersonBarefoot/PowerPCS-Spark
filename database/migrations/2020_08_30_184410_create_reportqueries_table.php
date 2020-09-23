@@ -30,7 +30,18 @@ class CreateReportqueriesTable extends Migration
       DB::table('reportqueries')->insert([
         ['reportid' => '1'
         ,'sortorder'=>'1'
-        ,'descr'=>'Position Number'
+        ,'descr'=>'Company Code'
+        ,'table' => 'positions'
+        ,'field'=>'company'
+        ,'datatype' => 'STRING'
+        ,'options' => ''
+        ],
+      ]);
+
+      DB::table('reportqueries')->insert([
+        ['reportid' => '1'
+        ,'sortorder'=>'2'
+        ,'descr'=>'Position #'
         ,'table' => 'positions'
         ,'field'=>'posno'
         ,'datatype' => 'STRING'
@@ -40,14 +51,92 @@ class CreateReportqueriesTable extends Migration
 
       DB::table('reportqueries')->insert([
         ['reportid' => '1'
-        ,'sortorder'=>'2'
-        ,'descr'=>'Position Status'
+        ,'sortorder'=>'3'
+        ,'descr'=>'Position Active Status'
         ,'table' => 'positions'
         ,'field'=>'active'
         ,'datatype' => 'STRING'
         ,'options' => 'A;I;'
         ],
       ]);
+
+      DB::table('reportqueries')->insert([
+        ['reportid' => '1'
+        ,'sortorder'=>'4'
+        ,'descr'=>'Position Filled Status'
+        ,'table' => 'positions'
+        ,'field'=>'curstatus'
+        ,'datatype' => 'STRING'
+        ,'options' => 'V(acant); P(artially Filled); F(illed); O(verfilled)'
+        ],
+      ]);
+
+      DB::table('reportqueries')->insert([
+        ['reportid' => '1'
+        ,'sortorder'=>'5'
+        ,'descr'=>'Position Start Date'
+        ,'table' => 'positions'
+        ,'field'=>'startdate'
+        ,'datatype' => 'DATE'
+        ,'options' => ''
+        ],
+      ]);
+
+      DB::table('reportqueries')->insert([
+        ['reportid' => '2'
+        ,'sortorder'=>'1'
+        ,'descr'=>'Company Code'
+        ,'table' => 'positions'
+        ,'field'=>'company'
+        ,'datatype' => 'STRING'
+        ,'options' => ''
+        ],
+      ]);
+
+      DB::table('reportqueries')->insert([
+        ['reportid' => '2'
+        ,'sortorder'=>'2'
+        ,'descr'=>'Position #'
+        ,'table' => 'positions'
+        ,'field'=>'posno'
+        ,'datatype' => 'STRING'
+        ,'options' => ''
+        ],
+      ]);
+
+      DB::table('reportqueries')->insert([
+        ['reportid' => '2'
+        ,'sortorder'=>'3'
+        ,'descr'=>'Position Active Status'
+        ,'table' => 'positions'
+        ,'field'=>'active'
+        ,'datatype' => 'STRING'
+        ,'options' => 'A;I;'
+        ],
+      ]);
+
+      DB::table('reportqueries')->insert([
+        ['reportid' => '2'
+        ,'sortorder'=>'4'
+        ,'descr'=>'Position Filled Status'
+        ,'table' => 'positions'
+        ,'field'=>'curstatus'
+        ,'datatype' => 'STRING'
+        ,'options' => 'V(acant); P(artially Filled); F(illed); O(verfilled)'
+        ],
+      ]);
+
+      DB::table('reportqueries')->insert([
+        ['reportid' => '2'
+        ,'sortorder'=>'5'
+        ,'descr'=>'Position Start Date'
+        ,'table' => 'positions'
+        ,'field'=>'startdate'
+        ,'datatype' => 'DATE'
+        ,'options' => ''
+        ],
+      ]);
+
 
 
     }
