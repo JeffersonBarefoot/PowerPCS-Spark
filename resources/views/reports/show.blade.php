@@ -34,11 +34,12 @@
     <!-- <div class="col-sm-8 offset-sm-0"> -->
     <div class="col-md-12">
         <h1 class="display-5">&nbsp;&nbsp;&nbsp;Report:  {{$report->descr}}</small></h1>
+      </div>
+  </div>
 
+        <form method="post" action="/reports" enctype="multipart/form-data">
+      {{ csrf_field() }}
 
-        <form action="{{route('reports.show',$report->id)}}" method="post">
-            {!! csrf_field() !!}
-        </form>
 
 
         @if ($errors->any())
@@ -51,8 +52,7 @@
         </div>
         <br />
         @endif
-    </div>
-</div>
+
 
 <!-- set this to readonly to make this a show screen, or something else (blank, notreadonly, etc) to allow editing -->
 <?php $readonly='xreadonly' ?>
@@ -239,6 +239,8 @@ sessionStorage.getItem("expandStatus")
 
           <button type="submit" class="btn btn-primary btn-sm">Run Report</button>
           <button type="reset" class="btn btn-primary btn-sm">Reset Queries</button>
+          <button type="submit" class="btn btn-primary">Submit Game</button>
+
 
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -264,13 +266,14 @@ sessionStorage.getItem("expandStatus")
           </div>
 
 
-<div>
-{!! $grid !!}
-</div>
+  <div>
+  {!! $grid !!}
+  </div>
+  </div>
 
 
 
 
 </body>
-
+</form>
 @endsection
