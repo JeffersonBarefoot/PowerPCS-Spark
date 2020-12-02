@@ -42,16 +42,7 @@
 
 
 
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        <br />
-        @endif
+
 
 
 <!-- set this to readonly to make this a show screen, or something else (blank, notreadonly, etc) to allow editing -->
