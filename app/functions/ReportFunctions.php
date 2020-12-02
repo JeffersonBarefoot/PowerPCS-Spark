@@ -149,7 +149,7 @@ if (!function_exists('BuildReportSummary')) {
           // code for pos
           $querySummary = (new Incumbent)
             ->newQuery()
-            ->selectRaw('count(*) as curstatus, positions.company, positions.level1,positions.level2')
+            ->selectRaw('count(*) as count, sum(budgsal) as sumbudgsal, positions.company, positions.level1,positions.level2')
             ->groupBy('positions.company','positions.level1','positions.level2')
             ->join('positions', 'incumbents.posno', '=', 'positions.posno')
             ->where('positions.Active', '=', 'A');
@@ -214,7 +214,7 @@ if (!function_exists('BuildReportSummary')) {
         ]); //end $config->setComponents
 
       // add columns from the AddColumns() custom function
-      AddColumns($configSummary,$reportId);
+      AddColumnSubs($configSummary,$reportId);
       // dump($config);
 
       // render the grid, and send it to the HTML
@@ -226,52 +226,71 @@ if (!function_exists('BuildReportSummary')) {
 }
 
 if (!function_exists('AddColumns')) {
-    function AddColumns($config,$reportId)
-    {
-      $availablereportcolumns = \DB::table('reportcolumns')
-        ->where('reportid','=',$reportId)
-        ->orderby("columnorder","asc")
-        ->orderby("header","asc")
-        ->get();
+  function AddColumns($config,$reportId)
+  {
+    $availablereportcolumns = \DB::table('reportcolumns')
+      ->where('reportid','=',$reportId)
+      ->orderby("columnorder","asc")
+      ->orderby("header","asc")
+      ->get();
 
-        foreach ($availablereportcolumns as $repcols){
-          $colField       =$repcols->field;
-          $colHeader      =$repcols->header;
-          $colSortable    =$repcols->sortable;
-          $colSortOrder   =$repcols->sortorder;
-          $colGroupOrder  =$repcols->grouporder;
-          $colSubtotal    =$repcols->subtotal;
-          $colTotal       =$repcols->total;
-          $colCount       =$repcols->count;
-          $colHidden      =$repcols->hidden;
+    foreach ($availablereportcolumns as $repcols){
+      $colField       =$repcols->field;
+      $colHeader      =$repcols->header;
+      $colSortable    =$repcols->sortable;
+      $colSortOrder   =$repcols->sortorder;
+      $colGroupOrder  =$repcols->grouporder;
+      $colSubtotal    =$repcols->subtotal;
+      $colTotal       =$repcols->total;
+      $colCount       =$repcols->count;
+      $colHidden      =$repcols->hidden;
 
-          if ($ColSortable = "Y") {
-            $colSortable = "TRUE";
-          } else {
-            $colSortable = "FALSE";
-          }
+      if ($ColSortable = "Y") {
+        $colSortable = "TRUE";
+      } else {
+        $colSortable = "FALSE";
+      }
 
-          $config->addColumn((new FieldConfig())
-            ->setName($colField)
-            ->setLabel($colHeader)
-            ->setSortable($colSortable)
-            // next line adds filter boxes, but doesn't work.  Clicking FILTER button returns "input file not specified"
-            // ->addFilter((new FilterConfig)->setOperator(FilterConfig::OPERATOR_LIKE))
-          );
-
-
-
-
-
-
-
-          // $config->addColumn((new FieldConfig())->setName("inccomp")->setLabel('Inc Company')->setSortable(true));
-          // $config->addColumn((new FieldConfig())->setName("posno")->setSortable(true));
-          // $config->addColumn((new FieldConfig())->setName("level1")->setSortable(true));
-          // $config->addColumn((new FieldConfig())->setName("unitrate")->setSortable(true));
-          // $config->addColumn((new FieldConfig())->setName("newrate")->setSortable(true));
-        }
-
-
+      $config->addColumn((new FieldConfig())
+        ->setName($colField)
+        ->setLabel($colHeader)
+        ->setSortable($colSortable)
+      );
     }
+  }
+}
+
+if (!function_exists('AddColumnSubs')) {
+  function AddColumnSubs($config,$reportId)
+  {
+    $availablereportcolumns = \DB::table('reportcolumnsubs')
+      ->where('reportid','=',$reportId)
+      ->orderby("columnorder","asc")
+      ->orderby("header","asc")
+      ->get();
+
+    foreach ($availablereportcolumns as $repcols){
+      $colField       =$repcols->field;
+      $colHeader      =$repcols->header;
+      $colSortable    =$repcols->sortable;
+      $colSortOrder   =$repcols->sortorder;
+      $colGroupOrder  =$repcols->grouporder;
+      $colSubtotal    =$repcols->subtotal;
+      $colTotal       =$repcols->total;
+      $colCount       =$repcols->count;
+      $colHidden      =$repcols->hidden;
+
+      if ($ColSortable = "Y") {
+        $colSortable = "TRUE";
+      } else {
+        $colSortable = "FALSE";
+      }
+
+      $config->addColumn((new FieldConfig())
+        ->setName($colField)
+        ->setLabel($colHeader)
+        ->setSortable($colSortable)
+      );
+    }
+  }
 }

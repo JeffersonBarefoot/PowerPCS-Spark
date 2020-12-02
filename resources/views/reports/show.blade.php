@@ -9,7 +9,7 @@
 
 
 
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"></script>
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"></script> -->
 
   <style>
 
@@ -18,13 +18,27 @@
 </head>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="row">
     <!-- <div class="col-sm-8 offset-sm-0"> -->
     <div class="col-md-12">
         <h1 class="display-5">&nbsp;&nbsp;&nbsp;Report:  {{$report->descr}}</small></h1>
 
 
-
+        <form action="{{route('reports.show',$report->id)}}" method="post">
+            {!! csrf_field() !!}
+        </form>
 
 
         @if ($errors->any())
@@ -45,6 +59,9 @@
 
 
 <body>
+
+
+
 
   <!-- <button onclick="expandStatus()"  id="p2" aria-expanded="false">Try it</button>
   <p id="demo"></p>
@@ -152,7 +169,8 @@ sessionStorage.getItem("expandStatus")
 
         {{-- Results container --}}
         <section data-grid-layout="results"></section>
-        <form action="/action_page.php">
+
+
 
 
 
@@ -190,17 +208,17 @@ sessionStorage.getItem("expandStatus")
                       <td>{{$query->descr}}</td>
 
                       @if ($query->datatype=="DATE")
-                        <td><input type="date" id=beg|{{$query->table}}||{{$query->field}}||| name=beg|{{$query->table}}||{{$query->field}}|||></td>
+                        <td><input type="date" id=beg{{$query->table}}{{$query->field}} name=beg{{$query->table}}{{$query->field}}></td>
                       @else
-                        <td><input id=beg|{{$query->table}}||{{$query->field}}||| name=beg|{{$query->table}}||{{$query->field}}|||></td>
+                        <td><input type="text" class="form-control" style="font-size:11pt;" name=beg{{$query->table}}{{$query->field}}/></td>
                       @endif
 
                       <td>to</td>
 
                       @if ($query->datatype=="DATE")
-                        <td><input type="date" id=end|{{$query->table}}||{{$query->field}}||| name=end|{{$query->table}}||{{$query->field}}|||></td>
+                        <td><input type="date" id=end{{$query->table}}{{$query->field}} name=end{{$query->table}}{{$query->field}}></td>
                       @else
-                        <td><input id=end|{{$query->table}}||{{$query->field}}||| name=end|{{$query->table}}||{{$query->field}}|||></td>
+                        <td><input type="text" class="form-control" style="font-size:11pt;" name=end{{$query->table}}{{$query->field}}></td>
                       @endif
 
                       <td>{{$query->options}}</td>
@@ -218,6 +236,9 @@ sessionStorage.getItem("expandStatus")
               </div>
             </div>
           </div>
+
+          <button type="submit" class="btn btn-primary btn-sm">Run Report</button>
+          <button type="reset" class="btn btn-primary btn-sm">Reset Queries</button>
 
           <div class="panel panel-default">
             <div class="panel-heading">

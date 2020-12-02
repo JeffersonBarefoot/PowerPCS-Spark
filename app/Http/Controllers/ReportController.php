@@ -181,7 +181,7 @@ class ReportController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    //***************************************************
+    //****************************************************
     //***************************************************
     //***************************************************
     //**   S H O W
@@ -194,6 +194,21 @@ class ReportController extends Controller
       if (is_null($id)) {
         $id=1;
       }
+
+//$viewinchistid = $request->input('viewinchistid');
+//$navbarcompany = $request->input('company');
+$begcompany = $request->input('beg|positions||company|||');
+//dump($begcompany);
+$input = $request->all();
+
+dump('$input');
+dump($input);
+
+
+dump('$request');
+dump($request);
+
+
 
       $report = Report::find($id);
       // $reportid = $report->id;
@@ -210,6 +225,9 @@ class ReportController extends Controller
         ->where('active','=',"A")
         ->orderby("sortorder","asc")
         ->get();
+
+        dump('$reportqueries');
+        dump($reportqueries);
 
       $availablereportsPOS = \DB::table('reports')
         ->where('active','=',"A")

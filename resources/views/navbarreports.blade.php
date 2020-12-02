@@ -37,6 +37,8 @@
     <div class="row">
         <div class="col-md-2" style="background-color:#aaa;">
 
+          <form action={{route('reports.show',$report->id)}} method="get">
+
           <h2>Available Reports:</h2>
 
           <br>
@@ -163,7 +165,7 @@
                   <tr>
                     @foreach($availablereportsINCH as $rep)
                       <tr>
-                        
+
                         <td height="25"><a href={{route('reports.show',$rep->id)}}>{{$rep->descr}}</td>
                         <!-- <td>{{$rep->descr}}</td> -->
                       </tr>
