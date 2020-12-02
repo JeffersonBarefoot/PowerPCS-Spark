@@ -37,7 +37,7 @@
     <div class="row">
         <div class="col-md-2" style="background-color:#aaa;">
 
-          <form action={{route('reports.show',$report->id)}} method="get">
+          <!-- <form action={{route('reports.show',$report->id)}} method="get"> -->
 
           <h2>Available Reports:</h2>
 
