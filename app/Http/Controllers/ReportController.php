@@ -198,15 +198,15 @@ class ReportController extends Controller
 //$viewinchistid = $request->input('viewinchistid');
 //$navbarcompany = $request->input('company');
 $begcompany = $request->input('beg|positions||company|||');
-dump($begcompany);
+//dump($begcompany);
 $input = $request->all();
 
-dump('$input');
-dump($input);
+//dump('$input');
+//dump($input);
 
 
-dump('$request');
-dump($request);
+//dump('$request');
+//dump($request);
 
 
 
@@ -226,8 +226,8 @@ dump($request);
         ->orderby("sortorder","asc")
         ->get();
 
-        dump('$reportqueries');
-        dump($reportqueries);
+        //dump('$reportqueries');
+        //dump($reportqueries);
 
       $availablereportsPOS = \DB::table('reports')
         ->where('active','=',"A")
@@ -269,7 +269,7 @@ dump($request);
 
 $grid = "";
 $gridSummary = "";
-$grid = BuildReport($id,$reporttype);
+$grid = BuildReport($id,$reporttype,$input);
 $gridSummary = BuildReportSummary($id,$reporttype);
 
 

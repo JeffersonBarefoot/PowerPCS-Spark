@@ -44,8 +44,43 @@ use Nayjest\Grids\GridConfig;
 
 // build the REPORT.SHOW.BLADE main report grid
 if (!function_exists('BuildReport')) {
-    function BuildReport($reportId,$reportType)
+    function BuildReport($reportId,$reportType,$input)
     {
+
+dump('ReportFunctions.BuildReport() $input');
+dump($input);
+
+// foreach ($input as $queryParameters){
+//   dump($queryParameters);
+//
+//   // $key = array_search ($queryParameters, $input);
+//   $key = key($input);
+//   dump($key);
+//
+// }
+
+foreach ($input as $key => $value){
+
+  $value = Arr::get($input,$key);
+
+  dump($key);
+  dump($value);
+
+  // we have the key (beg/end, table, field) and the user's input value
+  // first item in array is key = "_token."  Ignore this element
+
+  // beg and end elements will be sequential
+  // iterate through each beg record:
+  // - if null skip
+  // - if not null, parse out
+  // - see if there is a corresponding end RecordsPerPage
+  //    - if there is a corresponding record, create ->where record using BETWEEN
+  //    - if no corresponding record, create ->where record using LIKE
+
+}
+
+// $begcompany = $request->input('beg|positions||company|||');
+// dump($begcompany);
 
       //######################################
       // build $query
