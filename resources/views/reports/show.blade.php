@@ -7,28 +7,13 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-
-
-  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"></script> -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"></script>
 
   <style>
 
   </style>
 
 </head>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <div class="row">
     <!-- <div class="col-sm-8 offset-sm-0"> -->
@@ -37,37 +22,21 @@
       </div>
   </div>
 
-        <form method="post" action="/reports" enctype="multipart/form-data">
+      <!-- <form method="post" action="/reports" enctype="multipart/form-data"> -->
+      <form action="{{route('reports.show',$report->id)}}" method="get">
       {{ csrf_field() }}
-
-
-
-
-
 
 <!-- set this to readonly to make this a show screen, or something else (blank, notreadonly, etc) to allow editing -->
 <?php $readonly='xreadonly' ?>
 
-
 <body>
-
-
-
-
-  <!-- <button onclick="expandStatus()"  id="p2" aria-expanded="false">Try it</button>
-  <p id="demo"></p>
-
-  <input type="hidden" id="testArial" name="testArial" value="3487"> -->
-
 
 
   <script>
     function initExpands() {
 
       sessionStorage.setItem("initialized","expandStatus");
-
     }
-
 
     function expandStatus() {
     var x = document.getElementById("p2").getAttribute("aria-expanded");
@@ -161,109 +130,97 @@ sessionStorage.getItem("expandStatus")
         {{-- Results container --}}
         <section data-grid-layout="results"></section>
 
-
-
-
-
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h4 class="panel-title">
-                <div class="row">
-                  <div class="col-md-12">
-                    <a data-toggle="collapse" href="#collapseRep07">Report Parameters</a>
-                  </div>
-
-                </div>
-              </h4>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <div class="row">
+            <div class="col-md-12">
+              <a data-toggle="collapse" href="#collapseRep07">Report Parameters</a>
             </div>
-            <div id="collapseRep07" class="panel-collapse collapse">
-              <div class="panel-body">
-                {{$report->notes}}<br>
 
-
-
-                <table class="table table-condensed">
-                  <thead>
-                    <tr>
-                      <th width="20%">Field</th>
-                      <th width="10%">Start</th>
-                      <th width="5%"></th>
-                      <th width="10%">End</th>
-                      <th width="55%"></th>
-
-                    </tr>
-                  </thead>
-                  @foreach($reportqueries as $query)
-                    <tr>
-
-                      <td>{{$query->descr}}</td>
-
-                      @if ($query->datatype=="DATE")
-                        <td><input type="date" id=beg{{$query->table}}{{$query->field}} name=beg{{$query->table}}{{$query->field}}></td>
-                      @else
-                        <td><input type="text" class="form-control" style="font-size:11pt;" name=beg{{$query->table}}{{$query->field}}/></td>
-                      @endif
-
-                      <td>to</td>
-
-                      @if ($query->datatype=="DATE")
-                        <td><input type="date" id=end{{$query->table}}{{$query->field}} name=end{{$query->table}}{{$query->field}}></td>
-                      @else
-                        <td><input type="text" class="form-control" style="font-size:11pt;" name=end{{$query->table}}{{$query->field}}></td>
-                      @endif
-
-                      <td>{{$query->options}}</td>
-                      <!-- <td>{{$query->table}}</td>
-                      <td>{{$query->field}}</td>
-                      <td>{{$query->datatype}}</td>
-                      <td>{{$query->descr}}</td> -->
-
-                    </tr>
-                  @endforeach
-                </table>
-
-
-
-              </div>
-            </div>
           </div>
+        </h4>
+      </div>
+      <div id="collapseRep07" class="panel-collapse collapse">
+        <div class="panel-body">
+          {{$report->notes}}<br>
+
+
+
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th width="20%">Field</th>
+                <th width="10%">Start</th>
+                <th width="5%"></th>
+                <th width="10%">End</th>
+                <th width="55%"></th>
+
+              </tr>
+            </thead>
+
+            @foreach($reportqueries as $query)
+              <tr>
+
+                <td>{{$query->descr}}</td>
+
+                @if ($query->datatype=="DATE")
+                  <td><input type="date" id=beg|{{$query->table}}||{{$query->field}}||| name=beg|{{$query->table}}||{{$query->field}}|||></td>
+                @else
+                  <td><input id=beg|{{$query->table}}||{{$query->field}}||| name=beg|{{$query->table}}||{{$query->field}}|||></td>
+                @endif
+
+                <td>to</td>
+
+                @if ($query->datatype=="DATE")
+                  <td><input type="date" id=end|{{$query->table}}||{{$query->field}}||| name=end|{{$query->table}}||{{$query->field}}|||></td>
+                @else
+                  <td><input id=end|{{$query->table}}||{{$query->field}}||| name=end|{{$query->table}}||{{$query->field}}|||></td>
+                @endif
+
+                <td>{{$query->options}}</td>
+                <!-- <td>{{$query->table}}</td>
+                <td>{{$query->field}}</td>
+                <td>{{$query->datatype}}</td>
+                <td>{{$query->descr}}</td> -->
+
+              </tr>
+            @endforeach
+          </table>
 
           <button type="submit" class="btn btn-primary btn-sm">Run Report</button>
           <button type="reset" class="btn btn-primary btn-sm">Reset Queries</button>
-          <button type="submit" class="btn btn-primary">Submit Game</button>
 
+        </div>
+      </div>
+    </div>
 
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h4 class="panel-title">
-                <div class="row">
-                  <div class="col-md-12">
-                    <a data-toggle="collapse" href="#collapseSummary">Summary</a>
-                  </div>
-
-                </div>
-              </h4>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <div class="row">
+            <div class="col-md-12">
+              <a data-toggle="collapse" href="#collapseSummary">Summary</a>
             </div>
-            <div id="collapseSummary" class="panel-collapse collapse">
-              <div class="panel-body">
-                {{$report->notes}}<br>
 
-                <div>
-                {!! $gridSummary !!}
-                </div>
-
-              </div>
-            </div>
           </div>
+        </h4>
+      </div>
+      <div id="collapseSummary" class="panel-collapse collapse">
+        <div class="panel-body">
+          {{$report->notes}}<br>
 
+          <div>
+            {!! $gridSummary !!}
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div>
-  {!! $grid !!}
+    <div>
+      {!! $grid !!}
+    </div>
   </div>
-  </div>
-
-
-
 
 </body>
 </form>

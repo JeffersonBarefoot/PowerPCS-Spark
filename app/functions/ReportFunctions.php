@@ -42,7 +42,7 @@ use Nayjest\Grids\GridConfig;
 // leave namespace out so that functions are global
 //namespace App\Http\Middleware;
 
-
+// build the REPORT.SHOW.BLADE main report grid
 if (!function_exists('BuildReport')) {
     function BuildReport($reportId,$reportType)
     {
@@ -137,6 +137,8 @@ if (!function_exists('BuildReport')) {
     }
 }
 
+// build the REPORT.SHOW.BLADE summary report grid
+// this is the grid that shows subtotals and counts, between the report parameters and the main report grid
 if (!function_exists('BuildReportSummary')) {
     function BuildReportSummary($reportId,$reportType)
     {
@@ -225,6 +227,7 @@ if (!function_exists('BuildReportSummary')) {
     }
 }
 
+// iterate through columns from REPORTCOLUMNS and add the columns into the main report grid, in BUILDREPORT()
 if (!function_exists('AddColumns')) {
   function AddColumns($config,$reportId)
   {
@@ -260,6 +263,7 @@ if (!function_exists('AddColumns')) {
   }
 }
 
+// iterate through columns from REPORTCOLUMNSUBS and add the columns into the summary report grid, in BUILDREPORTSUMMARY()
 if (!function_exists('AddColumnSubs')) {
   function AddColumnSubs($config,$reportId)
   {
