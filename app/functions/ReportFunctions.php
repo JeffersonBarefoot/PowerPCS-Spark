@@ -59,6 +59,26 @@ dump($input);
 //
 // }
 
+// create an empty temp table to hold report parameters
+$queryTableCreated = DB::insert(
+    DB::raw( "CREATE TEMPORARY TABLE tempQueries as (
+      Select space(30) as tablename
+        , space(30) as fieldname
+        , space(30) as BegValue
+        , space(30) as EndValue
+        from positions
+        where company = '!!!!!'
+      )"
+    )
+  );
+
+
+$exportQueryList = \DB::table('tempQueries')
+  ->get();
+
+dump ('Temporary Table');
+dump ($exportQueryList);
+
 foreach ($input as $key => $value){
 
   $value = Arr::get($input,$key);
