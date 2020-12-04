@@ -127,13 +127,22 @@ foreach ($input as $key => $value){
 DB::update('update tempQueries set whereClause = ? where BegValue is null ', [""] );
 // DB::update('update tempQueries set whereClause = ? where BegValue is not null and EndValue is null ',["->where('".fieldname."', '=', ".BegValue."'"   ] );
 // DB::insert('update tempQueries set whereClause = ? where BegValue is not null and EndValue is null ',[DB::raw("fieldname")] );
-DB::statement('update tempqueries set whereClause = ? where BegValue is not null and EndValue is null ',["fieldname"]);
+DB::update('update tempQueries set whereClause = ? where BegValue is not null and EndValue is null ',["tempQueries.fieldname"]);
+
+// DB::update(DB::RAW('update tempQueries set whereClause = tempQueries.fieldname  where BegValue is not null and EndValue is null' ,['1']));
+// DB::update(DB::RAW('update tempQueries set whereClause = concat('->where(',tempQueries.fieldname)  where BegValue is not null and EndValue is null' ));
+DB::update(DB::RAW('update tempQueries set whereClause = concat("abc",tempQueries.fieldname)  where BegValue is not null and EndValue is null' ));
+// ->where('active','=',"A")
+
 
 
 $exportQueryList = \DB::table('tempQueries')
   ->get();
 dump ('Temporary Table');
 dump ($exportQueryList);
+
+// drop the temp table...don't need it any more
+DB::update(DB::RAW('drop temporary table tempQueries'));
 
 // $begcompany = $request->input('beg|positions||company|||');
 // dump($begcompany);
@@ -144,12 +153,29 @@ dump ($exportQueryList);
       switch ($reportType) {
         case "POS":
           // code for pos
+
+          $testQuery1 = 'positions.Active' ;
+          $testQuery2 = '<>';
+          $testQuery3 = 'A';
+
+          // $query = (new Position)
+          //   ->newQuery()
+          //   ->select('*')
+          //   ->where('positions.Active', '=', 'A');
+
           $query = (new Position)
             ->newQuery()
             ->select('*')
-            ->where('positions.Active', '=', 'A');
+            ->where($testQuery1,$testQuery2,$testQuery3)
+            ;
+
+          // see new bookmark in laravel\eloquent on Jeff's computer
+          // 2020-12-04 JLB
+
 
           break;
+
+
 
         case "POSH":
           // code
@@ -169,6 +195,8 @@ dump ($exportQueryList);
                 ,'positions.level1')
             ->join('positions', 'incumbents.posno', '=', 'positions.posno')
             ->where('positions.Active', '=', 'A');
+
+
 
           break;
 
