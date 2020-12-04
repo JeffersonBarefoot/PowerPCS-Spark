@@ -42,9 +42,14 @@ use Nayjest\Grids\GridConfig;
 // leave namespace out so that functions are global
 //namespace App\Http\Middleware;
 
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 // build the REPORT.SHOW.BLADE main report grid
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 if (!function_exists('BuildReport')) {
     function BuildReport($reportId,$reportType,$input)
+
     {
 
 dump('ReportFunctions.BuildReport() $input');
@@ -60,44 +65,75 @@ dump($input);
 // }
 
 // create an empty temp table to hold report parameters
-$queryTableCreated = DB::insert(
-    DB::raw( "CREATE TEMPORARY TABLE tempQueries as (
-      Select space(30) as tablename
-        , space(30) as fieldname
-        , space(30) as BegValue
-        , space(30) as EndValue
-        from positions
-        where company = '!!!!!'
-      )"
-    )
-  );
-
-
-$exportQueryList = \DB::table('tempQueries')
-  ->get();
-
-dump ('Temporary Table');
-dump ($exportQueryList);
+DB::insert(
+  DB::raw( "CREATE TEMPORARY TABLE tempQueries as (
+    Select space(100) as tablename
+      , space(100) as fieldname
+      , space(100) as BegValue
+      , space(100) as EndValue
+      , space(300) as whereClause
+      from positions
+      where company = 'DontIncludeAnyRecords'
+    )"
+  )
+);
 
 foreach ($input as $key => $value){
 
   $value = Arr::get($input,$key);
+  //dump($key);
+  //dump($value);
 
-  dump($key);
-  dump($value);
 
   // we have the key (beg/end, table, field) and the user's input value
   // first item in array is key = "_token."  Ignore this element
+  // parse out data from $key and update tablename, fieldname, begvalue, endvalue
+  if ($key <> "_token") {
+    // parse out the key's contents
+    // format is like:  beg|positions||company|||
+    $break1 = strpos($key,"|");
+    $break2 = strpos($key,"||");
+    $break3 = strpos($key,"|||");
+    $begEnd = strtoupper(Substr($key,0,$break1));
+    //$begEnd2 = substr($key,1,3);
+    $tableName = substr($key,$break1+1,$break2-$break1-1);
+    $fieldName = substr($key,$break2+2,$break3-$break3-3);
+    $nullField = NULL;
 
-  // beg and end elements will be sequential
-  // iterate through each beg record:
+    dump($begEnd);
+
+    // if BEG record, then add new record
+    if ($begEnd == "BEG") {
+      DB::insert('insert into tempQueries (tablename, fieldname, BegValue) values (?, ?, ?)', [$tableName, $fieldName, $value]);
+    }
+
+    // if END record then put value in record with corresponding BEG
+    if ($begEnd == "END") {
+      DB::update('update tempQueries set EndValue = ? where tablename = ? and fieldname = ?', [$value, $tableName, $fieldName] );
+      //DB::update('update tempQueries set EndValue = ? where fieldname = $fieldName', [$value] );
+    }
+  }
+
   // - if null skip
   // - if not null, parse out
-  // - see if there is a corresponding end RecordsPerPage
+  // - see if there is a corresponding end Record
   //    - if there is a corresponding record, create ->where record using BETWEEN
   //    - if no corresponding record, create ->where record using LIKE
 
 }
+
+// Build report query for each query record, and put into temp mysql_list_tables
+// DB::update('update tempQueries set whereClause = ? where BegValue <> ? and tablename = ? and fieldname = ?', ["TEST WHERE CLAUSE", "xxxx", $tableName, $fieldName] );
+DB::update('update tempQueries set whereClause = ? where BegValue is null ', [""] );
+// DB::update('update tempQueries set whereClause = ? where BegValue is not null and EndValue is null ',["->where('".fieldname."', '=', ".BegValue."'"   ] );
+// DB::insert('update tempQueries set whereClause = ? where BegValue is not null and EndValue is null ',[DB::raw("fieldname")] );
+DB::statement('update tempqueries set whereClause = ? where BegValue is not null and EndValue is null ',["fieldname"]);
+
+
+$exportQueryList = \DB::table('tempQueries')
+  ->get();
+dump ('Temporary Table');
+dump ($exportQueryList);
 
 // $begcompany = $request->input('beg|positions||company|||');
 // dump($begcompany);
@@ -192,8 +228,12 @@ foreach ($input as $key => $value){
     }
 }
 
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 // build the REPORT.SHOW.BLADE summary report grid
 // this is the grid that shows subtotals and counts, between the report parameters and the main report grid
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 if (!function_exists('BuildReportSummary')) {
     function BuildReportSummary($reportId,$reportType)
     {
@@ -282,7 +322,11 @@ if (!function_exists('BuildReportSummary')) {
     }
 }
 
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 // iterate through columns from REPORTCOLUMNS and add the columns into the main report grid, in BUILDREPORT()
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 if (!function_exists('AddColumns')) {
   function AddColumns($config,$reportId)
   {
@@ -318,7 +362,11 @@ if (!function_exists('AddColumns')) {
   }
 }
 
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 // iterate through columns from REPORTCOLUMNSUBS and add the columns into the summary report grid, in BUILDREPORTSUMMARY()
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 if (!function_exists('AddColumnSubs')) {
   function AddColumnSubs($config,$reportId)
   {
