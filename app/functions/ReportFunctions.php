@@ -67,7 +67,8 @@ dump($input);
 // create an empty temp table to hold report parameters
 DB::insert(
   DB::raw( "CREATE TEMPORARY TABLE tempQueries as (
-    Select space(100) as tablename
+    Select 000 as id
+      ,space(100) as tablename
       , space(100) as fieldname
       , space(100) as BegValue
       , space(100) as EndValue
@@ -78,11 +79,15 @@ DB::insert(
   )
 );
 
+$id = 0;
+
 foreach ($input as $key => $value){
 
   $value = Arr::get($input,$key);
   //dump($key);
   //dump($value);
+
+
 
 
   // we have the key (beg/end, table, field) and the user's input value
@@ -100,11 +105,12 @@ foreach ($input as $key => $value){
     $fieldName = substr($key,$break2+2,$break3-$break3-3);
     $nullField = NULL;
 
-    dump($begEnd);
+    // dump($begEnd);
 
     // if BEG record, then add new record
     if ($begEnd == "BEG") {
-      DB::insert('insert into tempQueries (tablename, fieldname, BegValue) values (?, ?, ?)', [$tableName, $fieldName, $value]);
+      $id = $id + 1;
+      DB::insert('insert into tempQueries (id, tablename, fieldname, BegValue) values (?, ?, ?, ?)', [$id, $tableName, $fieldName, $value]);
     }
 
     // if END record then put value in record with corresponding BEG
@@ -131,7 +137,7 @@ DB::update('update tempQueries set whereClause = ? where BegValue is not null an
 
 // DB::update(DB::RAW('update tempQueries set whereClause = tempQueries.fieldname  where BegValue is not null and EndValue is null' ,['1']));
 // DB::update(DB::RAW('update tempQueries set whereClause = concat('->where(',tempQueries.fieldname)  where BegValue is not null and EndValue is null' ));
-DB::update(DB::RAW('update tempQueries set whereClause = concat("abc",tempQueries.fieldname)  where BegValue is not null and EndValue is null' ));
+// DB::update(DB::RAW('update tempQueries set whereClause = concat("abc",tempQueries.fieldname)  where BegValue is not null and EndValue is null' ));
 // ->where('active','=',"A")
 
 
@@ -154,28 +160,47 @@ DB::update(DB::RAW('drop temporary table tempQueries'));
         case "POS":
           // code for pos
 
-          $testQuery1 = 'positions.Active' ;
-          $testQuery2 = '<>';
-          $testQuery3 = 'A';
+          $query1 = "Y"
+          $testQuery1 = 'positions.Company' ;
+          $testQuery2 = 'like';
+          $testQuery3 = 'Z%';
+          $testQuery4 = "where";
+
+          $query2 = "Y"
+          $testQuery10 = 'positions.posno' ;
+          $testQuery20 = '[100,200]';
+          $testQuery30 = '';
+          $testQuery40 = "wherebetween";
+
+          // $testQuery1 = 'positions.StartDate' ;
+          // $testQuery2 = '<';
+          // $testQuery3 = '2000-01-01';
+          // $testQuery4 = "where";
+
+          // $test5 = ""->where('positions.Active', '=', 'A')";
 
           // $query = (new Position)
           //   ->newQuery()
           //   ->select('*')
           //   ->where('positions.Active', '=', 'A');
-
           $query = (new Position)
             ->newQuery()
-            ->select('*')
-            ->where($testQuery1,$testQuery2,$testQuery3)
-            ;
+            ->select('*');
+
+            if (!empty($query1)){
+              $query = $query->where('positions.Active', '=', 'A');
+            };
+
+            if (!empty($query2)){
+              $query = $query->where('positions.company', 'like', 'S%');
+            };
+
+
 
           // see new bookmark in laravel\eloquent on Jeff's computer
           // 2020-12-04 JLB
 
-
           break;
-
-
 
         case "POSH":
           // code
