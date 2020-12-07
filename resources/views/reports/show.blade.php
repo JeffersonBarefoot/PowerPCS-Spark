@@ -165,17 +165,17 @@ sessionStorage.getItem("expandStatus")
                 <td>{{$query->descr}}</td>
 
                 @if ($query->datatype=="DATE")
-                  <td><input type="date" id=beg|{{$query->table}}||{{$query->field}}||| name=beg|{{$query->table}}||{{$query->field}}|||></td>
+                  <td><input type="date" id=beg|{{$query->table}}||{{$query->field}}||| name=beg|{{$query->table}}||{{$query->field}}|||{{$query->datatype}}||||></td>
                 @else
-                  <td><input id=beg|{{$query->table}}||{{$query->field}}||| name=beg|{{$query->table}}||{{$query->field}}|||></td>
+                  <td><input id=beg|{{$query->table}}||{{$query->field}}||| name=beg|{{$query->table}}||{{$query->field}}|||{{$query->datatype}}||||></td>
                 @endif
 
                 <td>to</td>
 
                 @if ($query->datatype=="DATE")
-                  <td><input type="date" id=end|{{$query->table}}||{{$query->field}}||| name=end|{{$query->table}}||{{$query->field}}|||></td>
+                  <td><input type="date" id=end|{{$query->table}}||{{$query->field}}||| name=end|{{$query->table}}||{{$query->field}}|||{{$query->datatype}}||||></td>
                 @else
-                  <td><input id=end|{{$query->table}}||{{$query->field}}||| name=end|{{$query->table}}||{{$query->field}}|||></td>
+                  <td><input id=end|{{$query->table}}||{{$query->field}}||| name=end|{{$query->table}}||{{$query->field}}|||{{$query->datatype}}||||></td>
                 @endif
 
                 <td>{{$query->options}}</td>
