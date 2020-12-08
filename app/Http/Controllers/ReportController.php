@@ -269,7 +269,7 @@ $input = $request->all();
 
 $grid = "";
 $gridSummary = "";
-$grid = BuildReport($id,$reporttype,$input);
+$grid = BuildReport($id,$reporttype,$input,$report);
 $gridSummary = BuildReportSummary($id,$reporttype);
 
 

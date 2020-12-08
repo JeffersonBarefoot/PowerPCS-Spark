@@ -48,7 +48,7 @@ use Nayjest\Grids\GridConfig;
 //><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 //><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 if (!function_exists('BuildReport')) {
-    function BuildReport($reportId,$reportType,$input)
+    function BuildReport($reportId,$reportType,$input,$report)
 
     {
 
@@ -70,20 +70,9 @@ if (!function_exists('BuildReport')) {
       //######################################
       switch ($reportType) {
         case "POS":
-          // code for pos
-
-
-          // $query = (new Position)
-          //   ->newQuery()
-          //   ->select('*')
-          //   ->where('positions.Active', '=', 'A');
           $query = (new Position)
             ->newQuery()
             ->select('*');
-
-
-
-
           break;
 
         case "POSH":
@@ -254,7 +243,7 @@ DB::update(DB::RAW('drop temporary table tempQueries'));
              (new OneCellRow)
               ->setRenderSection(RenderableRegistry::SECTION_END)
               ->setComponents([
-                  (new CsvExport)->setFileName('my_report' . date('Y-m-d')),
+                  (new CsvExport)->setFileName($report->descr . date(' Y-m-d H-i-s')),
                   (new HtmlTag)
                      ->setAttributes(['class' => 'pull-right'])
                      ->addComponent(new ShowingRecords)
