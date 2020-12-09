@@ -113,7 +113,7 @@
 <!-- {{ Session::get('expandIncumbents')}} -->
 <!-- <button type="submit" class="btn btn-primary btn-sm">Edit this position</button> -->
 <!-- <input formaction="/shop/products.php" name="submit" class="obutn" type="submit" value="Order" /> -->
-<a href={{route('positions.show',$position->id)}}?editmode=switch>Switch to edit mode </a>
+<a href={{route('positions.show',$position->id)}}?editmode=switch>{{Session::get('editModeButtonText')}} </a>
 
 <!-- sessionStorage.getItem("expandStatus")
 <p id="demo123"></p> -->

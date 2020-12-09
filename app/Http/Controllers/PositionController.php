@@ -194,10 +194,12 @@ class PositionController extends Controller
         // code...
         Session::put('positionID', $id);
         $viewincid = '' ;
-        //dump('New position!!');
-        //dump($sessionPositionID);
-        //dump($id);
+        dump('New position!!');
+        dump($sessionPositionID);
+        dump($id);
         // clear out all session variables.  If applicable, reset to the current position
+        Session::put('freshPosition', 'YES');
+        $freshPosition = "YES";
         Session::put('reportsDirTo', '');
         Session::put('reportsIndirTo', '');
         Session::put('viewincid', '');
@@ -208,6 +210,8 @@ class PositionController extends Controller
 
       } else {
         //dump('Same Position');
+        $freshPosition = "NO";
+        Session::put('freshPosition', 'NO');
         $viewincid = Session::get('viewincid') ;
         $viewinchistid = Session::get('viewinchistid') ;
         $reportsDirTo = Session::get('reportsDirTo');
@@ -226,15 +230,38 @@ class PositionController extends Controller
       $company = $position->company;
 
       // control whether in ReadOnly or Edit mode
+      // switch is a toggle, so if you see SWITCH then detect current state and switch to other state
       $switcheditmode = $request->input('editmode');
-      if (is_null($switcheditmode)){
-        // NOT in edit mode...set readonly and disabled texts
+      $readOnlyText = Session::get('readOnlyText');
+      dump($freshPosition);
+      dump($switcheditmode);
+      dump($readOnlyText);
+      if ($freshPosition=="YES"){
+        dump("freshxxx");
+        // on new position
+        // Do NOT want to be in edit mode...set readonly and disabled texts
         Session::put('readOnlyText', 'readonly');
         Session::put('disabledText', 'disabled');
+        Session::put('editModeButtonText', 'Switch to Edit Mode');
       } else {
-        // in edit mode...leave readonly and disabled texts as blank
-        Session::put('readOnlyText', '');
-        Session::put('disabledText', '');
+        // have not change positions
+        // if null, no change...leave as is
+        // if "switch" then detect current mode and switch to other mode
+        if ($switcheditmode=="switch"){
+          if ($readOnlyText<>"readonly"){
+            dump("1");
+            // currently in edit mode, switch to NOT in edit mode...set readonly and disabled texts
+            Session::put('readOnlyText', 'readonly');
+            Session::put('disabledText', 'disabled');
+            Session::put('editModeButtonText', 'Switch to Edit Mode');
+          }else{
+            dump("2");
+            // in edit mode...leave readonly and disabled texts as blank
+            Session::put('readOnlyText', '');
+            Session::put('disabledText', '');
+            Session::put('editModeButtonText', 'Leave Edit Mode');
+          }
+        }
       }
       dump($switcheditmode);
 
