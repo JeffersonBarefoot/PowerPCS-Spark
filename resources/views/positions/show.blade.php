@@ -37,7 +37,10 @@
 </div>
 
 <!-- set this to readonly to make this a show screen, or something else (blank, notreadonly, etc) to allow editing -->
-<?php $readonly='xreadonly' ?>
+<!-- <?php $readonly='xreadonly' ?> -->
+<!-- note that for UNCHECKED radio buttons you have to use [disabled] instead of [readonly].  CHECKED radio buttons remain active-->
+<?php $readonly='readonly' ?>
+<?php $disabled='disabled' ?>
 
 
 <body>
@@ -172,11 +175,11 @@ sessionStorage.getItem("expandStatus")
                         <label><input type="radio" name="active" value="A"checked>Active</label>
                       </td>
                       <td>
-                        <label><input type="radio" name="active" value="I">Inactive</label>
+                        <label><input type="radio" name="active" value="I" {{$disabled}}>Inactive</label>
                       </td>
                       @else
                       <td>
-                        <label><input type="radio" name="active" value="A">Active</label>
+                        <label><input type="radio" name="active" value="A" {{$disabled}}>Active</label>
                       </td>
                       <td>
                         <label><input type="radio" name="active" value="I" checked>Inactive</label>
@@ -195,11 +198,11 @@ sessionStorage.getItem("expandStatus")
                         <label><input type="radio" name="multincumb" value="1" checked>Yes</label>
                       </td>
                       <td>
-                        <label><input type="radio" name="multincumb" value="0">No</label>
+                        <label><input type="radio" name="multincumb" value="0" {{$disabled}}>No</label>
                       </td>
                       @else
                       <td>
-                        <label><input type="radio" name="multincumb" value="1">Yes</label>
+                        <label><input type="radio" name="multincumb" value="1" {{$disabled}}>Yes</label>
                       </td>
                       <td>
                         <label><input type="radio" name="multincumb" value="0" checked>No</label>
@@ -216,14 +219,14 @@ sessionStorage.getItem("expandStatus")
 
                     @if ($position->funded=="Y")
                     <td>
-                      <label><input type="radio" name="Funded" value="1" checked>Yes</label>
+                      <label><input type="radio" name="Funded" value="1" checked >Yes</label>
                     </td>
                     <td>
-                      <label><input type="radio" name="Funded" value="0">No</label>
+                      <label><input type="radio" name="Funded" value="0" {{$disabled}}>No</label>
                     </td>
                     @else
                     <td>
-                      <label><input type="radio" name="Funded" value="1">Yes</label>
+                      <label><input type="radio" name="Funded" value="1" {{$disabled}}>Yes</label>
                     </td>
                     <td>
                       <label><input type="radio" name="Funded" value="0" checked>No</label>
