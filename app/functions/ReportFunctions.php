@@ -76,7 +76,11 @@ if (!function_exists('BuildReport')) {
           break;
 
         case "POSH":
-          // code
+        $query = (new Position)
+          ->newQuery()
+          ->select('*')
+          ->join('hpositions', 'positions.posno', '=', 'hpositions.posno');
+        break;
 
           break;
 
@@ -296,7 +300,10 @@ if (!function_exists('BuildReportSummary')) {
           break;
 
         case "POSH":
-          // code
+        $querySummary = (new Position)
+          ->newQuery()
+          ->select('*')
+          ->join('hpositions', 'positions.posno', '=', 'hpositions.posno');
 
           break;
 

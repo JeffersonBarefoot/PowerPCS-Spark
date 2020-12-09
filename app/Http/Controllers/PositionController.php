@@ -156,7 +156,7 @@ class PositionController extends Controller
       // dump('positioncontroller.show');
       // dump($id);
       // dump("end");
-      dump($request);
+      // dump($request);
 
 
       if (is_null($id)) {
@@ -164,8 +164,8 @@ class PositionController extends Controller
       }
       $position = Position::find($id);
 
-dump('id');
-dump($id);
+// dump('id');
+// dump($id);
 
       // if sess var positionID is null, then this is a fresh launch.  Save the current ID to the session variable
       $sessionPositionID = Session::get('positionID');
@@ -229,8 +229,8 @@ dump($id);
       $navbarposno = $request->input('posno');
       $navbardescr = $request->input('descr');
 
-      dump($request);
-      dump($navbarcompany);
+      // dump($request);
+      // dump($navbarcompany);
 
       $testAriaCollapse = $request->input('testArial');
 //dump($testAriaCollapse);

@@ -215,6 +215,8 @@ $input = $request->all();
       // find the report type, i.e. POS, from $report.group1
       $reporttype = $report->group1;
 
+      dump($reporttype);
+
 
       // include all queries for this reporttype (all standard POS or POSH or INC queries), and for this specific report
       $reportqueries = \DB::table('reportqueries')
