@@ -158,6 +158,8 @@ class PositionController extends Controller
       // dump("end");
       // dump($request);
 
+      dump("PositionController.Show has fired");
+
 
       if (is_null($id)) {
         $id=1;
@@ -202,6 +204,7 @@ class PositionController extends Controller
         Session::put('viewinchistid', '');
         $viewinchistid='';
         Session::put('viewPosHistId', '');
+        // Session::put('editMode', '');
 
       } else {
         //dump('Same Position');
@@ -209,6 +212,7 @@ class PositionController extends Controller
         $viewinchistid = Session::get('viewinchistid') ;
         $reportsDirTo = Session::get('reportsDirTo');
         $reportsIndirTo = Session::get('reportsIndirTo');
+        // $editMode = Session::get('editMode');
 
       }
       //dump('checking whether session variable was set ... ' . $viewincid);
@@ -221,6 +225,19 @@ class PositionController extends Controller
       $posno = $position->posno;
       $company = $position->company;
 
+      // control whether in ReadOnly or Edit mode
+      $switcheditmode = $request->input('editmode');
+      if (is_null($switcheditmode)){
+        // NOT in edit mode...set readonly and disabled texts
+        Session::put('readOnlyText', 'readonly');
+        Session::put('disabledText', 'disabled');
+      } else {
+        // in edit mode...leave readonly and disabled texts as blank
+        Session::put('readOnlyText', '');
+        Session::put('disabledText', '');
+      }
+      dump($switcheditmode);
+
 
       //****************************
       // N A V B A R
@@ -228,6 +245,7 @@ class PositionController extends Controller
       $navbarcompany = $request->input('company');
       $navbarposno = $request->input('posno');
       $navbardescr = $request->input('descr');
+
 
       // dump($request);
       // dump($navbarcompany);

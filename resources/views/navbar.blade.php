@@ -85,6 +85,7 @@
 
                 <!-- <input type="submit" name="submit" value="Submit (blank queries return all records)"> -->
                 <button type="submit" class="btn btn-primary btn-sm">Submit (blank queries return all records)</button>
+                {{ csrf_field() }}
                 <br>
 
 

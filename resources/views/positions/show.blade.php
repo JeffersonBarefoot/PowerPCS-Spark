@@ -13,6 +13,9 @@
 
 </head>
 
+<form action={{route('positions.show',$position->id)}} method="get">
+{{ csrf_field() }}
+
 <div class="row">
     <!-- <div class="col-sm-8 offset-sm-0"> -->
     <div class="col-md-12">
@@ -39,8 +42,8 @@
 <!-- set this to readonly to make this a show screen, or something else (blank, notreadonly, etc) to allow editing -->
 <!-- <?php $readonly='xreadonly' ?> -->
 <!-- note that for UNCHECKED radio buttons you have to use [disabled] instead of [readonly].  CHECKED radio buttons remain active-->
-<?php $readonly='readonly' ?>
-<?php $disabled='disabled' ?>
+<?php $readonly=Session::get('readOnlyText') ?>
+<?php $disabled=Session::get('disabledText') ?>
 
 
 <body>
@@ -49,8 +52,6 @@
   <p id="demo"></p>
 
   <input type="hidden" id="testArial" name="testArial" value="3487"> -->
-
-
 
   <script>
     function initExpands() {
@@ -108,8 +109,13 @@
   </script>
 
 
-<!-- {{ Session::get('expandIncumbents')}}
-sessionStorage.getItem("expandStatus")
+
+<!-- {{ Session::get('expandIncumbents')}} -->
+<!-- <button type="submit" class="btn btn-primary btn-sm">Edit this position</button> -->
+<!-- <input formaction="/shop/products.php" name="submit" class="obutn" type="submit" value="Order" /> -->
+<a href={{route('positions.show',$position->id)}}?editmode=switch>Switch to edit mode </a>
+
+<!-- sessionStorage.getItem("expandStatus")
 <p id="demo123"></p> -->
 
 
@@ -1230,7 +1236,8 @@ sessionStorage.getItem("expandStatus")
 
   <!-- </div> -->
 </div>
-
+</form>
 </body>
+
 
 @endsection
