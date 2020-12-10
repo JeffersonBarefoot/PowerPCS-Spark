@@ -132,7 +132,7 @@ class PositionController extends Controller
             'descr' => $request->get('descr')
         ]);
         $position->save();
-        return redirect('/positions')->with('success', 'Position saved!');
+        return redirect('/positions/1')->with('success', 'Position saved!');
     }
 
     /**
@@ -194,9 +194,9 @@ class PositionController extends Controller
         // code...
         Session::put('positionID', $id);
         $viewincid = '' ;
-        dump('New position!!');
-        dump($sessionPositionID);
-        dump($id);
+        // dump('New position!!');
+        // dump($sessionPositionID);
+        // dump($id);
         // clear out all session variables.  If applicable, reset to the current position
         Session::put('freshPosition', 'YES');
         $freshPosition = "YES";
@@ -233,11 +233,11 @@ class PositionController extends Controller
       // switch is a toggle, so if you see SWITCH then detect current state and switch to other state
       $switcheditmode = $request->input('editmode');
       $readOnlyText = Session::get('readOnlyText');
-      dump($freshPosition);
-      dump($switcheditmode);
-      dump($readOnlyText);
+      // dump($freshPosition);
+      // dump($switcheditmode);
+      // dump($readOnlyText);
       if ($freshPosition=="YES"){
-        dump("freshxxx");
+        // dump("freshxxx");
         // on new position
         // Do NOT want to be in edit mode...set readonly and disabled texts
         Session::put('readOnlyText', 'readonly');
@@ -249,13 +249,13 @@ class PositionController extends Controller
         // if "switch" then detect current mode and switch to other mode
         if ($switcheditmode=="switch"){
           if ($readOnlyText<>"readonly"){
-            dump("1");
+            // dump("1");
             // currently in edit mode, switch to NOT in edit mode...set readonly and disabled texts
             Session::put('readOnlyText', 'readonly');
             Session::put('disabledText', 'disabled');
             Session::put('editModeButtonText', 'Switch to Edit Mode');
           }else{
-            dump("2");
+            // dump("2");
             // in edit mode...leave readonly and disabled texts as blank
             Session::put('readOnlyText', '');
             Session::put('disabledText', '');
@@ -263,7 +263,7 @@ class PositionController extends Controller
           }
         }
       }
-      dump($switcheditmode);
+      // dump($switcheditmode);
 
 
       //****************************
@@ -575,11 +575,11 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
      //***************************************************
     public function destroy($id)
     {
-      dump('positioncontroller.destroy');
-
+      // dd('positioncontroller.destroy');
+      
       $position = Position::find($id);
       $position->delete();
 
-      return redirect('/positions')->with('success', 'Position deleted!');
+      return redirect('/positions/9')->with('success', 'Position deleted!');
     }
 }

@@ -13,7 +13,7 @@
 
 </head>
 
-<form action={{route('positions.show',$position->id)}} method="get">
+<form action={{route('positions.show',$position->id)}} method="post">
 {{ csrf_field() }}
 
 <div class="row">
@@ -113,7 +113,18 @@
 <!-- {{ Session::get('expandIncumbents')}} -->
 <!-- <button type="submit" class="btn btn-primary btn-sm">Edit this position</button> -->
 <!-- <input formaction="/shop/products.php" name="submit" class="obutn" type="submit" value="Order" /> -->
-<a href={{route('positions.show',$position->id)}}?editmode=switch>{{Session::get('editModeButtonText')}} </a>
+<a href={{route('positions.show',$position->id)}}?editmode=switch>{{Session::get('editModeButtonText')}} </a><br>
+<a href={{route('positions.show',$position->id)}}>Save Changes </a><br>
+<a href={{route('positions.create')}}>Add New Position </a><br>
+
+<!-- don't know why, but the next 7 lines are required for delete button.  JLB 20201210 -->
+<form action="{{ route('positions.destroy', $position->id)}}" method="POST">
+</form>
+<form action="{{url('positions', [$position->id])}}" method="POST">
+    	<input type="hidden" name="_method" value="DELETE">
+   		<input type="hidden" name="_token" value="{{ csrf_token() }}">
+   		<input type="submit" class="btn btn-danger" value="Delete 2"/>
+</form>
 
 <!-- sessionStorage.getItem("expandStatus")
 <p id="demo123"></p> -->
