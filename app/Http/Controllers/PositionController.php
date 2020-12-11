@@ -552,7 +552,7 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
         $id=1;
       }
 
-      // dump('positioncontroller.update');
+      dump('positioncontroller.update');
       UpdatePosition($id, $request);
 
       return redirect('/positions')->with('success', 'Position updated!');
@@ -576,7 +576,7 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
     public function destroy($id)
     {
       // dd('positioncontroller.destroy');
-      
+
       $position = Position::find($id);
       $position->delete();
 

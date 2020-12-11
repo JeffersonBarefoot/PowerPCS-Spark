@@ -1,5 +1,9 @@
-@extends('base2')
-@section('main')
+@extends('layout')
+
+@section('testsection')
+
+This is a test
+
 <div class="row">
     <div class="col-sm-8 offset-sm-2">
         <h1 class="display-3">Update a Position</h1>
@@ -33,7 +37,7 @@
                 <label for="descr">Descr:</label>
                 <input type="text" class="form-control" name="descr" value="{{ $position->descr }}" />
             </div>
-
+<form method="post" action="{{ route('positions.update', $position->id) }}">
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
     </div>

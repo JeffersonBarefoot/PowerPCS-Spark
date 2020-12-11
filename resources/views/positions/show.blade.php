@@ -13,34 +13,7 @@
 
 </head>
 
-<form action={{route('positions.show',$position->id)}} method="post">
-{{ csrf_field() }}
-
-<div class="row">
-    <!-- <div class="col-sm-8 offset-sm-0"> -->
-    <div class="col-md-12">
-        <h1 class="display-5">&nbsp;&nbsp;&nbsp;{{$position->descr}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{$position->company}} / {{$position->posno}}</small></h1>
-
-        <form action={{route('positions.show',$position->id)}} method="get">
-
-        <!-- <input type="checkbox" name="mycheckbox" value="myvalue" onclick={{route('positions.show',$position->id)}}>TestCheckBox</input><br>
-        <input type="checkbox" name="mycheckbox" value="myvalue" onclick=“this.form.submit()”>TestCheckBox</input><br> -->
-
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        <br />
-        @endif
-    </div>
-</div>
-
 <!-- set this to readonly to make this a show screen, or something else (blank, notreadonly, etc) to allow editing -->
-<!-- <?php $readonly='xreadonly' ?> -->
 <!-- note that for UNCHECKED radio buttons you have to use [disabled] instead of [readonly].  CHECKED radio buttons remain active-->
 <?php $readonly=Session::get('readOnlyText') ?>
 <?php $disabled=Session::get('disabledText') ?>
@@ -54,21 +27,18 @@
   <input type="hidden" id="testArial" name="testArial" value="3487"> -->
 
   <script>
+
     function initExpands() {
-
       sessionStorage.setItem("initialized","expandStatus");
-
     }
-
 
     function expandStatus() {
     var x = document.getElementById("p2").getAttribute("aria-expanded");
-    if (x == " class='panel-collapse collapse' id='collapse1' ")
-      {
-        x = " class='panel-collapse' id='collapse1' ";
-      } else {
-        x = " class='panel-collapse collapse' id='collapse1' ";
-      }
+    if (x == " class='panel-collapse collapse' id='collapse1' ")  {
+      x = " class='panel-collapse' id='collapse1' ";
+    } else {
+      x = " class='panel-collapse collapse' id='collapse1' ";
+    }
 
       // document.getElementById("p2").setAttribute("aria-expanded", x);
       // document.getElementById("p2").innerHTML = "aria-expanded =" + x;
@@ -94,29 +64,53 @@
       table = document.getElementById("myTable");
       tr = table.getElementsByTagName("tr");
       for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[0];
-        if (td) {
-          txtValue = td.textContent || td.innerText;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
-          } else {
-            tr[i].style.display = "none";
+          td = tr[i].getElementsByTagName("td")[0];
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
           }
-        }
       }
     }
 
   </script>
+  <div class="row">
+      <!-- <div class="col-sm-8 offset-sm-0"> -->
+      <div class="col-md-12">
+          <h1 class="display-5">&nbsp;&nbsp;&nbsp;{{$position->descr}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{$position->company}} / {{$position->posno}}</small></h1>
 
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
 
 
 <!-- {{ Session::get('expandIncumbents')}} -->
 <!-- <button type="submit" class="btn btn-primary btn-sm">Edit this position</button> -->
 <!-- <input formaction="/shop/products.php" name="submit" class="obutn" type="submit" value="Order" /> -->
 <a href={{route('positions.show',$position->id)}}?editmode=switch>{{Session::get('editModeButtonText')}} </a><br>
-<a href={{route('positions.show',$position->id)}}>Save Changes </a><br>
 <a href={{route('positions.create')}}>Add New Position </a><br>
 
+<!-- DELETE -->
 <!-- don't know why, but the next 7 lines are required for delete button.  JLB 20201210 -->
 <form action="{{ route('positions.destroy', $position->id)}}" method="POST">
 </form>
@@ -125,6 +119,43 @@
    		<input type="hidden" name="_token" value="{{ csrf_token() }}">
    		<input type="submit" class="btn btn-danger" value="Delete 2"/>
 </form>
+
+
+<!-- SAVE EDIT CHANGES -->
+<!-- Not working as of 2020-12-11 -->
+<form method="get" action="{{ route('positions.update', $position->id) }}">
+<button type="submit" class="btn btn-primary">Update</button>
+
+<a href={{route('positions.update',$position->id)}}>Save Changes </a><br>
+
+
+</div>
+</div>
+
+
+
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+<!-- ************************** -->
+
+
 
 <!-- sessionStorage.getItem("expandStatus")
 <p id="demo123"></p> -->
@@ -1247,6 +1278,7 @@
 
   <!-- </div> -->
 </div>
+</form>
 </form>
 </body>
 
