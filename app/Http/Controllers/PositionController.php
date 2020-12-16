@@ -569,6 +569,30 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
      //***************************************************
      //***************************************************
      //***************************************************
+     //**   V E R I F Y D E S T R O Y
+     //**   This works together with DESTROY to delete a record
+     //***************************************************
+     //***************************************************
+     //***************************************************
+    public function verifydestroy(Request $request)
+    {
+
+      $positionToDestroy = $request->input('positiontodestroy');
+
+        return view('positions.destroy')
+          ->with('id',$positionToDestroy);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+
+     //***************************************************
+     //***************************************************
+     //***************************************************
      //**   D E S T R O Y
      //***************************************************
      //***************************************************

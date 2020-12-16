@@ -109,6 +109,7 @@
 <!-- <input formaction="/shop/products.php" name="submit" class="obutn" type="submit" value="Order" /> -->
 <a href={{route('positions.show',$position->id)}}?editmode=switch>{{Session::get('editModeButtonText')}} </a><br>
 <a href={{route('positions.create')}}>Add New Position </a><br>
+<a href={{ route('verifydestroy') }}?positiontodelete={{$position->id}}>Delete This Position </a><br>
 
 <!-- DELETE -->
 <!-- don't know why, but the next 7 lines are required for delete button.  JLB 20201210 -->

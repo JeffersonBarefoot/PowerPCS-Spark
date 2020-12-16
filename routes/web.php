@@ -15,5 +15,6 @@ Route::get('/', 'WelcomeController@show');
 
 Route::get('/home', 'HomeController@show');
 
+Route::get('/verifydestroy', 'PositionController@verifydestroy')->name('verifydestroy');
 Route::resource('positions', 'PositionController');
 Route::resource('reports', 'ReportController');
