@@ -10,10 +10,6 @@ You cannot undo this.
 {{$position->company}} / {{$position->posno}} / {{$position->descr}}
 <br>
 <br>
-
-
-
-
     <form action="{{ route('positions.destroy', $position->id)}}" method="post">
       @csrf
       @method('DELETE')
