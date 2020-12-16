@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('testsection')
+@section('bodysection')
 this is a test
 
 <form method="post" action="{{ route('positions.store') }}">

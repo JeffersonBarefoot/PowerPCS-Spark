@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('testsection')
+@section('bodysection')
 
 This is a test
 
