@@ -1,23 +1,17 @@
 @extends('layout')
 
 @section('bodysection')
-Destroy this position?
+Are you sure that you want to this position?
 
-<form method="post" action="{{ route('positions.store') }}">
-    <div class="form-group">
-        @csrf
-        <label for="company">Company:</label>
-        <input type="text" class="form-control" name="company"/>
-    </div>
-    <div class="form-group">
-        <label for="posno">Position Number</label>
-        <input type="text" class="form-control" name="posno"/>
-    </div>
-    <div class="form-group">
-        <label for="descr">Position Name / Description:</label>
-        <input type="text" class="form-control" name="descr"/>
-    </div>
-    <button type="submit" class="btn btn-primary">Add</button>
+
+{{$position->company}} / {{$position->posno}} / {{$position->descr}}
+
+
+<form method="DELETE" action="{{url('positions', [$position->id])}}" >
+    @csrf
+
+
+    <button type="submit" class="btn btn-primary">Delete</button>
 </form>
 
 
@@ -26,7 +20,7 @@ Destroy this position?
 @section('content')
 Test the Content Section
 
-@extends('navbarcreate')
+@extends('navbardestroy')
 @section('main')
 
 <style>

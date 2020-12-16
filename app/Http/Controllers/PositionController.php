@@ -577,10 +577,25 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
     public function verifydestroy(Request $request)
     {
 
-      $positionToDestroy = $request->input('positiontodestroy');
+      $positionToDestroy = $request->input('positiontodelete');
 
-        return view('positions.destroy')
-          ->with('id',$positionToDestroy);
+        // $position = Position::find($positionToDestroy);
+        //
+        // dump($position);
+
+
+        $position = Position::find($positionToDestroy);
+
+        // dump('verifydestroy');
+        // dump($position);
+        // dump($positionToDestroy);
+        // dump('verifydestroy2');
+
+        return view('positions.destroy', compact('position'));
+
+        // return view('positions.destroy')
+        //   ->with('id',$positionToDestroy)
+        //   ->with(compact('position'));
     }
 
     /**
@@ -600,6 +615,8 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
     public function destroy($id)
     {
       // dd('positioncontroller.destroy');
+
+      dump('destroy');
 
       $position = Position::find($id);
       $position->delete();
