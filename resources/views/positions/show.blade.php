@@ -103,30 +103,18 @@
   <!-- ************************** -->
   <!-- ************************** -->
 
-
-<!-- {{ Session::get('expandIncumbents')}} -->
-<!-- <button type="submit" class="btn btn-primary btn-sm">Edit this position</button> -->
-<!-- <input formaction="/shop/products.php" name="submit" class="obutn" type="submit" value="Order" /> -->
 <a href={{route('positions.show',$position->id)}}?editmode=switch>{{Session::get('editModeButtonText')}} </a><br>
 <a href={{route('positions.create')}}>Add New Position </a><br>
 <a href={{ route('verifydestroy') }}?positiontodelete={{$position->id}}>Delete This Position </a><br>
 
-<!-- DELETE -->
-<!-- don't know why, but the next 7 lines are required for delete button.  JLB 20201210 -->
-<form action="{{ route('positions.destroy', $position->id)}}" method="POST">
-</form>
-<form action="{{url('positions', [$position->id])}}" method="POST">
-    	<input type="hidden" name="_method" value="DELETE">
-   		<input type="hidden" name="_token" value="{{ csrf_token() }}">
-   		<input type="submit" class="btn btn-danger" value="Delete 2"/>
-</form>
-
-
 <!-- SAVE EDIT CHANGES -->
 <!-- Not working as of 2020-12-11 -->
 <form method="get" action="{{ route('positions.update', $position->id) }}">
+<br>
+<br>
 <button type="submit" class="btn btn-primary">Update</button>
-
+<br>
+<br>
 <a href={{route('positions.update',$position->id)}}>Save Changes </a><br>
 
 
