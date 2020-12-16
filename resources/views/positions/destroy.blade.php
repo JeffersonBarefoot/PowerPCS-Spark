@@ -1,16 +1,22 @@
 @extends('layout')
 
 @section('bodysection')
-Are you sure that you want to this position?
-
-
+Are you sure that you want to delete this position?
+<br>
+<br>
+You cannot undo this.
+<br>
+<br>
 {{$position->company}} / {{$position->posno}} / {{$position->descr}}
+<br>
+<br>
 
 
-<form method="DELETE" action="{{url('positions', [$position->id])}}" >
-    @csrf
 
 
+    <form action="{{ route('positions.destroy', $position->id)}}" method="post">
+      @csrf
+      @method('DELETE')
     <button type="submit" class="btn btn-primary">Delete</button>
 </form>
 
