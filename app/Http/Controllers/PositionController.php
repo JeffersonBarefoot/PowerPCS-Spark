@@ -519,7 +519,9 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
      //***************************************************
          public function edit($id)
     {
-      // dump('positioncontroller.edit');
+      dump('positioncontroller.edit');
+      dd('positioncontroller.edit');
+      
       if (is_null($id)) {
         $id=1;
       }
@@ -553,6 +555,7 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
       }
 
       dump('positioncontroller.update');
+      dd('positioncontroller.update');
       UpdatePosition($id, $request);
 
       return redirect('/positions')->with('success', 'Position updated!');

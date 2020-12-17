@@ -33,11 +33,12 @@
 </style>
 </head>
 <body>
+  <form action={{route('positions.show',$position->id)}} method="get">
 
 
     <div class="row">
         <div class="col-md-3" style="background-color:WhiteSmoke">
-          <form action={{route('positions.show',$position->id)}} method="get">
+
 
           <!-- ************************** -->
           <!-- ************************** -->
@@ -127,7 +128,7 @@
         <div class="col-md-9">
           @yield('main')
         </div>
-      </form>
+
 
 
 
@@ -135,6 +136,7 @@
 
     </div>
   <script src="{{ asset('js/app.js') }}" type="text/js"></script>
+  </form>
 </body>
 @endsection
 </html>

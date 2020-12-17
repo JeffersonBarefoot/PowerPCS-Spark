@@ -109,7 +109,7 @@
 
 <!-- SAVE EDIT CHANGES -->
 <!-- Not working as of 2020-12-11 -->
-<form method="get" action="{{ route('positions.update', $position->id) }}">
+<form method="patch" action="{{ route('positions.update', $position->id) }}">
 <br>
 <br>
 <button type="submit" class="btn btn-primary">Update</button>
