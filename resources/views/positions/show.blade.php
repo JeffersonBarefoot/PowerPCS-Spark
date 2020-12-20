@@ -20,6 +20,7 @@
 
 
 <body>
+  {{ Form::model($position, array('route' => array('positions.update', $position->id), 'method' => 'PUT')) }}
 
   <!-- <button onclick="expandStatus()"  id="p2" aria-expanded="false">Try it</button>
   <p id="demo"></p>
@@ -109,7 +110,7 @@
 
 <!-- SAVE EDIT CHANGES -->
 <!-- Not working as of 2020-12-11 -->
-<form method="patch" action="{{ route('positions.update', $position->id) }}">
+
 <br>
 <br>
 <button type="submit" class="btn btn-primary">Update</button>
@@ -470,7 +471,7 @@
                   </tr> -->
                   <tr>
                     <td>x Budgeted Pay Rate</td>
-                    <td><input type="text" class="form-control" name="payrate" value="{{FormatDollars($position->payrate)}}"></td>
+                    <td><label display: inline-block>Short </label><input type="text" class="form-control" name="payrate" value="{{$position->payrate}}"></td>
                     <td></td>
                   </tr>
 

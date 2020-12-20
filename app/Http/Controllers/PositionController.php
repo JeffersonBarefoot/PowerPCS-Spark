@@ -159,6 +159,7 @@ class PositionController extends Controller
       // dump($request);
 
       dump("PositionController.Show has fired");
+      dump($request);
 
 
       if (is_null($id)) {
@@ -520,8 +521,8 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
          public function edit($id)
     {
       dump('positioncontroller.edit');
-      dd('positioncontroller.edit');
-      
+      // dd('positioncontroller.edit');
+
       if (is_null($id)) {
         $id=1;
       }
@@ -548,6 +549,7 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
      //***************************************************
      //***************************************************
     public function update(Request $request, $id)
+    // public function update($id)
     {
 
       if (is_null($id)) {
@@ -555,7 +557,7 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
       }
 
       dump('positioncontroller.update');
-      dd('positioncontroller.update');
+      // dd('positioncontroller.update');
       UpdatePosition($id, $request);
 
       return redirect('/positions')->with('success', 'Position updated!');

@@ -12,7 +12,7 @@
   <script>$(document).ready(function(){$('[data-toggle="tooltip"]').tooltip();});</script>
 
   <style>
-* {
+  {
   box-sizing: border-box;
 }
 
@@ -87,6 +87,8 @@
                 <!-- <input type="submit" name="submit" value="Submit (blank queries return all records)"> -->
                 <button type="submit" class="btn btn-primary btn-sm">Submit (blank queries return all records)</button>
                 {{ csrf_field() }}
+
+                </form>
                 <br>
 
 
@@ -136,7 +138,7 @@
 
     </div>
   <script src="{{ asset('js/app.js') }}" type="text/js"></script>
-  </form>
+
 </body>
 @endsection
 </html>

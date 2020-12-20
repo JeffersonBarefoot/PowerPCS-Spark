@@ -188,21 +188,30 @@ if (!function_exists('UpdatePosition')) {
   function UpdatePosition($id, $request)
   {
 
+    dump("UpdatePosition just fired");
+    // dd($request);
+
     // grab a copy of all Position.Fields, and locate the current position
     $columnList = \Schema::getColumnListing('positions');
     $position = Position::find($id);
 
+
+
     // not exactly sure what this does as of Oct 2019
-    $request->validate([
-     'company'=>'required',
-     'posno'=>'required',
-     'descr'=>'required'
-    ]);
+    // $request->validate([
+    //  'company'=>'required',
+    //  'posno'=>'required',
+    //  'descr'=>'required'
+    // ]);
+
+    dump("made it through validate");
 
     // cycle through each columnlist as columnName to try and save changes
     foreach($columnList as $columnName) {
       // attempt to get a return value.  if doesn't exist will return null
       $returnStringValue = $request->get($columnName);
+
+
 
       // make sure that this field is included in the return string (so not null)
       // if so, update the column
