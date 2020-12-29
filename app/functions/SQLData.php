@@ -188,7 +188,7 @@ if (!function_exists('UpdatePosition')) {
   function UpdatePosition($id, $request)
   {
 
-    dump("UpdatePosition just fired");
+    // dump("UpdatePosition just fired");
     // dd($request);
 
     // grab a copy of all Position.Fields, and locate the current position
@@ -216,7 +216,7 @@ if (!function_exists('UpdatePosition')) {
       // make sure that this field is included in the return string (so not null)
       // if so, update the column
       if (! is_null($returnStringValue)) {
-        dump($returnStringValue);
+        // dump("ReturnStringValue:".$returnStringValue);
         $position->$columnName = $request->get($columnName);
       }
     }
@@ -238,7 +238,17 @@ if (!function_exists('UpdatePosition')) {
           // dd($column);
           //$position.$columnName = $request->get($columnName);
           $columnValue = $request->get($columnName);
+          $columnType = GetColumnType('positions',$columnName);
+          dump("ColumnType".$columnType);
 
+          // if using FORMATMONEY() function then a leading $ will be in the data.  Strip it fann_descale_output
+          // validate the incoming data, based on the table.field data type
+          if (strToUpper($columnType) == "DECIMAL") {
+            // dd('decimal type found');
+            // dump("ColumnValue".$columnValue);
+            $columnValue = str_replace('$','',$columnValue);
+            // dump("ColumnValueNoDollarSign".$columnValue);
+          }
 
           // dump('1:  ' . $columnName);
           //dd($columnList);
@@ -253,11 +263,17 @@ if (!function_exists('UpdatePosition')) {
             $friendlyName = GetFriendlyColumnName('positions',$columnName);
             $fieldChange = '  - ' . $friendlyName . ' has changed from ' . $originalValue . ' to ' . $columnValue ."\r\n" ;
             $userConfirmMessage = $userConfirmMessage . $fieldChange ;
+
+
+            // update the field in the new positions records
+            // import will look like:  $position->active="A"
+            $position->$columnName=$columnValue;
+
           }
         }
       }
 
-      dump($userConfirmMessage);
+      dd($userConfirmMessage);
 
       //Can do something useful here.  "These changes were made.  Would you like to save them?"
       //Oct 2019 for now, just save them.
@@ -268,7 +284,7 @@ if (!function_exists('UpdatePosition')) {
 
     } else {
       // what to do if nothing is dirty?  Probably nothing
-      dump('Nothing is dirty!!')  ;
+      dd('Nothing is dirty!!')  ;
     }
 
     // sleep(10);

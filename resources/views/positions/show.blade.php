@@ -257,17 +257,17 @@
 
                     @if ($position->funded=="Y")
                     <td>
-                      <label><input type="radio" name="Funded" value="1" checked >Yes</label>
+                      <label><input type="radio" name="funded" value="Y" checked >Yes</label>
                     </td>
                     <td>
-                      <label><input type="radio" name="Funded" value="0" {{$disabled}}>No</label>
+                      <label><input type="radio" name="funded" value="N" {{$disabled}}>No</label>
                     </td>
                     @else
                     <td>
-                      <label><input type="radio" name="Funded" value="1" {{$disabled}}>Yes</label>
+                      <label><input type="radio" name="funded" value="Y" {{$disabled}}>Yes</label>
                     </td>
                     <td>
-                      <label><input type="radio" name="Funded" value="0" checked>No</label>
+                      <label><input type="radio" name="funded" value="N" checked>No</label>
                     </td>
                     @endif
                   </div>
@@ -430,7 +430,7 @@
               <table class="table table-condensed">
                 <tr>
                   <td width="35%">Pay Frequency</td>
-                  <td width="35%"><input type="text" class="form-control" name="annftehour" value="{{$position->ftefreq}}"></td>
+                  <td width="35%"><input type="text" class="form-control" name="ftefreq" value="{{$position->ftefreq}}"></td>
                   <td width="10%">
                   <td width="10%">
                   <td width="10%">
@@ -439,13 +439,13 @@
 
                 <tr>
                   <td>x Budgeted Hours</td>
-                  <td><input type="text" class="form-control" name="annftehour" value="{{round($position->ftehours,3)}}"></td>
+                  <td><input type="text" class="form-control" name="ftehours" value="{{round($position->ftehours,3)}}"></td>
 
                 </tr>
 
                 <tr>
                   <td>/ Basis ) = FTEs</td>
-                  <td><input type="text" class="form-control" name="annftehour" value="{{round($position->fulltimeequiv,3)}}"></td>
+                  <td><input type="text" class="form-control" name="fulltimeequiv" value="{{round($position->fulltimeequiv,3)}}"></td>
                   <td></td>
                   <td><img src="/images/ArrowRight.jpg" width="50" height="15"></td>
 
