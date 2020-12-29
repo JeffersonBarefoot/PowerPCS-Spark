@@ -158,8 +158,8 @@ class PositionController extends Controller
       // dump("end");
       // dump($request);
 
-      dump("PositionController.Show has fired");
-      dump($request);
+      // dump("PositionController.Show has fired");
+      // dump($request);
 
 
       if (is_null($id)) {
@@ -556,11 +556,16 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
         $id=1;
       }
 
-      dump('positioncontroller.update');
+      // dump('positioncontroller.update');
       // dd('positioncontroller.update');
       UpdatePosition($id, $request);
 
-      return redirect('/positions')->with('success', 'Position updated!');
+      // return redirect('/positions')->with('success', 'Position updated!');
+      // return View('positions.show') ->with $id;
+      // route('positions.show',$id);
+      return redirect(route('positions.show',$id));
+      // route('positions.show',$position->id)
+      // return redirect()->route('show',$id);
 
     }
 

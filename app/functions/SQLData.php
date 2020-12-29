@@ -204,7 +204,7 @@ if (!function_exists('UpdatePosition')) {
     //  'descr'=>'required'
     // ]);
 
-    dump("made it through validate");
+    // dump("made it through validate");
 
     // cycle through each columnlist as columnName to try and save changes
     foreach($columnList as $columnName) {
@@ -239,7 +239,7 @@ if (!function_exists('UpdatePosition')) {
           //$position.$columnName = $request->get($columnName);
           $columnValue = $request->get($columnName);
           $columnType = GetColumnType('positions',$columnName);
-          dump("ColumnType".$columnType);
+          // dump("ColumnType".$columnType);
 
           // if using FORMATMONEY() function then a leading $ will be in the data.  Strip it fann_descale_output
           // validate the incoming data, based on the table.field data type
@@ -273,7 +273,7 @@ if (!function_exists('UpdatePosition')) {
         }
       }
 
-      dd($userConfirmMessage);
+      // dd($userConfirmMessage);
 
       //Can do something useful here.  "These changes were made.  Would you like to save them?"
       //Oct 2019 for now, just save them.
@@ -284,7 +284,7 @@ if (!function_exists('UpdatePosition')) {
 
     } else {
       // what to do if nothing is dirty?  Probably nothing
-      dd('Nothing is dirty!!')  ;
+      // dd('Nothing is dirty!!')  ;
     }
 
     // sleep(10);
