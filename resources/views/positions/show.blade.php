@@ -471,7 +471,7 @@
                   </tr> -->
                   <tr>
                     <td>x Budgeted Pay Rate</td>
-                    <td><label display: inline-block>Short </label><input type="text" class="form-control" name="payrate" value="{{$position->payrate}}"></td>
+                    <td><input type="text" class="form-control" name="payrate" value="{{FormatDollars($position->payrate)}}"></td>
                     <td></td>
                   </tr>
 
