@@ -218,6 +218,7 @@ sessionStorage.getItem("expandStatus")
     </div>
 
     <div>
+      Put EXPORT TO CSV button here
       {!! $grid !!}
     </div>
   </div>

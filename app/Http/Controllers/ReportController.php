@@ -263,6 +263,30 @@ $input = $request->all();
         ->orderby("sortorder","asc")
         ->get();
 
+      $availablereportsBUDG = \DB::table('reports')
+        ->where('active','=',"A")
+        ->where('group1','=',"BUDG")
+        ->orderby("group1","asc")
+        ->orderby("group2","asc")
+        ->orderby("sortorder","asc")
+        ->get();
+
+      $availablereportsVAC = \DB::table('reports')
+        ->where('active','=',"A")
+        ->where('group1','=',"VAC")
+        ->orderby("group1","asc")
+        ->orderby("group2","asc")
+        ->orderby("sortorder","asc")
+        ->get();
+
+      $availablereportsRECR = \DB::table('reports')
+        ->where('active','=',"A")
+        ->where('group1','=',"RECR")
+        ->orderby("group1","asc")
+        ->orderby("group2","asc")
+        ->orderby("sortorder","asc")
+        ->get();
+
       $reportdata = \DB::table('positions')
         ->where('active','=',"A")
         ->get();
@@ -288,7 +312,10 @@ $gridSummary = BuildReportSummary($id,$reporttype);
         ->with(compact('availablereportsPOS'))
         ->with(compact('availablereportsPOSH'))
         ->with(compact('availablereportsINC'))
-        ->with(compact('availablereportsINCH'));
+        ->with(compact('availablereportsINCH'))
+        ->with(compact('availablereportsBUDG'))
+        ->with(compact('availablereportsVAC'))
+        ->with(compact('availablereportsRECR'));
     }
 
     /**

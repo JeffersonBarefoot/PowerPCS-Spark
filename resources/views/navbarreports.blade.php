@@ -194,7 +194,17 @@
             </div>
             <div id="collapseRep05" class="panel-collapse collapse">
               <div class="panel-body">Reserved for future functionality
+                <table class="table table-condensed">
+                  <tr>
+                    @foreach($availablereportsBUDG as $rep)
+                      <tr>
 
+                        <td height="25"><a href={{route('reports.show',$rep->id)}}>{{$rep->descr}}</td>
+                        <!-- <td>{{$rep->descr}}</td> -->
+                      </tr>
+                    @endforeach
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
@@ -217,7 +227,17 @@
             </div>
             <div id="collapseRep06" class="panel-collapse collapse">
               <div class="panel-body">Reserved for future functionality
+                <table class="table table-condensed">
+                  <tr>
+                    @foreach($availablereportsVAC as $rep)
+                      <tr>
 
+                        <td height="25"><a href={{route('reports.show',$rep->id)}}>{{$rep->descr}}</td>
+                        <!-- <td>{{$rep->descr}}</td> -->
+                      </tr>
+                    @endforeach
+                  </tr>
+                </table>
               </div>
             </div>
           </div>

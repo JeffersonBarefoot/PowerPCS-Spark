@@ -91,6 +91,7 @@ if (!function_exists('BuildReport')) {
             ->select('incumbents.company as inccomp'
                 ,'positions.company as poscomp'
                 ,'incumbents.posno'
+                ,'incumbents.lname'
                 ,'unitrate'
                 ,DB::raw('(unitrate + 1) as newrate')
                 ,'positions.descr'
