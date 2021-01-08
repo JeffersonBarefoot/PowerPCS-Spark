@@ -108,7 +108,22 @@ if (!function_exists('BuildReport')) {
 
           break;
 
-          default:
+        case "BUDG":
+          // code
+
+          break;
+
+        case "VAC":
+          // code
+
+          break;
+
+        case "RECR":
+          // code
+
+          break;
+
+        default:
 
       }
 

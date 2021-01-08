@@ -214,14 +214,15 @@ $input = $request->all();
       // $reportid = $report->id;
       // find the report type, i.e. POS, from $report.group1
       $reporttype = $report->group1;
+      $reportid = $report->reportid;
 
       dump($reporttype);
 
 
       // include all queries for this reporttype (all standard POS or POSH or INC queries), and for this specific report
       $reportqueries = \DB::table('reportqueries')
-        ->where(function ($query) use ($id,$reporttype) {
-            $query->where('reportid','=',$id)
+        ->where(function ($query) use ($reportid,$reporttype) {
+            $query->where('reportid','=',$reportid)
               ->orwhere('reportid','=',$reporttype);
             })
         ->where('active','=',"A")
@@ -295,8 +296,8 @@ $input = $request->all();
 
 $grid = "";
 $gridSummary = "";
-$grid = BuildReport($id,$reporttype,$input,$report);
-$gridSummary = BuildReportSummary($id,$reporttype);
+$grid = BuildReport($reportid,$reporttype,$input,$report);
+$gridSummary = BuildReportSummary($reportid,$reporttype);
 
 
       //****************************
