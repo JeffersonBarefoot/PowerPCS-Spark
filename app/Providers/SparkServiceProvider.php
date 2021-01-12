@@ -34,7 +34,7 @@ class SparkServiceProvider extends ServiceProvider
      */
     protected $developers = [
         //
-        'Jefferson.L.Barefoot@gmail.com'
+        'JEFFERSON.L.BAREFOOT@GMAIL.COM',
     ];
 
     /**
@@ -51,6 +51,22 @@ class SparkServiceProvider extends ServiceProvider
      */
     public function booted()
     {
+        Spark::useRoles([
+            'UPNRO' => 'View Only, Positions, no costs',
+            'UPFRO' => 'View Only, all Position data',
+            'UINRO' => 'View Only, Positions + Incumbents, no costs',
+            'UIFRO' => 'View Only, Positions + Incumbents, all data',
+
+            'UPN' => 'Update Positions, no costs',
+            'UPF' => 'Update all Position data ',
+            'UIN' => 'Update Positions + Incumbents, no costs',
+            'UIF' => 'Update Positions + Incumbents, all data',
+
+            'DAT' => 'Data User:  Full access + data upload',
+            'ADM' => 'Admin:  Data User + system config, team members',
+            'ADMB' => 'Billing Admin:  Admin + Billing Contact',
+        ]);
+
         Spark::noCardUpFront()->trialDays(10);
 
         Spark::freePlan()
