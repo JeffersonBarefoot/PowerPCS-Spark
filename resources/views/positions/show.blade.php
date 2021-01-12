@@ -291,17 +291,17 @@
                   <tr>
                     <td>Established</td>
                     <td></td>
-                    <td><input type="text" class="form-control" name="startdate" value="{{$position->startdate}}" {{$readonly}}></td>
+                    <td><input type="date" class="form-control" name="startdate" value="{{$position->startdate}}" {{$readonly}}></td>
                   </tr>
                   <tr>
                     <td>Available</td>
                     <td></td>
-                    <td><input type="text" class="form-control" name="avail_date" value="{{$position->avail_date}}" {{$readonly}}></td>
+                    <td><input type="date" class="form-control" name="avail_date" value="{{$position->avail_date}}" {{$readonly}}></td>
                   </tr>
                   <tr>
                     <td>End Date</td>
                     <td></td>
-                    <td><input type="text" class="form-control" name="enddate" value="{{$position->enddate}}" {{$readonly}}></td>
+                    <td><input type="date" class="form-control" name="enddate" value="{{$position->enddate}}" {{$readonly}}></td>
                   </tr>
 
 
@@ -325,23 +325,23 @@
 
               <tr>
                 <td>Last Became Vacant</td>
-                <td><input type="text" class="form-control" name="last_vac" value="{{$position->last_vac}}" {{$readonly}}></td>
+                <td><input type="date" class="form-control" name="last_vac" value="{{$position->last_vac}}" {{$readonly}}></td>
                 <td>@if ($position->curstatus=='VACANT') *** Current Status:  Vacant   @endif</td>
               </tr>
               <tr>
                 <td>Last Became Partially Filled</td>
-                <td><input type="text" class="form-control" name="last_par" value="{{$position->last_par}}" {{$readonly}}></td>
+                <td><input type="date" class="form-control" name="last_par" value="{{$position->last_par}}" {{$readonly}}></td>
                 <!-- <td><input type="text" class="form-control" name="last_par" value="{{$position->last_par}}" {{$readonly}}></td> -->
                 <td>@if ($position->curstatus=='PARTIALLYFILLED') *** Current Status:  Partially Filled   @endif</td>
               </tr>
               <tr>
                 <td>Last Became Filled</td>
-                <td><input type="text" class="form-control" name="last_fil" value="{{$position->last_fil}}" {{$readonly}}></td>
+                <td><input type="date" class="form-control" name="last_fil" value="{{$position->last_fil}}" {{$readonly}}></td>
                 <td>@if ($position->curstatus=='FILLED') *** Current Status:  Filled  @endif</td>
               </tr>
               <tr>
                 <td>Last Became Overfilled</td>
-                <td><input type="text" class="form-control" name="last_fpl" value="{{$position->last_fpl}}" {{$readonly}}></td>
+                <td><input type="date" class="form-control" name="last_fpl" value="{{$position->last_fpl}}" {{$readonly}}></td>
                 <td>@if ($position->curstatus=='OVERFILLED') *** Current Status:  Overfilled  @endif</td>
               </tr>
             </table>
