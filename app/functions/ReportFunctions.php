@@ -44,6 +44,9 @@ use Nayjest\Grids\GridConfig;
 
 //><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 //><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+//
+//  BUILD MAIN GRID
+//
 // build the REPORT.SHOW.BLADE main report grid
 //><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 //><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
@@ -292,6 +295,9 @@ DB::update(DB::RAW('drop temporary table tempQueries'));
 
 //><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 //><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+//
+//  BUILD SUMMARY GRID
+//
 // build the REPORT.SHOW.BLADE summary report grid
 // this is the grid that shows subtotals and counts, between the report parameters and the main report grid
 //><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
@@ -306,12 +312,11 @@ if (!function_exists('BuildReportSummary')) {
       switch ($reportType) {
         case "POS":
           // code for pos
-          $querySummary = (new Incumbent)
+          $querySummary = (new Position)
             ->newQuery()
             ->selectRaw('count(*) as count, sum(budgsal) as sumbudgsal, positions.company, positions.level1,positions.level2')
-            ->groupBy('positions.company','positions.level1','positions.level2')
-            ->join('positions', 'incumbents.posno', '=', 'positions.posno')
-            ->where('positions.Active', '=', 'A');
+            ->groupBy('positions.company','positions.level1','positions.level2');
+            // ->where('positions.Active', '=', 'A');
 
           break;
 
