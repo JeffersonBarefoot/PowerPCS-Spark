@@ -297,7 +297,7 @@ $input = $request->all();
 $grid = "";
 $gridSummary = "";
 $grid = BuildReport($reportid,$reporttype,$input,$report);
-$gridSummary = BuildReportSummary($reportid,$reporttype);
+$gridSummary = BuildReportSummary($reportid,$reporttype,$input);
 
 
       //****************************

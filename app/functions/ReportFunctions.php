@@ -131,118 +131,7 @@ if (!function_exists('BuildReport')) {
       }
 
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-// create an empty temp table to hold report parameters
-// "where id=-1" is intended to create a table with no records (id would never equal -1)....not sure how to do that otherwise
-DB::insert(
-  DB::raw( "CREATE TEMPORARY TABLE tempQueries as (
-    Select 000 as id
-      ,space(100) as tablename
-      , space(100) as fieldname
-      , space(100) as BegValue
-      , space(100) as EndValue
-      , space(100) as DataType
-      , space(300) as whereClause
-      from positions
-      where id=-1
-    )"
-  )
-);
-
-$id = 0;
-
-// iterate through the values in the $input array
-//
-foreach ($input as $key => $value){
-
-  $value = Arr::get($input,$key);
-
-  // dump($key);
-  // dump($value);
-
-  // we have the key (beg/end, table, field) and the user's input value
-  // first item in array is key = "_token."  Ignore this element
-  // parse out data from $key and update tablename, fieldname, begvalue, endvalue
-  if ($key <> "_token") {
-    // parse out the key's contents
-    // format is like:  beg|positions||company|||
-    $break1 = strpos($key,"|");
-    $break2 = strpos($key,"||");
-    $break3 = strpos($key,"|||");
-    $break4 = strpos($key,"||||");
-    $begEnd = strtoupper(Substr($key,0,$break1));
-    $tableName = substr($key,$break1+1,$break2-$break1-1);
-    $fieldName = substr($key,$break2+2,$break3-$break2-2);
-    $datatype  = substr($key,$break3+3,$break4-$break3-3);
-    $nullField = NULL;
-
-    // if this is a BEG record, then add new record
-    if ($begEnd == "BEG") {
-      $id = $id + 1;
-      DB::insert('insert into tempQueries (id, tablename, fieldname, BegValue, DataType) values (?, ?, ?, ?, ?)', [$id, $tableName, $fieldName, $value, $datatype]);
-    }
-
-    // if this is an END record then put value in record with corresponding BEG
-    if ($begEnd == "END") {
-      DB::update('update tempQueries set EndValue = ? where tablename = ? and fieldname = ?', [$value, $tableName, $fieldName] );
-      //DB::update('update tempQueries set EndValue = ? where fieldname = $fieldName', [$value] );
-    }
-  }
-}
-
-$exportQueryList = \DB::table('tempQueries')
-  ->get();
-// dump ('Temporary Table (actually, $exportQueryList)');
-// dump ($exportQueryList);
-
-foreach ($exportQueryList as $WhereClause){
-  $WCTable=$WhereClause->tablename;
-  $WCField=$WhereClause->fieldname;
-  $WCBeg=$WhereClause->BegValue;
-  $WCEnd=$WhereClause->EndValue;
-  $WCType=strtoupper($WhereClause->DataType);
-
-  $WCTableField=$WCTable.'.'.$WCField;
-  $WCBegLike=$WCBeg."%";
-
-
-  // begvalue is null, skip
-  if (is_null($WCBeg)){
-    // nothing to do...skip
-  }
-
-  // begvalue is not null, end value is null
-  if (! is_null($WCBeg) and is_null($WCEnd)){
-    // options:
-    // Beg but no end:
-    // string-like / decimal-equals / date-equals / boolean-equals
-    if ($WCType=='STRING'){
-      $query = $query->where($WCTableField, 'like', $WCBegLike);
-      // dump($WCTableField);
-      // dump($WCBegLike);
-    } else {
-      $query = $query->where($WCTableField, '=', $WCBeg);
-      // dump($WCTableField);
-      // dump($WCBeg);
-    }
-  }
-
-  // begvalue and end value are not null
-  if (! is_null($WCBeg) and ! is_null($WCEnd)){
-    // options:
-    // Beg and End
-    // string-between / decimal-between / date-between / boolean-ignore
-    if ($WCType<>'BOOLEAN'){
-      $query = $query->wherebetween($WCTableField,[$WCBeg,$WCEnd]);
-    } else {
-      // no other options
-    }
-  }
-}
-
-// drop the temp table...don't need it any more
-DB::update(DB::RAW('drop temporary table tempQueries'));
+AddFilters($input,$query);
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -303,7 +192,7 @@ DB::update(DB::RAW('drop temporary table tempQueries'));
 //><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 //><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 if (!function_exists('BuildReportSummary')) {
-    function BuildReportSummary($reportId,$reportType)
+    function BuildReportSummary($reportId,$reportType,$input)
     {
 
       //######################################
@@ -346,6 +235,8 @@ if (!function_exists('BuildReportSummary')) {
 
           default:
       }
+
+      AddFilters($input,$querySummary);
 
       // instantiate grid configuration object, set data provider
       $configSummary = new GridConfig();
@@ -470,4 +361,132 @@ if (!function_exists('AddColumnSubs')) {
       );
     }
   }
+}
+
+
+
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+//
+// Analyze filters, and update $query
+//
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+//><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+
+if (!function_exists('AddFilters')) {
+  function AddFilters($input,$query)
+  {
+
+// create an empty temp table to hold report parameters
+// "where id=-1" is intended to create a table with no records (id would never equal -1)....not sure how to do that otherwise
+DB::insert(
+  DB::raw( "CREATE TEMPORARY TABLE tempQueries as (
+    Select 000 as id
+      ,space(100) as tablename
+      , space(100) as fieldname
+      , space(100) as BegValue
+      , space(100) as EndValue
+      , space(100) as DataType
+      , space(300) as whereClause
+      from positions
+      where id=-1
+    )"
+  )
+);
+
+$id = 0;
+
+// iterate through the values in the $input array
+//
+foreach ($input as $key => $value){
+
+  $value = Arr::get($input,$key);
+
+  // dump($key);
+  // dump($value);
+
+  // we have the key (beg/end, table, field) and the user's input value
+  // first item in array is key = "_token."  Ignore this element
+  // parse out data from $key and update tablename, fieldname, begvalue, endvalue
+  if ($key <> "_token") {
+    // parse out the key's contents
+    // format is like:  beg|positions||company|||
+    $break1 = strpos($key,"|");
+    $break2 = strpos($key,"||");
+    $break3 = strpos($key,"|||");
+    $break4 = strpos($key,"||||");
+    $begEnd = strtoupper(Substr($key,0,$break1));
+    $tableName = substr($key,$break1+1,$break2-$break1-1);
+    $fieldName = substr($key,$break2+2,$break3-$break2-2);
+    $datatype  = substr($key,$break3+3,$break4-$break3-3);
+    $nullField = NULL;
+
+    // if this is a BEG record, then add new record
+    if ($begEnd == "BEG") {
+      $id = $id + 1;
+      DB::insert('insert into tempQueries (id, tablename, fieldname, BegValue, DataType) values (?, ?, ?, ?, ?)', [$id, $tableName, $fieldName, $value, $datatype]);
+    }
+
+    // if this is an END record then put value in record with corresponding BEG
+    if ($begEnd == "END") {
+      DB::update('update tempQueries set EndValue = ? where tablename = ? and fieldname = ?', [$value, $tableName, $fieldName] );
+      //DB::update('update tempQueries set EndValue = ? where fieldname = $fieldName', [$value] );
+    }
+  }
+}
+
+$exportQueryList = \DB::table('tempQueries')
+  ->get();
+// dump ('Temporary Table (actually, $exportQueryList)');
+// dump ($exportQueryList);
+
+foreach ($exportQueryList as $WhereClause){
+  $WCTable=$WhereClause->tablename;
+  $WCField=$WhereClause->fieldname;
+  $WCBeg=$WhereClause->BegValue;
+  $WCEnd=$WhereClause->EndValue;
+  $WCType=strtoupper($WhereClause->DataType);
+
+  $WCTableField=$WCTable.'.'.$WCField;
+  $WCBegLike=$WCBeg."%";
+
+
+  // begvalue is null, skip
+  if (is_null($WCBeg)){
+    // nothing to do...skip
+  }
+
+  // begvalue is not null, end value is null
+  if (! is_null($WCBeg) and is_null($WCEnd)){
+    // options:
+    // Beg but no end:
+    // string-like / decimal-equals / date-equals / boolean-equals
+    if ($WCType=='STRING'){
+      $query = $query->where($WCTableField, 'like', $WCBegLike);
+      // dump($WCTableField);
+      // dump($WCBegLike);
+    } else {
+      $query = $query->where($WCTableField, '=', $WCBeg);
+      // dump($WCTableField);
+      // dump($WCBeg);
+    }
+  }
+
+  // begvalue and end value are not null
+  if (! is_null($WCBeg) and ! is_null($WCEnd)){
+    // options:
+    // Beg and End
+    // string-between / decimal-between / date-between / boolean-ignore
+    if ($WCType<>'BOOLEAN'){
+      $query = $query->wherebetween($WCTableField,[$WCBeg,$WCEnd]);
+    } else {
+      // no other options
+    }
+  }
+}
+
+// drop the temp table...don't need it any more
+DB::update(DB::RAW('drop temporary table tempQueries'));
+
+}
 }
