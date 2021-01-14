@@ -307,6 +307,7 @@ if (!function_exists('AddColumns')) {
       $colTotal       =$repcols->total;
       $colCount       =$repcols->count;
       $colHidden      =$repcols->hidden;
+      $colFormat      =$repcols->format;
 
       if ($ColSortable = "Y") {
         $colSortable = "TRUE";
@@ -314,12 +315,34 @@ if (!function_exists('AddColumns')) {
         $colSortable = "FALSE";
       }
 
+      if (strlen($colFormat) <> 0) {
+        $formatColumn = "TRUE";
+          } else {
+        $formatColumn = "FALSE";
+      }
+
+
+      if ($formatColumn == "TRUE") {
+      $config->addColumn((new FieldConfig())
+        ->setName($colField)
+        ->setLabel($colHeader)
+        ->setSortable($colSortable)
+        ->setCallback(function ($val,$formatDecimals) {
+
+              return "$".(number_format($val, 2, '.', ','));
+
+          }
+          )
+        );
+      } else {
+
       $config->addColumn((new FieldConfig())
         ->setName($colField)
         ->setLabel($colHeader)
         ->setSortable($colSortable)
       );
     }
+  }
   }
 }
 
@@ -347,6 +370,7 @@ if (!function_exists('AddColumnSubs')) {
       $colTotal       =$repcols->total;
       $colCount       =$repcols->count;
       $colHidden      =$repcols->hidden;
+      $colFormat      =$repcols->format;
 
       if ($ColSortable = "Y") {
         $colSortable = "TRUE";
@@ -354,12 +378,40 @@ if (!function_exists('AddColumnSubs')) {
         $colSortable = "FALSE";
       }
 
+      if (strlen($colFormat) <> 0) {
+        $formatColumn = "TRUE";
+          } else {
+        $formatColumn = "FALSE";
+      }
+
+dump("1".$colField);
+
+      if ($formatColumn == "TRUE") {
       $config->addColumn((new FieldConfig())
         ->setName($colField)
         ->setLabel($colHeader)
         ->setSortable($colSortable)
-      );
-    }
+        ->setCallback(function ($val,$formatDecimals) {
+
+              return "$".(number_format($val, 2, '.', ','));
+
+          }
+          )
+        );
+      } else {
+
+        $config->addColumn((new FieldConfig())
+          ->setName($colField)
+          ->setLabel($colHeader)
+          ->setSortable($colSortable)
+          );
+
+
+      }
+
+
+
+      }
   }
 }
 
