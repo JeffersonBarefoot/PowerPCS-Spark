@@ -44,11 +44,11 @@ class CreateReportcolumns extends Migration
       DB::table('reportcolumns')->insert([['reportid'=>'1010','columnorder'=>'40','field'=>'level1','header'=>'Department'],]);
       DB::table('reportcolumns')->insert([['reportid'=>'1010','columnorder'=>'50','field'=>'curstatus','header'=>'Status'],]);
 
-      DB::table('reportcolumns')->insert([['reportid'=>'1010','columnorder'=>'10','field'=>'company','header'=>'Company'],]);
-      DB::table('reportcolumns')->insert([['reportid'=>'1010','columnorder'=>'20','field'=>'posno','header'=>'Pos #'],]);
-      DB::table('reportcolumns')->insert([['reportid'=>'1010','columnorder'=>'30','field'=>'descr','header'=>'Position'],]);
-      DB::table('reportcolumns')->insert([['reportid'=>'1010','columnorder'=>'40','field'=>'level1','header'=>'Department'],]);
-      DB::table('reportcolumns')->insert([['reportid'=>'1010','columnorder'=>'50','field'=>'curstatus','header'=>'Status'],]);
+      DB::table('reportcolumns')->insert([['reportid'=>'1020','columnorder'=>'10','field'=>'company','header'=>'Company'],]);
+      DB::table('reportcolumns')->insert([['reportid'=>'1020','columnorder'=>'20','field'=>'posno','header'=>'Pos #'],]);
+      DB::table('reportcolumns')->insert([['reportid'=>'1020','columnorder'=>'30','field'=>'descr','header'=>'Position'],]);
+      DB::table('reportcolumns')->insert([['reportid'=>'1020','columnorder'=>'40','field'=>'level1','header'=>'Department'],]);
+      DB::table('reportcolumns')->insert([['reportid'=>'1020','columnorder'=>'50','field'=>'curstatus','header'=>'Status'],]);
 
       // Incumbent Reports
       DB::table('reportcolumns')->insert([['reportid'=>'3000','columnorder'=>'10','field'=>'company','header'=>'Company'],]);

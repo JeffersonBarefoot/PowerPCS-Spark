@@ -125,7 +125,7 @@ if (!function_exists('BuildReport')) {
                 ,DB::raw('sum(positions.fulltimeequiv-incumbents.fulltimeequiv) as ftevar')
                 ,DB::raw('sum(positions.budgsal-incumbents.annual) as salvar')
                 )
-            ->leftjoin('incumbents', 'positions.company + positions.posno', '=', 'incumbents.posno')
+            ->leftjoin('incumbents', 'positions.posno', '=', 'incumbents.posno')
             ->groupBy('positions.company','positions.posno','positions.descr')
             ->where('incumbents.active', '<>', 'xA');
 
