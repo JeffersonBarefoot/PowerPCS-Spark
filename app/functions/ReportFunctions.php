@@ -113,6 +113,21 @@ if (!function_exists('BuildReport')) {
 
         case "BUDG":
           // code
+          $query = (new Position)
+            ->newQuery()
+            ->select('positions.company as poscomp'
+                ,'positions.posno'
+                ,'positions.descr'
+                ,DB::raw('sum(positions.budgsal) as budgsal')
+                ,DB::raw('sum(positions.fulltimeequiv) as budgfte')
+                ,DB::raw('sum(incumbents.annual) as actsal')
+                ,DB::raw('sum(incumbents.fulltimeequiv) as actfte')
+                ,DB::raw('sum(positions.fulltimeequiv-incumbents.fulltimeequiv) as ftevar')
+                ,DB::raw('sum(positions.budgsal-incumbents.annual) as salvar')
+                )
+            ->leftjoin('incumbents', 'positions.company + positions.posno', '=', 'incumbents.posno')
+            ->groupBy('positions.company','positions.posno','positions.descr')
+            ->where('incumbents.active', '<>', 'xA');
 
           break;
 
@@ -233,6 +248,17 @@ if (!function_exists('BuildReportSummary')) {
 
           break;
 
+          case "BUDG":
+            // code
+            $querySummary = (new Incumbent)
+              ->newQuery()
+              ->selectRaw('count(*) as curstatus, positions.company, positions.level1,positions.level2')
+              ->groupBy('positions.company','positions.level1','positions.level2')
+              ->join('positions', 'incumbents.posno', '=', 'positions.posno')
+              ->where('positions.Active', '=', 'A');
+
+            break;
+
           default:
       }
 
@@ -327,12 +353,7 @@ if (!function_exists('AddColumns')) {
         ->setName($colField)
         ->setLabel($colHeader)
         ->setSortable($colSortable)
-        ->setCallback(function ($val,$formatDecimals) {
-
-              return "$".(number_format($val, 2, '.', ','));
-
-          }
-          )
+        ->setCallback(function ($val,$formatDecimals) {return "$".(number_format($val, 2, '.', ','));})
         );
       } else {
 
