@@ -438,6 +438,15 @@ if (!function_exists('ImportIncumbents')) {
             $fieldname=$header[$i];
             $fielddata=$data[$i];
 
+            if ($fieldname=="company") {
+              $companyvalue = $fielddata;
+            }
+
+            if ($fieldname=="posno") {
+              $posnovalue = $fielddata;
+            }
+
+
             // validate the incoming data, based on the table.field data type
             $fielddata=validateData('incumbents',$fieldname,$fielddata);
 
@@ -448,8 +457,12 @@ if (!function_exists('ImportIncumbents')) {
         endwhile;
 
         // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
+        $positionid = GetPositionField($companyvalue, $posnovalue, "id");
 
-        $incumbent->save();
+        if (! is_null($positionid)) {
+          $incumbent->posid=$positionid;
+          $incumbent->save();
+        }
       }
 
       fclose ( $handle );
