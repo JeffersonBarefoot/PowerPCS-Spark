@@ -118,6 +118,7 @@ if (!function_exists('BuildReport')) {
             ->select('positions.company as poscomp'
                 ,'positions.posno'
                 ,'positions.descr'
+                ,DB::raw("'|||||' as divider")
                 ,DB::raw('sum(positions.budgsal) as budgcost')
                 ,DB::raw('sum(positions.fulltimeequiv) as budgfte')
                 ,DB::raw('sum(if(incumbents.ann_cost<>0,incumbents.ann_cost,0)) as actcost')
@@ -335,18 +336,21 @@ if (!function_exists('AddColumns')) {
       $colHidden      =$repcols->hidden;
       $colFormat      =$repcols->format;
 
-      if ($ColSortable = "Y") {
-        $colSortable = "TRUE";
+      // dump($colSortable);
+
+      if ($colSortable == "Y") {
+        $colSortable = true;
       } else {
-        $colSortable = "FALSE";
+        $colSortable = false;
       }
+
+      dump($colSortable);
 
       if (strlen($colFormat) <> 0) {
         $formatColumn = "TRUE";
           } else {
         $formatColumn = "FALSE";
       }
-
 
       if ($formatColumn == "TRUE") {
       $config->addColumn((new FieldConfig())
