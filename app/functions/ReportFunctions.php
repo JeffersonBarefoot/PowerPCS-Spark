@@ -118,16 +118,16 @@ if (!function_exists('BuildReport')) {
             ->select('positions.company as poscomp'
                 ,'positions.posno'
                 ,'positions.descr'
-                ,DB::raw('sum(positions.budgsal) as budgsal')
+                ,DB::raw('sum(positions.budgsal) as budgcost')
                 ,DB::raw('sum(positions.fulltimeequiv) as budgfte')
-                ,DB::raw('sum(incumbents.annual) as actsal')
-                ,DB::raw('sum(incumbents.fulltimeequiv) as actfte')
-                ,DB::raw('sum(positions.fulltimeequiv-incumbents.fulltimeequiv) as ftevar')
-                ,DB::raw('sum(positions.budgsal-incumbents.annual) as salvar')
+                ,DB::raw('sum(if(incumbents.ann_cost<>0,incumbents.ann_cost,0)) as actcost')
+                ,DB::raw('sum(if(incumbents.fulltimeequiv<>0,incumbents.fulltimeequiv,0)) as actfte')
+                ,DB::raw('sum(positions.fulltimeequiv-if(incumbents.fulltimeequiv<>0,incumbents.fulltimeequiv,0)) as ftevar')
+                ,DB::raw('sum(positions.budgsal-incumbents.annual) as costvar')
+                ,DB::raw('count(incumbents.empno) as inccount')
                 )
-            ->leftjoin('incumbents', 'positions.posno', '=', 'incumbents.posno')
-            ->groupBy('positions.company','positions.posno','positions.descr')
-            ->where('incumbents.active', '<>', 'xA');
+            ->leftjoin('incumbents', 'positions.id', '=', 'incumbents.posid')
+            ->groupBy('positions.company','positions.posno','positions.descr');
 
           break;
 
