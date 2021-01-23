@@ -476,6 +476,27 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
 // importincumbents('');
 // importhincumbents('');
 
+//######################
+//######################
+//######################
+//######################
+//######################
+// test functionality to export to Csv
+// Seems to have worked.  Saves file to C:\Users\Jeffe\Homestead\Projects\spark-installer\PowerPCS-Spark\public
+// $positions = position::get()->toArray();
+// // dd($positions);
+// $fp = fopen('xxxfile.csv', 'w');
+// foreach ($positions as $pos) {
+//   // dd($pos);
+//     fputcsv($fp, $pos);
+// }
+// fclose($fp);
+//######################
+//######################
+//######################
+//######################
+//######################
+
       // save all session variables prior to returning to the blade
       Session::put('reportsDirTo', '');
       Session::put('reportsIndirTo', '');
