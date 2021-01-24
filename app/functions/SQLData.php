@@ -539,12 +539,16 @@ if (!function_exists('TestOnclickFunction')) {
 if (!function_exists('getTimestamp')) {
   function getTimestamp()
   {
+    // this works, but the HOUR is 7 hours off from EST
+    // $timestamp = date("Ymdhis");
+    // return $timestamp;
 
-  // $timestamp = "20210124";
-  // $timestamp = date("Y-m-d", strtotime("12th february 2017"));
-  // $timestamp = date("Ymd:his");
-    $timestamp = date("Ymdhis");
-  return $timestamp;
+    // this works, and defaults to EST (new york time)
+    $tz = 'America/New_York';
+    $dt = new DateTime();
+    $dt->setTimezone(new DateTimeZone($tz));
+    $timestamp = $dt->format('Ymd-his');
+    return $timestamp;
 
   }
 }
