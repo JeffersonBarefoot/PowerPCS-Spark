@@ -118,13 +118,14 @@ if (!function_exists('BuildReport')) {
             ->select('positions.company as poscomp'
                 ,'positions.posno'
                 ,'positions.descr'
-                ,DB::raw("'|||||' as divider")
+                ,DB::raw("'|' as divider")
+                ,DB::raw("' ' as dividerspace")
                 ,DB::raw('sum(positions.budgsal) as budgcost')
                 ,DB::raw('sum(positions.fulltimeequiv) as budgfte')
                 ,DB::raw('sum(if(incumbents.ann_cost<>0,incumbents.ann_cost,0)) as actcost')
                 ,DB::raw('sum(if(incumbents.fulltimeequiv<>0,incumbents.fulltimeequiv,0)) as actfte')
                 ,DB::raw('sum(positions.fulltimeequiv-if(incumbents.fulltimeequiv<>0,incumbents.fulltimeequiv,0)) as ftevar')
-                ,DB::raw('sum(positions.budgsal-incumbents.annual) as costvar')
+                ,DB::raw('sum(positions.budgsal-incumbents.ann_cost) as costvar')
                 ,DB::raw('count(incumbents.empno) as inccount')
                 )
             ->leftjoin('incumbents', 'positions.id', '=', 'incumbents.posid')
@@ -168,21 +169,39 @@ AddFilters($input,$query);
             // (new FiltersRow)
             //     ->addComponents([]),
 
-             (new OneCellRow)
-              ->setRenderSection(RenderableRegistry::SECTION_END)
-              ->setComponents([
-                  (new CsvExport)->setFileName($report->descr . date(' Y-m-d H-i-s')),
-                  (new HtmlTag)
-                     ->setAttributes(['class' => 'pull-right'])
-                     ->addComponent(new ShowingRecords)
-                  ]), //end ->setComponenets
+             // (new OneCellRow)
+             //  ->setRenderSection(RenderableRegistry::SECTION_END)
+             //  ->setComponents([
+             //      // (new CsvExport)->setFileName($report->descr . date(' Y-m-d H-i-s')),
+             //      (new CsvExport)->setFileName($report->descr),
+             //      (new HtmlTag)
+             //         ->setAttributes(['class' => 'pull-right'])
+             //         ->addComponent(new ShowingRecords)
+             //      ]), //end ->setComponenets
 
+              // (new OneCellRow)
+              //  ->setRenderSection(RenderableRegistry::SECTION_END)
+              //  ->setComponents([
+              //      new Pager,
+              //    ]), //end ->setComponenets
+              //    (new ColumnHeadersRow),
+
+              // Add a new pager control
+              // (new OneCellRow)
+              //  ->setRenderSection(RenderableRegistry::SECTION_END)
+              //  ->setComponents([
+              //      new Pager,
+              // ]), //end ->setComponenets
+
+              // Add column headers (including sorting arrows) and pager controller
+              // NOTE:  to print as a report, you have to NOT pass setSortable...the code behind the buttons messes up the printing
+              // ALSO:  Don't pass the PAGER, for the same reason
+              // So, to print need to pass the grid to a new, clean HTML page with not frills that will mess up the print job
               (new OneCellRow)
                ->setRenderSection(RenderableRegistry::SECTION_END)
-               ->setComponents([
-                   new Pager,
-                 ]), //end ->setComponenets
-                 (new ColumnHeadersRow),
+               ->setComponents([new ColumnHeadersRow,new Pager,]), //end ->setComponenets
+                 // (new ColumnHeadersRow),
+
           ]) //end ->setComponents
         ]); //end $config->setComponents
 
@@ -324,6 +343,9 @@ if (!function_exists('AddColumns')) {
       ->orderby("header","asc")
       ->get();
 
+
+
+
     foreach ($availablereportcolumns as $repcols){
       $colField       =$repcols->field;
       $colHeader      =$repcols->header;
@@ -336,6 +358,8 @@ if (!function_exists('AddColumns')) {
       $colHidden      =$repcols->hidden;
       $colFormat      =$repcols->format;
 
+      
+
       // dump($colSortable);
 
       if ($colSortable == "Y") {
@@ -344,7 +368,7 @@ if (!function_exists('AddColumns')) {
         $colSortable = false;
       }
 
-      dump($colSortable);
+      // dump($colSortable);
 
       if (strlen($colFormat) <> 0) {
         $formatColumn = "TRUE";
@@ -353,11 +377,21 @@ if (!function_exists('AddColumns')) {
       }
 
       if ($formatColumn == "TRUE") {
+
+
+// for setCallback functionality search for setCallback here: https://github.com/Nayjest/Grids
+      setlocale(LC_MONETARY, 'en_US.UTF-8');
       $config->addColumn((new FieldConfig())
         ->setName($colField)
         ->setLabel($colHeader)
         ->setSortable($colSortable)
-        ->setCallback(function ($val,$formatDecimals) {return "$".(number_format($val, 2, '.', ','));})
+        // ->setCallback(function ($val,$formatDecimals) {return "$".(number_format($val, 2, '.', ','));})
+        ->setCallback(function ($val) {return (money_format('%(#12n',$val));})
+        ->addFilter(
+              (new FilterConfig)
+                ->setName('costvar')
+                ->setOperator(FilterConfig::OPERATOR_EQ)
+            )
         );
       } else {
 
@@ -365,6 +399,11 @@ if (!function_exists('AddColumns')) {
         ->setName($colField)
         ->setLabel($colHeader)
         ->setSortable($colSortable)
+        ->addFilter(
+            (new FilterConfig)
+                ->setName($colField)
+                ->setOperator(FilterConfig::OPERATOR_LIKE)
+        )
       );
     }
   }
