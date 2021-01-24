@@ -536,6 +536,19 @@ if (!function_exists('TestOnclickFunction')) {
   }
 }
 
+if (!function_exists('getTimestamp')) {
+  function getTimestamp()
+  {
+
+  // $timestamp = "20210124";
+  // $timestamp = date("Y-m-d", strtotime("12th february 2017"));
+  // $timestamp = date("Ymd:his");
+    $timestamp = date("Ymdhis");
+  return $timestamp;
+
+  }
+}
+
 if (!function_exists('posShowInit')) {
   function posShowInit()
   {

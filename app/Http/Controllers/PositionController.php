@@ -483,14 +483,16 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
 //######################
 // test functionality to export to Csv
 // Seems to have worked.  Saves file to C:\Users\Jeffe\Homestead\Projects\spark-installer\PowerPCS-Spark\public
-// $positions = position::get()->toArray();
-// // dd($positions);
+$positions = position::get()->toArray();
+// dd($positions);
+//  UPDATE:  now saves to C:\Users\Jeffe\Homestead\Projects\spark-installer\PowerPCS-Spark\FileExports\TEAM00001
+$fp = fopen('../FileExports/TEAM00001/xxxfile.' . getTimestamp() .  '.csv', 'w');
 // $fp = fopen('xxxfile.csv', 'w');
-// foreach ($positions as $pos) {
-//   // dd($pos);
-//     fputcsv($fp, $pos);
-// }
-// fclose($fp);
+foreach ($positions as $pos) {
+  // dd($pos);
+    fputcsv($fp, $pos);
+}
+fclose($fp);
 //######################
 //######################
 //######################
