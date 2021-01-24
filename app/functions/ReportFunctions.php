@@ -199,7 +199,7 @@ AddFilters($input,$query);
               // So, to print need to pass the grid to a new, clean HTML page with not frills that will mess up the print job
               (new OneCellRow)
                ->setRenderSection(RenderableRegistry::SECTION_END)
-               ->setComponents([new ColumnHeadersRow,new Pager,]), //end ->setComponenets
+               ->setComponents([new ColumnHeadersRow,new Pager,new ShowingRecords,]), //end ->setComponenets
                  // (new ColumnHeadersRow),
 
           ]) //end ->setComponents
@@ -358,7 +358,7 @@ if (!function_exists('AddColumns')) {
       $colHidden      =$repcols->hidden;
       $colFormat      =$repcols->format;
 
-      
+
 
       // dump($colSortable);
 
