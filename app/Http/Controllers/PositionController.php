@@ -654,6 +654,8 @@ fclose($fp);
       $position = Position::find($id);
       $position->delete();
 
+// this redirects to position #9.  Need to find first position for the team and go there instead
+// JLB 2021-01-26
       return redirect('/positions/9')->with('success', 'Position deleted!');
     }
 }
