@@ -219,6 +219,8 @@ sessionStorage.getItem("expandStatus")
 
     <div>
       Put EXPORT TO CSV button here
+      <a href={{ route('dumpGridToCsv') }}>Dump to CSV </a><br>
+
       {!! $grid !!}
     </div>
   </div>

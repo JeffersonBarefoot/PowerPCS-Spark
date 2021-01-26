@@ -17,4 +17,6 @@ Route::get('/home', 'HomeController@show');
 
 Route::get('/verifydestroy', 'PositionController@verifydestroy')->name('verifydestroy');
 Route::resource('positions', 'PositionController');
+
+Route::get('/dumpGridToCsv', 'ReportController@dumpGridToCsv')->name('dumpGridToCsv');
 Route::resource('reports', 'ReportController');

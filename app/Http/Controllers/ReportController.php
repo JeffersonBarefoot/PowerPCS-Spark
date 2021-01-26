@@ -296,9 +296,18 @@ $input = $request->all();
 
 $grid = "";
 $gridSummary = "";
-$grid = BuildReport($reportid,$reporttype,$input,$report);
-$gridSummary = BuildReportSummary($reportid,$reporttype,$input);
 
+$query = BuildQuery($reportid,$reporttype,$input,$report);
+$querySummary = "";
+
+$CSVData = $query->get()->toArray();
+Session::put('CSVDataFromGrid',$CSVData);
+
+$grid = BuildReport($reportid,$reporttype,$input,$report,$query);
+// $gridSummary = BuildReportSummary($reportid,$reporttype,$input);
+
+
+// ExportReportToCsv($CSVData);
 
       //****************************
       // R E T U R N   T O   positions.show
@@ -399,4 +408,30 @@ $gridSummary = BuildReportSummary($reportid,$reporttype,$input);
 
       return redirect('/positions')->with('success', 'Position deleted!');
     }
+
+    //***************************************************
+    //***************************************************
+    //***************************************************
+    //**   dumpGridToCsv
+    //***************************************************
+    //***************************************************
+    //***************************************************
+   public function dumpGridToCsv()
+   {
+
+     $fileCreated = fopen('../FileExports/TEAM00001/xyzfile.' . getTimestamp() .  '.csv', 'w');
+     // $fp = fopen('xxxfile.csv', 'w');
+
+     $CSVData = Session::get('CSVDataFromGrid');
+
+
+     foreach ($CSVData as $exportRecord) {
+       // dd($pos);
+         fputcsv($fileCreated, $exportRecord);
+     }
+     fclose($fileCreated);
+
+     return redirect('/reports/2')->with('success', 'CSV Export File Created');
+
+   }
 }

@@ -50,8 +50,8 @@ use Nayjest\Grids\GridConfig;
 // build the REPORT.SHOW.BLADE main report grid
 //><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
 //><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
-if (!function_exists('BuildReport')) {
-    function BuildReport($reportId,$reportType,$input,$report)
+if (!function_exists('BuildQuery')) {
+    function BuildQuery($reportId,$reportType,$input,$report)
 
     {
 
@@ -76,6 +76,7 @@ if (!function_exists('BuildReport')) {
           $query = (new Position)
             ->newQuery()
             ->select('*');
+                        return $query;
           break;
 
         case "POSH":
@@ -83,6 +84,7 @@ if (!function_exists('BuildReport')) {
           ->newQuery()
           ->select('*')
           ->join('hpositions', 'positions.posno', '=', 'hpositions.posno');
+                      return $query;
         break;
 
           break;
@@ -102,13 +104,15 @@ if (!function_exists('BuildReport')) {
             ->join('positions', 'incumbents.posno', '=', 'positions.posno')
             ->where('positions.Active', '=', 'A');
 
-
+            return $query;
 
           break;
 
         case "INCH":
           // code
 
+
+            return $query;
           break;
 
         case "BUDG":
@@ -131,26 +135,36 @@ if (!function_exists('BuildReport')) {
             ->leftjoin('incumbents', 'positions.id', '=', 'incumbents.posid')
             ->groupBy('positions.company','positions.posno','positions.descr');
 
+            return $query;
           break;
 
         case "VAC":
           // code
 
+            return $query;
           break;
 
         case "RECR":
           // code
 
+            return $query;
           break;
 
         default:
 
+            return $query;
+        return $query;
+
       }
+    }
+}
 
+if (!function_exists('BuildReport')) {
+    function BuildReport($reportId,$reportType,$input,$report,$query){
+// dd($query);
+    AddFilters($input,$query);
 
-AddFilters($input,$query);
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
       // instantiate grid configuration object, set data provider
       $config = new GridConfig();
@@ -208,6 +222,23 @@ AddFilters($input,$query);
       // add columns from the AddColumns() custom function
       AddColumns($config,$reportId);
       // dump($config);
+
+      // // dump data into an array so it is ready to be exported to Csv
+      // // $CSVData = $config::get()->toArray();
+      // $CSVData = $query->get()->toArray();
+      // // dd($CSVData);
+      //
+      // $fileCreated = fopen('../FileExports/TEAM00001/xxxfile.' . getTimestamp() .  '.csv', 'w');
+      // // $fp = fopen('xxxfile.csv', 'w');
+      // foreach ($CSVData as $exportRecord) {
+      //   // dd($pos);
+      //     fputcsv($fileCreated, $exportRecord);
+      // }
+      // fclose($fileCreated);
+
+
+
+
 
       // render the grid, and send it to the HTML
       $grid = new Grid($config);
@@ -448,7 +479,7 @@ if (!function_exists('AddColumnSubs')) {
         $formatColumn = "FALSE";
       }
 
-dump("1".$colField);
+// dump("1".$colField);
 
       if ($formatColumn == "TRUE") {
       $config->addColumn((new FieldConfig())
@@ -606,3 +637,20 @@ DB::update(DB::RAW('drop temporary table tempQueries'));
 
 }
 }
+
+// if (!function_exists('ExportReportToCsv')) {
+//   function ExportReportToCsv($CSVData)
+//   {
+//     $fileCreated = fopen('../FileExports/TEAM00001/xxxfile.' . getTimestamp() .  '.csv', 'w');
+//     // $fp = fopen('xxxfile.csv', 'w');
+//     foreach ($CSVData as $exportRecord) {
+//       // dd($pos);
+//         fputcsv($fileCreated, $exportRecord);
+//     }
+//     fclose($fileCreated);
+//
+//
+//
+//
+//   }
+// }
