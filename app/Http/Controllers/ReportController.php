@@ -419,7 +419,7 @@ $grid = BuildReport($reportid,$reporttype,$input,$report,$query);
    public function dumpGridToCsv()
    {
 
-     $fileCreated = fopen('../FileExports/TEAM00001/xyzfile.' . getTimestamp() .  '.csv', 'w');
+     $fileCreated = fopen('../FileExports/TEAM00001/wxyzfile.' . getTimestamp() .  '.csv', 'w');
      // $fp = fopen('xxxfile.csv', 'w');
 
      $CSVData = Session::get('CSVDataFromGrid');
