@@ -172,6 +172,18 @@ class PositionController extends Controller
 // dump('id');
 // dump($id);
 
+
+
+      // set parameters for the current TEAM to session variables
+      $user = Auth::user();
+      Session::put('level1Desc', $user->currentTeam->Level1Desc);
+      Session::put('level2Desc', $user->currentTeam->Level2Desc);
+      Session::put('level3Desc', $user->currentTeam->Level3Desc);
+      Session::put('level4Desc', $user->currentTeam->Level4Desc);
+      Session::put('level5Desc', $user->currentTeam->Level5Desc);
+      // dump($user->currentTeam->Level1Desc);
+
+
       // if sess var positionID is null, then this is a fresh launch.  Save the current ID to the session variable
       $sessionPositionID = Session::get('positionID');
       if (is_null($sessionPositionID)) {

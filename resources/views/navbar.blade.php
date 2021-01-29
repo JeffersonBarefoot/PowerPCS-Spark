@@ -70,6 +70,12 @@
                 <?php $posNavbarLevel4Query=Session::get('posNavbarLevel4Query') ?>
                 <?php $posNavbarLevel5Query=Session::get('posNavbarLevel5Query') ?>
 
+                <?php $posNavbarLevel1Desc=Session::get('level1Desc') ?>
+                <?php $posNavbarLevel2Desc=Session::get('level2Desc') ?>
+                <?php $posNavbarLevel3Desc=Session::get('level3Desc') ?>
+                <?php $posNavbarLevel4Desc=Session::get('level4Desc') ?>
+                <?php $posNavbarLevel5Desc=Session::get('level5Desc') ?>
+
                 <table class="table table-condensed">
                   <col>
                   <col>
@@ -79,27 +85,27 @@
                   </tr>
 
                   <tr>
-                    <td>Locations starting with:</td>
+                    <td>{{$posNavbarLevel1Desc}} starting with:</td>
                     <td><input type="text" class="form-control" style="font-size:11pt;" name="level1" value={{ $posNavbarLevel1Query }}></td>
                   </tr>
 
                   <tr>
-                    <td>Departments starting with:</td>
+                    <td>{{$posNavbarLevel2Desc}} starting with:</td>
                     <td><input type="text" class="form-control" style="font-size:11pt;" name="level2" value={{ $posNavbarLevel2Query }}></td>
                   </tr>
 
                   <tr>
-                    <td>... starting with:</td>
+                    <td>{{$posNavbarLevel3Desc}} starting with:</td>
                     <td><input type="text" class="form-control" style="font-size:11pt;" name="level3" value={{ $posNavbarLevel3Query }}></td>
                   </tr>
 
                   <tr>
-                    <td>... starting with:</td>
+                    <td>{{$posNavbarLevel4Desc}} starting with:</td>
                     <td><input type="text" class="form-control" style="font-size:11pt;" name="level4" value={{ $posNavbarLevel4Query }}></td>
                   </tr>
 
                   <tr>
-                    <td>... starting with:</td>
+                    <td>{{$posNavbarLevel5Desc}} starting with:</td>
                     <td><input type="text" class="form-control" style="font-size:11pt;" name="level5" value={{ $posNavbarLevel5Query }}></td>
                   </tr>
 
