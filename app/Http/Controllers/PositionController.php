@@ -179,7 +179,7 @@ class PositionController extends Controller
         Session::put('positionID', $id);
       }
 
-      // the next 3 IFs check to see if a search parameter has been passed via request-inputs from NavBar.
+      // the next IFs check to see if a search parameter has been passed via request-inputs from NavBar.
       // if specific parameters have been passed then remember them.
       // if nothing has been passed, do nothing so that the session variables don't change and Navbar remembers the last search when you go back to the position.show.blade
       if (request()->has('company')) {
@@ -203,6 +203,46 @@ class PositionController extends Controller
           Session::put('posNavbarPosnoQuery','');
         } else {
           Session::put('posNavbarPosnoQuery',request()->input('posno'));
+        }
+      }
+
+      if (request()->has('level1')) {
+        if (empty(request()->input('level1'))) {
+          Session::put('posNavbarLevel1Query','');
+        } else {
+          Session::put('posNavbarLevel1Query',request()->input('level1'));
+        }
+      }
+
+      if (request()->has('level2')) {
+        if (empty(request()->input('level2'))) {
+          Session::put('posNavbarLevel2Query','');
+        } else {
+          Session::put('posNavbarLevel2Query',request()->input('level2'));
+        }
+      }
+
+      if (request()->has('level3')) {
+        if (empty(request()->input('level3'))) {
+          Session::put('posNavbarLevel3Query','');
+        } else {
+          Session::put('posNavbarLevel3Query',request()->input('level3'));
+        }
+      }
+
+      if (request()->has('level4')) {
+        if (empty(request()->input('level4'))) {
+          Session::put('posNavbarLevel4Query','');
+        } else {
+          Session::put('posNavbarLevel4Query',request()->input('level4'));
+        }
+      }
+
+      if (request()->has('level5')) {
+        if (empty(request()->input('level5'))) {
+          Session::put('posNavbarLevel5Query','');
+        } else {
+          Session::put('posNavbarLevel5Query',request()->input('level5'));
         }
       }
 
@@ -318,6 +358,11 @@ class PositionController extends Controller
       $navbarcompany = Session::get('posNavbarCompanyQuery');
       $navbarposno = Session::get('posNavbarPosnoQuery');
       $navbardescr = Session::get('posNavbarDescrQuery');
+      $navbarlevel1 = Session::get('posNavbarLevel1Query');
+      $navbarlevel2 = Session::get('posNavbarLevel2Query');
+      $navbarlevel3 = Session::get('posNavbarLevel3Query');
+      $navbarlevel4 = Session::get('posNavbarLevel4Query');
+      $navbarlevel5 = Session::get('posNavbarLevel5Query');
 
 
       // dump($request);
@@ -330,6 +375,11 @@ class PositionController extends Controller
       $positionsnavbar = Position::where('company','like',"$navbarcompany%")
                           ->where('posno','like',"$navbarposno%")
                           ->where('descr','like',"%$navbardescr%")
+                          ->where('level1','like',"$navbarlevel1%")
+                          ->where('level2','like',"$navbarlevel2%")
+                          ->where('level3','like',"$navbarlevel3%")
+                          ->where('level4','like',"$navbarlevel4%")
+                          ->where('level5','like',"$navbarlevel5%")
                           ->orderby("company")
                           ->orderby("descr")
                           ->get();

@@ -53,7 +53,7 @@
               <h4 class="panel-title">
                 <div class="row">
                   <div class="col-md-12">
-                    <a data-toggle="collapse" href="#collapseRep01">Search:</a>
+                    <a data-toggle="collapse" href="#collapseRep01">Filter list to include:</a>
                   </div>
                 </div>
               </h4>
@@ -64,22 +64,52 @@
                 <?php $posNavbarCompanyQuery=Session::get('posNavbarCompanyQuery') ?>
                 <?php $posNavbarPosnoQuery=Session::get('posNavbarPosnoQuery') ?>
                 <?php $posNavbarDescrQuery=Session::get('posNavbarDescrQuery') ?>
+                <?php $posNavbarLevel1Query=Session::get('posNavbarLevel1Query') ?>
+                <?php $posNavbarLevel2Query=Session::get('posNavbarLevel2Query') ?>
+                <?php $posNavbarLevel3Query=Session::get('posNavbarLevel3Query') ?>
+                <?php $posNavbarLevel4Query=Session::get('posNavbarLevel4Query') ?>
+                <?php $posNavbarLevel5Query=Session::get('posNavbarLevel5Query') ?>
 
                 <table class="table table-condensed">
                   <col>
                   <col>
                   <tr>
-                    <td>Company starts with:</td>
+                    <td>Companies starting with:</td>
                     <td><input type="text" class="form-control" style="font-size:11pt;" name="company" value={{ $posNavbarCompanyQuery }}></td>
                   </tr>
 
                   <tr>
-                    <td>Position Number starts with:</td>
+                    <td>Locations starting with:</td>
+                    <td><input type="text" class="form-control" style="font-size:11pt;" name="level1" value={{ $posNavbarLevel1Query }}></td>
+                  </tr>
+
+                  <tr>
+                    <td>Departments starting with:</td>
+                    <td><input type="text" class="form-control" style="font-size:11pt;" name="level2" value={{ $posNavbarLevel2Query }}></td>
+                  </tr>
+
+                  <tr>
+                    <td>... starting with:</td>
+                    <td><input type="text" class="form-control" style="font-size:11pt;" name="level3" value={{ $posNavbarLevel3Query }}></td>
+                  </tr>
+
+                  <tr>
+                    <td>... starting with:</td>
+                    <td><input type="text" class="form-control" style="font-size:11pt;" name="level4" value={{ $posNavbarLevel4Query }}></td>
+                  </tr>
+
+                  <tr>
+                    <td>... starting with:</td>
+                    <td><input type="text" class="form-control" style="font-size:11pt;" name="level5" value={{ $posNavbarLevel5Query }}></td>
+                  </tr>
+
+                  <tr>
+                    <td>Position Numbers starting with:</td>
                     <td><input type="text" class="form-control" name="posno" value={{ $posNavbarPosnoQuery }}></td>
                   </tr>
 
                   <tr>
-                    <td>Description contains:</td>
+                    <td>Descriptions containing:</td>
                     <td><input type="text" class="form-control" name="descr" value={{ $posNavbarDescrQuery }}></td>
                   </tr>
 
@@ -87,7 +117,7 @@
                 </table>
 
                 <!-- <input type="submit" name="submit" value="Submit (blank queries return all records)"> -->
-                <button type="submit" class="btn btn-primary btn-sm">Submit (blank queries return all records)</button>
+                <button type="submit" class="btn btn-primary btn-sm">Submit (blank fields return all positions)</button>
                 <!-- <button type="reset" class="btn btn-primary btn-sm">Reset Queries</button> -->
                 {{ csrf_field() }}
 
