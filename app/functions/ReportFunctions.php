@@ -122,6 +122,8 @@ if (!function_exists('BuildQuery')) {
             ->select('positions.company as poscomp'
                 ,'positions.posno'
                 ,'positions.descr'
+                ,'positions.level1'
+                ,'positions.level2'
                 ,DB::raw("'|' as divider")
                 ,DB::raw("' ' as dividerspace")
                 ,DB::raw('sum(positions.budgsal) as budgcost')
@@ -129,11 +131,11 @@ if (!function_exists('BuildQuery')) {
                 ,DB::raw('sum(if(incumbents.ann_cost<>0,incumbents.ann_cost,0)) as actcost')
                 ,DB::raw('sum(if(incumbents.fulltimeequiv<>0,incumbents.fulltimeequiv,0)) as actfte')
                 ,DB::raw('sum(positions.fulltimeequiv-if(incumbents.fulltimeequiv<>0,incumbents.fulltimeequiv,0)) as ftevar')
-                ,DB::raw('sum(positions.budgsal-incumbents.ann_cost) as costvar')
+                ,DB::raw('sum(positions.budgsal-if(incumbents.fulltimeequiv<>0,incumbents.ann_cost,0)) as costvar')
                 ,DB::raw('count(incumbents.empno) as inccount')
                 )
             ->leftjoin('incumbents', 'positions.id', '=', 'incumbents.posid')
-            ->groupBy('positions.company','positions.posno','positions.descr');
+            ->groupBy('positions.company','positions.posno','positions.descr','positions.level1','positions.level2');
 
             return $query;
           break;
