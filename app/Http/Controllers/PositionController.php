@@ -161,6 +161,8 @@ class PositionController extends Controller
       // dump("PositionController.Show has fired");
       // dump($request);
 
+      $request->flash();
+      // dump($request);
 
       if (is_null($id)) {
         $id=1;
@@ -177,6 +179,44 @@ class PositionController extends Controller
         Session::put('positionID', $id);
       }
 
+      // the next 3 IFs check to see if a search parameter has been passed via request-inputs from NavBar.
+      // if specific parameters have been passed then remember them.
+      // if nothing has been passed, do nothing so that the session variables don't change and Navbar remembers the last search when you go back to the position.show.blade
+      if (request()->has('company')) {
+        if (empty(request()->input('company'))) {
+          Session::put('posNavbarCompanyQuery','');
+        } else {
+          Session::put('posNavbarCompanyQuery',request()->input('company'));
+        }
+      }
+
+      if (request()->has('descr')) {
+        if (empty(request()->input('descr'))) {
+          Session::put('posNavbarDescrQuery','');
+        } else {
+          Session::put('posNavbarDescrQuery',request()->input('descr'));
+        }
+      }
+
+      if (request()->has('posno')) {
+        if (empty(request()->input('posno'))) {
+          Session::put('posNavbarPosnoQuery','');
+        } else {
+          Session::put('posNavbarPosnoQuery',request()->input('posno'));
+        }
+      }
+
+      // if (!empty(request()->input('posno'))) {
+      //   Session::put('posNavbarPosnoQuery',request()->input('posno'));
+      // }
+      //
+      // if (!empty(request()->input('descr'))) {
+      //   Session::put('posNavbarDescrQuery',request()->input('descr'));
+      // }
+      //xxxxxxxxxxxxxxxxxxxxxxxx
+      //xxxxxxxxxxxxxxxxxxxxxxxx
+
+
       //\/\/\/\/\/\/\/\/\/\/\
       // Restore all variables as they were on last SHOW. could be NULL if first time
       //\/\/\/\/\/\/\/\/\/\/\
@@ -190,7 +230,6 @@ class PositionController extends Controller
       //
       //newly selected position
 
-
       if ($sessionPositionID <> $id) { // not on the same position as last time
         // code...
         Session::put('positionID', $id);
@@ -200,12 +239,12 @@ class PositionController extends Controller
         // dump($id);
         // clear out all session variables.  If applicable, reset to the current position
         Session::put('freshPosition', 'YES');
-        $freshPosition = "YES";
+          $freshPosition = "YES";
         Session::put('reportsDirTo', '');
         Session::put('reportsIndirTo', '');
         Session::put('viewincid', '');
         Session::put('viewinchistid', '');
-        $viewinchistid='';
+          $viewinchistid='';
         Session::put('viewPosHistId', '');
         // Session::put('editMode', '');
 
@@ -270,9 +309,15 @@ class PositionController extends Controller
       //****************************
       // N A V B A R
       // these variables are used to populate the NavBar, not the main portion of Positions.Show
-      $navbarcompany = $request->input('company');
-      $navbarposno = $request->input('posno');
-      $navbardescr = $request->input('descr');
+      // $navbarcompany = $request->input('company');
+      // $navbarposno = $request->input('posno');
+      // $navbardescr = $request->input('descr');
+      // $navbarcompany = $request->input('company');
+      // $navbarposno = $request->input('posno');
+      // $navbardescr = $request->input('descr');
+      $navbarcompany = Session::get('posNavbarCompanyQuery');
+      $navbarposno = Session::get('posNavbarPosnoQuery');
+      $navbardescr = Session::get('posNavbarDescrQuery');
 
 
       // dump($request);

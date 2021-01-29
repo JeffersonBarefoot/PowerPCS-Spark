@@ -61,24 +61,26 @@
             <div id="collapseRep01" class="panel-collapse collapse">
               <div class="panel-body">
 
-
+                <?php $posNavbarCompanyQuery=Session::get('posNavbarCompanyQuery') ?>
+                <?php $posNavbarPosnoQuery=Session::get('posNavbarPosnoQuery') ?>
+                <?php $posNavbarDescrQuery=Session::get('posNavbarDescrQuery') ?>
 
                 <table class="table table-condensed">
                   <col>
                   <col>
                   <tr>
-                    <td>Company:</td>
-                    <td><input type="text" class="form-control" style="font-size:11pt;" name="company"/></td>
+                    <td>Company starts with:</td>
+                    <td><input type="text" class="form-control" style="font-size:11pt;" name="company" value={{ $posNavbarCompanyQuery }}></td>
                   </tr>
 
                   <tr>
-                    <td>Position Number:</td>
-                    <td><input type="text" class="form-control" name="posno"/></td>
+                    <td>Position Number starts with:</td>
+                    <td><input type="text" class="form-control" name="posno" value={{ $posNavbarPosnoQuery }}></td>
                   </tr>
 
                   <tr>
-                    <td>Description:</td>
-                    <td><input type="text" class="form-control" name="descr"/></td>
+                    <td>Description contains:</td>
+                    <td><input type="text" class="form-control" name="descr" value={{ $posNavbarDescrQuery }}></td>
                   </tr>
 
 
@@ -86,6 +88,7 @@
 
                 <!-- <input type="submit" name="submit" value="Submit (blank queries return all records)"> -->
                 <button type="submit" class="btn btn-primary btn-sm">Submit (blank queries return all records)</button>
+                <!-- <button type="reset" class="btn btn-primary btn-sm">Reset Queries</button> -->
                 {{ csrf_field() }}
 
                 </form>
