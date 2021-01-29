@@ -312,7 +312,8 @@ if (!function_exists('ImportPositions')) {
   //***************************************************
   function ImportPositions($incomingfile)
   {
-    if (($handle = fopen ( public_path () . '/ImportFiles/samplepositions.csv', 'r' )) !== FALSE) {
+    // if (($handle = fopen ( public_path () . '/ImportFiles/samplepositions.csv', 'r' )) !== FALSE) {
+    if (($handle = fopen ( public_path () . '/ImportFiles/brmpositions.csv', 'r' )) !== FALSE) {
 
       // extract headers so we can see what fields are being imported
       $header = fgetcsv($handle, 2000, ',');
@@ -347,6 +348,10 @@ if (!function_exists('ImportPositions')) {
       }
 
       fclose ( $handle );
+
+      rename('/ImportFiles/brmpositions.csv.imported','/ImportFiles/brmpositions.csv');
+
+
     }
   }
 }
