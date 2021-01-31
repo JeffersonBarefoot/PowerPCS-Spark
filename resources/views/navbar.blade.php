@@ -85,28 +85,39 @@
                   </tr>
 
                   <tr>
-                    <td>{{$posNavbarLevel1Desc}} starting with:</td>
-                    <td><input type="text" class="form-control" style="font-size:11pt;" name="level1" value={{ $posNavbarLevel1Query }}></td>
+                    @if ( $posNavbarLevel1Desc <> "" )
+                      <td>{{$posNavbarLevel1Desc}}s starting with:</td>
+                      <td><input type="text" class="form-control" style="font-size:11pt;" name="level1" value={{ $posNavbarLevel1Query }}></td>
+                    @endif
                   </tr>
 
                   <tr>
-                    <td>{{$posNavbarLevel2Desc}} starting with:</td>
-                    <td><input type="text" class="form-control" style="font-size:11pt;" name="level2" value={{ $posNavbarLevel2Query }}></td>
+                    @if ( $posNavbarLevel2Desc <> "" )
+                      <td>{{$posNavbarLevel2Desc}}s starting with:</td>
+                      <td><input type="text" class="form-control" style="font-size:11pt;" name="level2" value={{ $posNavbarLevel2Query }}></td>
+                    @endif
+                  </tr>
+
+
+                  <tr>
+                    @if ( $posNavbarLevel3Desc <> "" )
+                      <td>{{$posNavbarLevel3Desc}}s starting with:</td>
+                      <td><input type="text" class="form-control" style="font-size:11pt;" name="level3" value={{ $posNavbarLevel3Query }}></td>
+                    @endif
                   </tr>
 
                   <tr>
-                    <td>{{$posNavbarLevel3Desc}} starting with:</td>
-                    <td><input type="text" class="form-control" style="font-size:11pt;" name="level3" value={{ $posNavbarLevel3Query }}></td>
+                    @if ( $posNavbarLevel4Desc <> "" )
+                      <td>{{$posNavbarLevel4Desc}}s starting with:</td>
+                      <td><input type="text" class="form-control" style="font-size:11pt;" name="level4" value={{ $posNavbarLevel4Query }}></td>
+                    @endif
                   </tr>
 
                   <tr>
-                    <td>{{$posNavbarLevel4Desc}} starting with:</td>
-                    <td><input type="text" class="form-control" style="font-size:11pt;" name="level4" value={{ $posNavbarLevel4Query }}></td>
-                  </tr>
-
-                  <tr>
-                    <td>{{$posNavbarLevel5Desc}} starting with:</td>
-                    <td><input type="text" class="form-control" style="font-size:11pt;" name="level5" value={{ $posNavbarLevel5Query }}></td>
+                    @if ( $posNavbarLevel5Desc <> "" )
+                      <td>{{$posNavbarLevel5Desc}}s starting with:</td>
+                      <td><input type="text" class="form-control" style="font-size:11pt;" name="level5" value={{ $posNavbarLevel5Query }}></td>
+                    @endif
                   </tr>
 
                   <tr>
