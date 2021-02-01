@@ -208,8 +208,6 @@ $input = $request->all();
 //dump('$request');
 //dump($request);
 
-
-
       $report = Report::find($id);
       // $reportid = $report->id;
       // find the report type, i.e. POS, from $report.group1
@@ -306,8 +304,9 @@ Session::put('CSVDataFromGrid',$CSVData);
 $grid = BuildReport($reportid,$reporttype,$input,$report,$query);
 // $gridSummary = BuildReportSummary($reportid,$reporttype,$input);
 
+dump('reportcontroller line 307');
+dump(session()->all());
 
-// ExportReportToCsv($CSVData);
 
       //****************************
       // R E T U R N   T O   positions.show

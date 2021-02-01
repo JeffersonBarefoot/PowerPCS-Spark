@@ -545,11 +545,28 @@ DB::insert(
 
 $id = 0;
 
+//clear out existing session variables that relate to report queries.
+//need to do this, or else old variables hang around and cause problems when user moves to a new report
+foreach(Session::all() as $key => $obj):
+  if (str_contains($key,"||||")) {
+    // dump($key);
+    // dump(Session::get($key));
+    Session::forget($key);
+    // dump(Session::get($key));
+  }
+endforeach;
+
 // iterate through the values in the $input array
 //
 foreach ($input as $key => $value){
 
   $value = Arr::get($input,$key);
+
+  // save the value out to a session variable so that we can pass the values back to the form when go to report.blade.show
+  // dump("adding session variable in report functions");
+  // dump($key);
+  // dump($value);
+  Session::put($key,$value);
 
   // dump($key);
   // dump($value);
@@ -599,6 +616,11 @@ foreach ($exportQueryList as $WhereClause){
   $WCTableField=$WCTable.'.'.$WCField;
   $WCBegLike=$WCBeg."%";
 
+  // save the value out to a session variable so that we can pass the values back to the form when go to report.blade.show
+  // dump("adding session variable in report functions");
+  // dump($key);
+  // dd($value);
+  // Session::put($key,$value);
 
   // begvalue is null, skip
   if (is_null($WCBeg)){
