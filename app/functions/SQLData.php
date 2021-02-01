@@ -526,21 +526,6 @@ if (!function_exists('ImportHIncumbents')) {
   }
 }
 
-if (!function_exists('TestOnclickFunction')) {
-  function TestOnclickFunction()
-  {
-    //    $initialValue = Session::get('expandIncumbents');
-    $initialValue = 'ABCDEFG' ;
-    dd($initialValue);
-
-    if ($initialValue == 'YES') {
-      $finalValue = 'NO' ;
-    } else {
-      $finalValue = 'YES' ;
-    }
-  }
-}
-
 if (!function_exists('getTimestamp')) {
   function getTimestamp()
   {
@@ -558,13 +543,29 @@ if (!function_exists('getTimestamp')) {
   }
 }
 
-if (!function_exists('posShowInit')) {
-  function posShowInit()
+if (!function_exists('sessionSet')) {
+  function sessionSet($key,$value)
   {
-    // Extract all session variables to
+    // example:  Session::put($key,$value);
+    Session::put($key,$value);
+    return true;
+  }
+}
 
+if (!function_exists('sessionGet')) {
+  function sessionGet($key)
+  {
+    // example:  Session::put($key,$value);
+    $getSessionValue = Session::get($key);
+    return $getSessionValue;
+  }
+}
 
-
-
+if (!function_exists('sessionForgetOne')) {
+  function sessionForgetOne($key)
+  {
+    // example:  Session::put($key,$value);
+    Session::forget($key);
+    return true;
   }
 }

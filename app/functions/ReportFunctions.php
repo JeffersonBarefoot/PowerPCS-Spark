@@ -55,19 +55,6 @@ if (!function_exists('BuildQuery')) {
 
     {
 
-// dump('ReportFunctions.BuildReport() $input');
-// dump($input);
-
-// foreach ($input as $queryParameters){
-//   dump($queryParameters);
-//
-//   // $key = array_search ($queryParameters, $input);
-//   $key = key($input);
-//   dump($key);
-//
-// }
-
-
       //######################################
       // build $query
       //######################################
@@ -549,27 +536,17 @@ $id = 0;
 //need to do this, or else old variables hang around and cause problems when user moves to a new report
 foreach(Session::all() as $key => $obj):
   if (str_contains($key,"||||")) {
-    // dump($key);
-    // dump(Session::get($key));
-    Session::forget($key);
-    // dump(Session::get($key));
+    sessionForgetOne($key);
   }
 endforeach;
 
 // iterate through the values in the $input array
-//
 foreach ($input as $key => $value){
 
   $value = Arr::get($input,$key);
 
   // save the value out to a session variable so that we can pass the values back to the form when go to report.blade.show
-  // dump("adding session variable in report functions");
-  // dump($key);
-  // dump($value);
-  Session::put($key,$value);
-
-  // dump($key);
-  // dump($value);
+  sessionSet($key,$value);
 
   // we have the key (beg/end, table, field) and the user's input value
   // first item in array is key = "_token."  Ignore this element
@@ -603,8 +580,6 @@ foreach ($input as $key => $value){
 
 $exportQueryList = \DB::table('tempQueries')
   ->get();
-// dump ('Temporary Table (actually, $exportQueryList)');
-// dump ($exportQueryList);
 
 foreach ($exportQueryList as $WhereClause){
   $WCTable=$WhereClause->tablename;
@@ -615,12 +590,6 @@ foreach ($exportQueryList as $WhereClause){
 
   $WCTableField=$WCTable.'.'.$WCField;
   $WCBegLike=$WCBeg."%";
-
-  // save the value out to a session variable so that we can pass the values back to the form when go to report.blade.show
-  // dump("adding session variable in report functions");
-  // dump($key);
-  // dd($value);
-  // Session::put($key,$value);
 
   // begvalue is null, skip
   if (is_null($WCBeg)){
@@ -661,20 +630,3 @@ DB::update(DB::RAW('drop temporary table tempQueries'));
 
 }
 }
-
-// if (!function_exists('ExportReportToCsv')) {
-//   function ExportReportToCsv($CSVData)
-//   {
-//     $fileCreated = fopen('../FileExports/TEAM00001/xxxfile.' . getTimestamp() .  '.csv', 'w');
-//     // $fp = fopen('xxxfile.csv', 'w');
-//     foreach ($CSVData as $exportRecord) {
-//       // dd($pos);
-//         fputcsv($fileCreated, $exportRecord);
-//     }
-//     fclose($fileCreated);
-//
-//
-//
-//
-//   }
-// }

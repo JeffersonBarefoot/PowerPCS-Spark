@@ -87,7 +87,7 @@ class ReportController extends Controller
         // $descr = $request->input('descr');
 //      dd($company);
 //      dd($posno);
- dump('ReportController.index');
+ // dump('ReportController.index');
 
         $positions = Position::all();
         //$positionsnavbar = Position::all();
@@ -214,7 +214,7 @@ $input = $request->all();
       $reporttype = $report->group1;
       $reportid = $report->reportid;
 
-      dump($reporttype);
+      // dump($reporttype);
 
 
       // include all queries for this reporttype (all standard POS or POSH or INC queries), and for this specific report
@@ -299,13 +299,13 @@ $query = BuildQuery($reportid,$reporttype,$input,$report);
 $querySummary = "";
 
 $CSVData = $query->get()->toArray();
-Session::put('CSVDataFromGrid',$CSVData);
+sessionSet('CSVDataFromGrid',$CSVData);
 
 $grid = BuildReport($reportid,$reporttype,$input,$report,$query);
 // $gridSummary = BuildReportSummary($reportid,$reporttype,$input);
 
-dump('reportcontroller line 307');
-dump(session()->all());
+// dump('reportcontroller line 307');
+// dump(session()->all());
 
 
       //****************************
@@ -421,8 +421,7 @@ dump(session()->all());
      $fileCreated = fopen('../FileExports/TEAM00001/wxyzfile.' . getTimestamp() .  '.csv', 'w');
      // $fp = fopen('xxxfile.csv', 'w');
 
-     $CSVData = Session::get('CSVDataFromGrid');
-
+     $CSVData = sessionGet('CSVDataFromGrid');
 
      foreach ($CSVData as $exportRecord) {
        // dd($pos);

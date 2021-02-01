@@ -160,22 +160,30 @@ sessionStorage.getItem("expandStatus")
             </thead>
 
             @foreach($reportqueries as $query)
+
+              <?php $reportQueryBegKey = 'beg|'.$query->table.'||'.$query->field.'|||'.$query->datatype.'||||' ?>
+              <?php $reportQueryEndKey = 'end|'.$query->table.'||'.$query->field.'|||'.$query->datatype.'||||' ?>
+
+
+
               <tr>
 
                 <td>{{$query->descr}}</td>
 
                 @if ($query->datatype=="DATE")
-                  <td><input type="date" id=beg|{{$query->table}}||{{$query->field}}||| name=beg|{{$query->table}}||{{$query->field}}|||{{$query->datatype}}||||></td>
+                  <!-- <td><input type="date" id=beg|{{$query->table}}||{{$query->field}}|||{{$query->datatype}}||||></td> -->
+                  <td><input type="date" id={{$reportQueryBegKey}} name={{$reportQueryBegKey}} value={{sessionGet($reportQueryBegKey)}}></td>
                 @else
-                  <td><input id=beg|{{$query->table}}||{{$query->field}}||| name=beg|{{$query->table}}||{{$query->field}}|||{{$query->datatype}}||||></td>
+                  <!-- <td><input id=beg|{{$query->table}}||{{$query->field}}||| name=beg|{{$query->table}}||{{$query->field}}|||{{$query->datatype}}||||></td> -->
+                  <td><input id={{$reportQueryBegKey}} name={{$reportQueryBegKey}} value={{sessionGet($reportQueryBegKey)}}></td>
                 @endif
 
                 <td>to</td>
 
                 @if ($query->datatype=="DATE")
-                  <td><input type="date" id=end|{{$query->table}}||{{$query->field}}||| name=end|{{$query->table}}||{{$query->field}}|||{{$query->datatype}}||||></td>
+                  <td><input type="date" id={{$reportQueryEndKey}} name={{$reportQueryEndKey}} value={{sessionGet($reportQueryEndKey)}}></td>
                 @else
-                  <td><input id=end|{{$query->table}}||{{$query->field}}||| name=end|{{$query->table}}||{{$query->field}}|||{{$query->datatype}}||||></td>
+                  <td><input id={{$reportQueryEndKey}} name={{$reportQueryEndKey}} value={{sessionGet($reportQueryEndKey)}}></td>
                 @endif
 
                 <td>{{$query->options}}</td>
@@ -189,7 +197,7 @@ sessionStorage.getItem("expandStatus")
           </table>
 
           <button type="submit" class="btn btn-primary btn-sm">Run Report</button>
-          <button type="reset" class="btn btn-primary btn-sm">Reset Queries</button>
+          <!-- <button type="reset" class="btn btn-primary btn-sm">Reset Queries</button> -->
 
         </div>
       </div>
@@ -218,7 +226,7 @@ sessionStorage.getItem("expandStatus")
     </div>
 
     <div>
-      
+
       <a href={{ route('dumpGridToCsv') }}>Export Report Data to CSV </a><br>
 
       {!! $grid !!}
