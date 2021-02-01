@@ -545,6 +545,141 @@
 
     <!-- ************************** -->
     <!-- ************************** -->
+    <!-- Org Levels -->
+    <!-- ************************** -->
+    <!-- ************************** -->
+    <div class="panel panel-default">
+
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <div class="row">
+            <div class="col-md-2">
+              <a data-toggle="collapse" href="#collapseOrgLevels">Organization</a>
+            </div>
+            <div class="col-md-10">
+              {{round($position->fulltimeequiv,3)}} FTEs / {{FormatMoney($position->budgsal)}}
+            </div>
+          </div>
+        </h4>
+      </div>
+
+      <div id="collapseOrgLevels" class="panel-collapse collapse">
+        <!-- <div class="panel-body">Full Time Equivalent Calculation -->
+        <div class="panel-body">
+          <!-- *************************** -->
+          <!-- Left div contains xxxxxxxxxxxxxxxxxxxxxx -->
+          <div class="row">
+            <div class="col-md-6">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="35%">Org Levels</th>
+                    <th width="35%"></th>
+                    <th width="10%"></th>
+                    <th width="10%"></th>
+                    <th width="10%"></th>
+                  </tr>
+                </thead>
+
+                <?php $level1Description = sessionGet('level1Desc') ?>
+                <?php $level2Description = sessionGet('level2Desc') ?>
+                <?php $level3Description = sessionGet('level3Desc') ?>
+                <?php $level4Description = sessionGet('level4Desc') ?>
+                <?php $level5Description = sessionGet('level5Desc') ?>
+                <tr>
+                  <td>{{$level1Description}}</td>
+                  <td><input type="text" class="form-control" name="Level1" value="{{$position->level1}}"></td>
+
+                </tr>
+              </table>
+            </div>
+            <div class="col-md-6">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="35%">Costs</th>
+                    <th width="35%"></th>
+                    <th width="10%"></th>
+                    <th width="10%"></th>
+                    <th width="10%"></th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <table class="table table-condensed">
+                <tr>
+                  <td>{{$level2Description}}</td>
+                  <td><input type="text" class="form-control" name="Level2" value="{{$position->level2}}"></td>
+                  <td width="10%">
+                  <td width="10%">
+                  <td width="10%">
+
+                </tr>
+
+                <tr>
+                  <td>{{$level3Description}}</td>
+                  <td><input type="text" class="form-control" name="Level3" value="{{$position->level3}}"></td>
+
+                </tr>
+
+                <tr>
+                  <td>{{$level4Description}}</td>
+                  <td><input type="text" class="form-control" name="Level4" value="{{$position->level4}}"></td>
+                  <td></td>
+                  <td></td>
+
+                </tr>
+              </table>
+            </div>
+
+            <!-- *************************** -->
+            <!-- Right div contains xxxxxxxxxxxxxxxxxxxxxx -->
+            <div class="col-md-6">
+              <table class="table table-condensed">
+                  <tr>
+                    <td width="35%">Pay Frequency</td>
+                    <td width="35%"><input type="text" class="form-control" name="payfreq" value="{{$position->payfreq}}"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                  </tr>
+                  <!-- <tr>
+                    <td>Pay Frequency</td>
+                    <td></td>
+                    <td></td>
+                  </tr> -->
+                  <tr>
+                    <td>x Budgeted Pay Rate</td>
+                    <td><input type="text" class="form-control" name="payrate" value="{{FormatDollars($position->payrate)}}"></td>
+                    <td></td>
+                  </tr>
+
+                  <tr>
+                    <td>x Budgeted FTEs</td>
+                    <td><input type="text" class="form-control" name="dummyfulltimeequiv" value="{{round($position->fulltimeequiv,3)}}"></td>
+                    <td></td>
+                  </tr>
+
+                  <tr>
+                    <td>= Budgeted Annual Cost</td>
+                    <td><input type="text" class="form-control" name="budgsal" value="{{FormatDollars($position->budgsal)}}"></td>
+                    <td></td>
+                  </tr>
+
+
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ************************** -->
+    <!-- ************************** -->
     <!-- Reports To -->
     <!-- ************************** -->
     <!-- ************************** -->
