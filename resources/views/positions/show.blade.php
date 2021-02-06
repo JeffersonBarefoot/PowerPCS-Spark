@@ -27,6 +27,9 @@
 
   <input type="hidden" id="testArial" name="testArial" value="3487"> -->
 
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
   <script>
 
     function initExpands() {
@@ -41,8 +44,6 @@
       x = " class='panel-collapse collapse' id='collapse1' ";
     }
 
-      // document.getElementById("p2").setAttribute("aria-expanded", x);
-      // document.getElementById("p2").innerHTML = "aria-expanded =" + x;
 
       if (typeof(Storage) !== "undefined") {
         if (sessionStorage.expandStatus) {
@@ -77,34 +78,108 @@
       }
     }
 
+    // This function runs when the value of one of the Budget fields is changed by the user
+    function updateBudgetValues() {
+
+      var nAnnFteHour, cFteFreq, nFteHours, nFullTimeEquiv, cPayFreq, nPayRate, nDummyFullTimeEquiv, nBudgSal, nPayPeriods,nFtePeriods;
+
+      // Gather values that user has input
+      // from the left column:
+      nAnnFteHour = document.getElementById('annftehour').value;
+      cFteFreq = document.getElementById('ftefreq').value;
+        cFteFreq = cFteFreq.substring(0,1);
+        cFteFreq = cFteFreq.toUpperCase();
+      nFteHours = document.getElementById('ftehours').value;
+      nFullTimeEquiv = document.getElementById('fulltimeequiv').value;
+      // from the right column
+      cPayFreq = document.getElementById('payfreq').value;
+        cPayFreq = cPayFreq.substring(0,1);
+        cPayFreq = cPayFreq.toUpperCase();
+      nPayRate = document.getElementById('payrate').value;
+          nPayRate = nPayRate.replace('$','');
+          nPayRate = nPayRate.replace(',','');
+      nDummyFullTimeEquiv = document.getElementById('dummyfulltimeequiv').value;
+      nBudgSal = document.getElementById('budgsal').value;
+
+      // validate data
+      // FTEFreq fields should only be W, B, S, M or A
+      // PayFreq fields should only be H, W, B, S, M or A
+
+
+      // calc # of pay periods
+      switch(cFteFreq) {
+        case 'W':
+          nFtePeriods = 52;
+          break;
+
+        case 'B':
+          nFtePeriods = 26;
+          break;
+
+        case 'S':
+          nFtePeriods = 24;
+          break;
+
+        case 'M':
+          nFtePeriods = 12;
+          break;
+
+        case 'A':
+          nFtePeriods = 1;
+          break;
+      }
+
+      // calc # of pay periods
+      switch(cPayFreq) {
+        case 'H':
+          nPayPeriods = nAnnFteHour;
+          break;
+
+        case 'W':
+          nPayPeriods = 52;
+          break;
+
+        case 'B':
+          nPayPeriods = 26;
+          break;
+
+        case 'S':
+          nPayPeriods = 24;
+          break;
+
+        case 'M':
+          nPayPeriods = 12;
+          break;
+
+        case 'A':
+          nPayPeriods = 1;
+          break;
+      }
+
+
+      // Calc # of FTEs
+      nFullTimeEquiv = (nFteHours * nFtePeriods)/nAnnFteHour
+
+      //Calc Budgeted Salary
+      nBudgSal = nPayRate * nPayPeriods * nFullTimeEquiv
+
+      // update all fields
+      document.getElementById("fulltimeequiv").setAttribute('value', nFullTimeEquiv );
+      document.getElementById("dummyfulltimeequiv").setAttribute('value', nFullTimeEquiv );
+      document.getElementById("budgsal").setAttribute('value', nBudgSal );
+    }
+
+
   </script>
+  <!-- ************************** -->
+  <!-- ************************** -->
+  <!-- ************************** -->
   <div class="row">
       <!-- <div class="col-sm-8 offset-sm-0"> -->
       <div class="col-md-12">
           <h1 class="display-5">&nbsp;&nbsp;&nbsp;{{$position->descr}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{$position->company}} / {{$position->posno}}</small></h1>
 
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-  <!-- ************************** -->
-
-<a href={{route('positions.show',$position->id)}}?editmode=switch>{{Session::get('editModeButtonText')}} </a><br>
+<a href={{route('positions.show',$position->id)}}?editmode=switch>{{Session::get('editModeButtonText')}} test</a><br>
 <a href={{route('positions.create')}}>Add New Position </a><br>
 <a href={{ route('verifydestroy') }}?positiontodelete={{$position->id}}>Delete This Position </a><br>
 
@@ -119,8 +194,8 @@
 <a href={{route('positions.update',$position->id)}}>Save Changes </a><br>
 
 
-</div>
-</div>
+      </div>
+  </div>
 
 
 
@@ -395,18 +470,18 @@
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="35%">FTEs</th>
-                    <th width="35%"></th>
+                    <th width="30%">Full Time Equivalents</th>
+                    <th width="30%"></th>
                     <th width="10%"></th>
                     <th width="10%"></th>
-                    <th width="10%"></th>
+                    <th width="40%"></th>
                   </tr>
                 </thead>
 
                 <tr>
                   <td>Annual FTE Basis</td>
-                  <td><input type="text" class="form-control" name="annftehour" value="{{$position->annftehour}}"></td>
-
+                  <td><input type="text" class="form-control" name="annftehour" id="annftehour" value="{{$position->annftehour}}" onChange="updateBudgetValues()" {{$readonly}}></td>
+                  <td><button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button></td>
                 </tr>
               </table>
             </div>
@@ -414,11 +489,11 @@
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="35%">Costs</th>
-                    <th width="35%"></th>
+                    <th width="30%">Costs</th>
+                    <th width="30%"></th>
                     <th width="10%"></th>
                     <th width="10%"></th>
-                    <th width="10%"></th>
+                    <th width="40%"></th>
                   </tr>
                 </thead>
               </table>
@@ -429,23 +504,23 @@
             <div class="col-md-6">
               <table class="table table-condensed">
                 <tr>
-                  <td width="35%">Pay Frequency</td>
-                  <td width="35%"><input type="text" class="form-control" name="ftefreq" value="{{$position->ftefreq}}"></td>
+                  <td width="30%">Pay Frequency</td>
+                  <td width="30%"><input type="text" class="form-control" name="ftefreq" id="ftefreq" value="{{$position->ftefreq}}" onChange="updateBudgetValues()" {{$readonly}}></td>
                   <td width="10%">
                   <td width="10%">
-                  <td width="10%">
+                  <td width="40%">
 
                 </tr>
 
                 <tr>
                   <td>x Budgeted Hours</td>
-                  <td><input type="text" class="form-control" name="ftehours" value="{{round($position->ftehours,3)}}"></td>
+                  <td><input type="text" class="form-control" id="ftehours" name="ftehours" value="{{round($position->ftehours,3)}}" onChange="updateBudgetValues()" {{$readonly}}></td>
 
                 </tr>
 
                 <tr>
                   <td>/ Basis ) = FTEs</td>
-                  <td><input type="text" class="form-control" name="fulltimeequiv" value="{{round($position->fulltimeequiv,3)}}"></td>
+                  <td><input type="text" class="form-control" id="fulltimeequiv" name="fulltimeequiv" value="{{round($position->fulltimeequiv,3)}}" readonly></td>
                   <td></td>
                   <td><img src="/images/ArrowRight.jpg" width="50" height="15"></td>
 
@@ -458,11 +533,11 @@
             <div class="col-md-6">
               <table class="table table-condensed">
                   <tr>
-                    <td width="35%">Pay Frequency</td>
-                    <td width="35%"><input type="text" class="form-control" name="payfreq" value="{{$position->payfreq}}"></td>
+                    <td width="30%">Pay Frequency</td>
+                    <td width="30%"><input type="text" class="form-control" id="payfreq" name="payfreq" value="{{$position->payfreq}}" onChange="updateBudgetValues()"  {{$readonly}}></td>
                     <td width="10%"></td>
                     <td width="10%"></td>
-                    <td width="10%"></td>
+                    <td width="40%"></td>
                   </tr>
                   <!-- <tr>
                     <td>Pay Frequency</td>
@@ -471,19 +546,19 @@
                   </tr> -->
                   <tr>
                     <td>x Budgeted Pay Rate</td>
-                    <td><input type="text" class="form-control" name="payrate" value="{{FormatDollars($position->payrate)}}"></td>
+                    <td><input type="text" class="form-control" id="payrate" name="payrate" value="{{FormatDollars($position->payrate)}}" onChange="updateBudgetValues()"  {{$readonly}}></td>
                     <td></td>
                   </tr>
 
                   <tr>
                     <td>x Budgeted FTEs</td>
-                    <td><input type="text" class="form-control" name="dummyfulltimeequiv" value="{{round($position->fulltimeequiv,3)}}"></td>
+                    <td><input type="text" class="form-control" id="dummyfulltimeequiv" name="dummyfulltimeequiv" value="{{round($position->fulltimeequiv,3)}}" readonly></td>
                     <td></td>
                   </tr>
 
                   <tr>
                     <td>= Budgeted Annual Cost</td>
-                    <td><input type="text" class="form-control" name="budgsal" value="{{FormatDollars($position->budgsal)}}"></td>
+                    <td><input type="text" class="form-control" id="budgsal" name="budgsal" value="{{FormatDollars($position->budgsal)}}" readonly></td>
                     <td></td>
                   </tr>
 
@@ -566,72 +641,42 @@
       <div id="collapseOrgLevels" class="panel-collapse collapse">
         <!-- <div class="panel-body">Full Time Equivalent Calculation -->
         <div class="panel-body">
-          <!-- *************************** -->
-          <!-- Left div contains xxxxxxxxxxxxxxxxxxxxxx -->
+
+          <?php $level1Description = sessionGet('level1Desc') ?>
+          <?php $level2Description = sessionGet('level2Desc') ?>
+          <?php $level3Description = sessionGet('level3Desc') ?>
+          <?php $level4Description = sessionGet('level4Desc') ?>
+          <?php $level5Description = sessionGet('level5Desc') ?>
+
           <div class="row">
             <div class="col-md-6">
               <table class="table table-condensed">
-                <thead>
-                  <tr>
-                    <th width="35%">Org Levels</th>
-                    <th width="35%"></th>
-                    <th width="10%"></th>
-                    <th width="10%"></th>
-                    <th width="10%"></th>
-                  </tr>
-                </thead>
-
-                <?php $level1Description = sessionGet('level1Desc') ?>
-                <?php $level2Description = sessionGet('level2Desc') ?>
-                <?php $level3Description = sessionGet('level3Desc') ?>
-                <?php $level4Description = sessionGet('level4Desc') ?>
-                <?php $level5Description = sessionGet('level5Desc') ?>
                 <tr>
                   <td>{{$level1Description}}</td>
                   <td><input type="text" class="form-control" name="Level1" value="{{$position->level1}}"></td>
-
+                  <td width="10%">
+                  <td width="10%">
+                  <td width="10%">
                 </tr>
-              </table>
-            </div>
-            <div class="col-md-6">
-              <table class="table table-condensed">
-                <thead>
-                  <tr>
-                    <th width="35%">Costs</th>
-                    <th width="35%"></th>
-                    <th width="10%"></th>
-                    <th width="10%"></th>
-                    <th width="10%"></th>
-                  </tr>
-                </thead>
-              </table>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="col-md-6">
-              <table class="table table-condensed">
                 <tr>
                   <td>{{$level2Description}}</td>
                   <td><input type="text" class="form-control" name="Level2" value="{{$position->level2}}"></td>
-                  <td width="10%">
-                  <td width="10%">
-                  <td width="10%">
-
                 </tr>
 
                 <tr>
                   <td>{{$level3Description}}</td>
                   <td><input type="text" class="form-control" name="Level3" value="{{$position->level3}}"></td>
-
                 </tr>
 
                 <tr>
                   <td>{{$level4Description}}</td>
                   <td><input type="text" class="form-control" name="Level4" value="{{$position->level4}}"></td>
-                  <td></td>
-                  <td></td>
+                </tr>
 
+                <tr>
+                  <td>{{$level5Description}}</td>
+                  <td><input type="text" class="form-control" name="Level5" value="{{$position->level5}}"></td>
                 </tr>
               </table>
             </div>
@@ -641,37 +686,13 @@
             <div class="col-md-6">
               <table class="table table-condensed">
                   <tr>
-                    <td width="35%">Pay Frequency</td>
-                    <td width="35%"><input type="text" class="form-control" name="payfreq" value="{{$position->payfreq}}"></td>
+                    <td width="35%"></td>
+                    <td width="35%"></td>
                     <td width="10%"></td>
                     <td width="10%"></td>
                     <td width="10%"></td>
                   </tr>
-                  <!-- <tr>
-                    <td>Pay Frequency</td>
-                    <td></td>
-                    <td></td>
-                  </tr> -->
-                  <tr>
-                    <td>x Budgeted Pay Rate</td>
-                    <td><input type="text" class="form-control" name="payrate" value="{{FormatDollars($position->payrate)}}"></td>
-                    <td></td>
-                  </tr>
-
-                  <tr>
-                    <td>x Budgeted FTEs</td>
-                    <td><input type="text" class="form-control" name="dummyfulltimeequiv" value="{{round($position->fulltimeequiv,3)}}"></td>
-                    <td></td>
-                  </tr>
-
-                  <tr>
-                    <td>= Budgeted Annual Cost</td>
-                    <td><input type="text" class="form-control" name="budgsal" value="{{FormatDollars($position->budgsal)}}"></td>
-                    <td></td>
-                  </tr>
-
-
-              </table>
+                </table>
             </div>
           </div>
         </div>
