@@ -262,15 +262,20 @@ if (!function_exists('UpdatePosition')) {
             // build the User Confirmation Message
             // if we save changes, we should store this message with the history record for easy id of changes that were made
             $originalValue = $position->getOriginal($columnName);
-            $friendlyName = GetFriendlyColumnName('positions',$columnName);
-            $fieldChange = '  - ' . $friendlyName . ' has changed from ' . $originalValue . ' to ' . $columnValue ."\r\n" ;
-            $userConfirmMessage = $userConfirmMessage . $fieldChange ;
+
+            if ($columnValue != $originalValue) {
+              // dd($originalValue);
+              $friendlyName = GetFriendlyColumnName('positions',$columnName);
+              $fieldChange = '  - ' . $friendlyName . ' has changed from ' . $originalValue . ' to ' . $columnValue . "\n" ;
+              $userConfirmMessage = $userConfirmMessage . $fieldChange ;
 
 
-            // update the field in the new positions records
-            // import will look like:  $position->active="A"
-            $position->$columnName=$columnValue;
-
+              // update the field in the new positions records
+              // import will look like:  $position->active="A"
+              $position->$columnName=$columnValue;
+            } else {
+              $position->$columnName=$originalValue;
+            }
           }
         }
       }
@@ -282,7 +287,11 @@ if (!function_exists('UpdatePosition')) {
       //Add modal message requesting save validation.
       //Also, we can create a history record here.
       //May need to grab a copy of the original record at the very beginning of this function
-      $position->save();
+
+
+$position->save();
+
+      // dd($userConfirmMessage);
 
     } else {
       // what to do if nothing is dirty?  Probably nothing
