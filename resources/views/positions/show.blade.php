@@ -646,9 +646,13 @@
             <div class="col-md-2">
               <a data-toggle="collapse" href="#collapseOrgLevels">Organization</a>
             </div>
+
             <div class="col-md-10">
-              {{round($position->fulltimeequiv,3)}} FTEs / {{FormatMoney($position->budgsal)}}
-            </div>
+              @if ($position->level1 != '') {{$position->level1}} @endif
+              @if ($position->level2 != '') / {{$position->level2}} @endif
+              @if ($position->level3 != '') / {{$position->level3}} @endif
+              @if ($position->level4 != '') / {{$position->level4}} @endif
+              @if ($position->level5 != '') / {{$position->level5}} @endif
           </div>
         </h4>
       </div>
