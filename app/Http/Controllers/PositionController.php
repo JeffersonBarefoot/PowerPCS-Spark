@@ -507,7 +507,7 @@ class PositionController extends Controller
 
     }
 
-dump($viewPositionHistoryDetails);
+// dump($viewPositionHistoryDetails);
 
       //****************************
       // REPORTS TO data

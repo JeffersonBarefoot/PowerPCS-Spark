@@ -195,6 +195,9 @@ if (!function_exists('UpdatePosition')) {
     // grab a copy of all Position.Fields, and locate the current position
     $columnList = \Schema::getColumnListing('positions');
     $position = Position::find($id);
+    $poscomp = $position->company;
+    $posno = $position->posno;
+    $posid = $position->id;
 
 
 
@@ -227,7 +230,8 @@ if (!function_exists('UpdatePosition')) {
 
       //MODEL IS DIRTY
       // if we determine that the model is dirty cycle through columns one by one to see which ones have changes
-      $userConfirmMessage = "Changes were made:\r\n";
+      $user = auth()->user();
+      $userConfirmMessage = "Changes were made by " . $user->name . " on " . date('Y-m-d') . "\r\n";
       foreach($columnList as $columnName) {
 
         // make sure that this field is included in the return string.
@@ -288,8 +292,38 @@ if (!function_exists('UpdatePosition')) {
       //Also, we can create a history record here.
       //May need to grab a copy of the original record at the very beginning of this function
 
+//***************************************************
+      // see if a history record is needed
+      $posHistRecs = \DB::table('hpositions')
+        ->where('posid','=',$posid)
+        ->where('trans_date','=',date('Y-m-d'))
+        ->get();
+      $positionhistorycount = $posHistRecs->count();
+// dd($positionhistorycount);
+      // if no records with today's date need to add a new history record
+      if ($positionhistorycount==0) {
 
-$position->save();
+
+// dd('trying to insert record inot hpositions');
+
+        $posHist = new HPosition();
+        $posHist->posid = $posid;
+        $posHist->company = $poscomp;
+        $posHist->posno = $posno;
+        $posHist->trans_date=date('Y-m-d');
+
+
+
+        $posHist->save();
+
+      }
+
+
+//***************************************************
+        $originalHistoryReason = $position->historyreason;
+        $newHistoryReason =   $originalHistoryReason . $userConfirmMessage;
+        $position->historyreason=$newHistoryReason;
+        $position->save();
 
       // dd($userConfirmMessage);
 
