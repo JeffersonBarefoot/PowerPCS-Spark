@@ -297,7 +297,7 @@ class PositionController extends Controller
         Session::put('viewincid', '');
         Session::put('viewinchistid', '');
           $viewinchistid='';
-        Session::put('viewPosHistId', '');
+        Session::put('viewposhistid', '');
         // Session::put('editMode', '');
 
       } else {
@@ -306,6 +306,7 @@ class PositionController extends Controller
         Session::put('freshPosition', 'NO');
         $viewincid = Session::get('viewincid') ;
         $viewinchistid = Session::get('viewinchistid') ;
+        $viewposhistid = Session::get('viewposhistid') ;
         $reportsDirTo = Session::get('reportsDirTo');
         $reportsIndirTo = Session::get('reportsIndirTo');
         // $editMode = Session::get('editMode');
@@ -484,6 +485,29 @@ class PositionController extends Controller
         ->orderby('trans_date','desc')
         ->get();
 
+      // see if we need to show a specific position history record
+      if (!empty($request->input('viewposhistid'))) {
+
+        $viewposhistid = $request->input('viewposhistid');
+
+        $viewPositionHistoryDetails = \DB::table('hpositions')
+          ->where('id','=',$viewposhistid)
+          ->get();
+
+      //what if this is a new incHistId?  Do we blank out the details, or return first record?
+      //jlb 20200225
+
+    } else {
+
+      // if a position history record id is not available, still need a blank table to avoid errors
+      $viewPositionHistoryDetails = \DB::table('hpositions')
+        ->where('id','=','blanktable')
+        ->get();
+
+    }
+
+dump($viewPositionHistoryDetails);
+
       //****************************
       // REPORTS TO data
       // "reports to" position is directly available in the positions table
@@ -620,11 +644,12 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
         ->with(compact('viewincumbent'))
         ->with(compact('viewIncumbentHistory'))
         ->with(compact('viewIncumbentDetails'))
+        ->with(compact('posHistRecs'))
+        ->with(compact('viewPositionHistoryDetails'))
         ->with(compact('positionsnavbar'))
         ->with(compact('incumbentsinposition'))
         ->with(compact('directReports'))
         ->with(compact('indirectReports'))
-        ->with(compact('posHistRecs'))
         ->with(compact('reportsToSource'))
         ->with('dirRepCount',$dirRepCount)
         ->with('indirRepCount',$indirRepCount)

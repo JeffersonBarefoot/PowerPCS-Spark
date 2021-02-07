@@ -1302,26 +1302,183 @@
                 </thead>
                 @foreach($posHistRecs as $posHistRecs)
                   <tr>
-                      <td>{{$posHistRecs->trans_date}}</td>
+                      <!-- <td>{{$posHistRecs->trans_date}}</td> -->
+                      <td><a href={{route('positions.show',$position->id)}}?viewposhistid={{$posHistRecs->id}}>{{$posHistRecs->trans_date}}</td>
                       <td>{{$posHistRecs->active}}</td>
-                      <td>{{$posHistRecs->fulltimeequiv}}</td>
-                      <td>{{$posHistRecs->budgsal}}</td>
+                      <td>{{round($posHistRecs->fulltimeequiv,3)}}</td>
+                      <td>{{formatdollars($posHistRecs->budgsal)}}</td>
                       <td>{{$posHistRecs->reason}}</td>
                   </tr>
                 @endforeach
               </table>
             </div>
-            <div class="col-md-6">
+
+            <!-- *************************** -->
+            <!-- Right div contains details of selected position history record -->
+            <div class="col-md-6">Details:
+              @foreach($viewPositionHistoryDetails as $vphd)
+                {{$vphd->company.'/'.$vphd->posno.', '.$vphd->descr.' @ '.$vphd->trans_date.', annual cost '.FormatDollars($vphd->budgsal)}}
+
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="20%">Col 1</th>
-                    <th width="20%">Col 2</th>
-                    <th width="20%">Col 3</th>
-                    <th width="20%">Col 4</th>
-                    <th width="20%">Col 5</th>
+                    <th width="25%">Status</th>
+                    <th width="25%"></th>
+                    <th width="0%"></th>
+                    <th width="25%"></th>
+                    <th width="25%"></th>
                   </tr>
                 </thead>
+
+
+                  <tr>
+                    <td>Position Status:</td>
+                    <td>{{$vphd->active}}</td>
+                    <td></td>
+                    <td>Established:</td>
+                    <td>{{$vphd->startdate}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Allow Multiple Incumbents:</td>
+                    @if ($vphd->multincumb=="1")
+                      <td>Y</td>
+                    @else
+                      <td>N</td>
+                    @endif
+                    <td></td>
+                    <td>Available:</td>
+                    <td>{{$vphd->avail_date}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Position Funded:</td>
+                    <td>{{$vphd->funded}}</td>
+                    <td></td>
+                    <td>End Date:</td>
+                    <td>{{$vphd->enddate}}</td>
+                  </tr>
+              </table>
+
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="25%">Budget</th>
+                    <th width="25%"></th>
+                    <th width="0%"></th>
+                    <th width="25%"></th>
+                    <th width="25%"></th>
+                  </tr>
+                </thead>
+
+                  <tr>
+                    <td>Hourly Rate</td>
+                    <td>{{FormatMoney($IncDet->unitrate)}}</td>
+                    <td></td>
+                    <td>Annualized Rate</td>
+                    <td>{{FormatDollars($IncDet->annual)}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Pay Frequency</td>
+                    <td>{{$IncDet->payfreq}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+
+                  <tr>
+                    <td>FTEs in this Pos:</td>
+                    <td>{{round($IncDet->fulltimeequiv,3)}}</td>
+                    <td></td>
+                    <td>Annual Cost</td>
+                    <td>{{FormatDollars($IncDet->ann_cost)}}</td>
+                  </tr>
+
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </table>
+
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="25%">Organization</th>
+                    <th width="25%"></th>
+                    <th width="0%"></th>
+                    <th width="25%"></th>
+                    <th width="25%"></th>
+                  </tr>
+                </thead>
+
+                  <tr>
+                    <td>Org Level 1</td>
+                    <td>{{$IncDet->level1}}</td>
+                    <td></td>
+                    <td>Org Level 4</td>
+                    <td>{{$IncDet->level4}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Org Level 2</td>
+                    <td>{{$IncDet->level2}}</td>
+                    <td></td>
+                    <td>Org Level 5</td>
+                    <td>{{$IncDet->level5}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Org Level 3</td>
+                    <td>{{$IncDet->level3}}</td>
+                    <td></td>
+                    <td>Primary Job</td>
+                    <td>{{$IncDet->jobtitle}}</td>
+                  </tr>
+
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </table>
+
+                <table class="table table-condensed">
+                  <thead>
+                    <tr>
+                      <th width="25%">Data Updates</th>
+                      <th width="25%"></th>
+                      <th width="0%"></th>
+                      <th width="25%"></th>
+                      <th width="25%"></th>
+                    </tr>
+                  </thead>
+
+                    <tr>
+                      <td>Update Effective:</td>
+                      <td>{{$IncDet->hrmsdate}}</td>
+                      <td></td>
+                      <td>Update Reason</td>
+                      <td>{{$IncDet->hrmsreas}}</td>
+                    </tr>
+
+                    <tr>
+                      <td>Update Actual Date</td>
+                      <td>{{$IncDet->trans_date}}</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+
+                  </table>
+
+
+                @endforeach
               </table>
             </div>
             <!-- <div class="col-md-1">this is a test</div>
