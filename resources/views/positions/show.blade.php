@@ -668,7 +668,7 @@
               <table class="table table-condensed">
                 <tr>
                   <td>{{$level1Description}}</td>
-                  <td><input type="text" class="form-control" name="Level1" value="{{$position->level1}}"></td>
+                  <td><input type="text" class="form-control" name="Level1" value="{{$position->level1}}" {{$readonly}}></td>
                   <td width="10%">
                   <td width="10%">
                   <td width="10%">
@@ -676,22 +676,22 @@
 
                 <tr>
                   <td>{{$level2Description}}</td>
-                  <td><input type="text" class="form-control" name="Level2" value="{{$position->level2}}"></td>
+                  <td><input type="text" class="form-control" name="Level2" value="{{$position->level2}}" {{$readonly}}></td>
                 </tr>
 
                 <tr>
                   <td>{{$level3Description}}</td>
-                  <td><input type="text" class="form-control" name="Level3" value="{{$position->level3}}"></td>
+                  <td><input type="text" class="form-control" name="Level3" value="{{$position->level3}}" {{$readonly}}></td>
                 </tr>
 
                 <tr>
                   <td>{{$level4Description}}</td>
-                  <td><input type="text" class="form-control" name="Level4" value="{{$position->level4}}"></td>
+                  <td><input type="text" class="form-control" name="Level4" value="{{$position->level4}}" {{$readonly}}></td>
                 </tr>
 
                 <tr>
                   <td>{{$level5Description}}</td>
-                  <td><input type="text" class="form-control" name="Level5" value="{{$position->level5}}"></td>
+                  <td><input type="text" class="form-control" name="Level5" value="{{$position->level5}}" {{$readonly}}></td>
                 </tr>
               </table>
             </div>
@@ -757,6 +757,9 @@
                     <th width="1%"></th>
                     <th width="68%">Reports Directly To:</th>
                     <th width="30%">
+
+
+                    @if ($readonly == "")
                       <!-- Modal -->
                       <!-- Trigger the modal with a button -->
                       <button type="button" class="btn btn-info btn" data-toggle="modal" data-target="#directReportingModal">Assign</button>
@@ -793,7 +796,10 @@
                           </div>
                         </div>
                       </div>
-                      </div>
+                    @endif
+
+
+            </div>
 
                     </th>
                     <th width="1%"></th>
@@ -821,6 +827,9 @@
                   <th width="1%"></th>
                   <th width="68%">Reports Indirectly To:</th>
                   <th width="30%">
+
+
+                    @if ($readonly == "")
                     <!-- Modal -->
                     <!-- Trigger the modal with a button -->
                     <button type="button" class="btn btn-info btn" data-toggle="modal" data-target="#directReportingModal2">Assign</button>
@@ -859,6 +868,9 @@
                         </div>
                       </div>
                     </div>
+                    @endif
+
+
                     </div>
 
                   </th>
@@ -1281,6 +1293,7 @@
               <a data-toggle="collapse" href="#collapse4">History</a>
             </div>
             <div class="col-md-10">
+              {{$positionhistorycount}} history records on file
             </div>
           </div>
         </h4>
@@ -1417,7 +1430,56 @@
                     <th width="25%"></th>
                   </tr>
                 </thead>
-</table>
+
+                <tr>
+                  <td><b>Budgeted FTEs</b></td>
+                  <td></td>
+                  <td></td>
+                  <td><b>Budgeted Cost</b></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>Annual FTE Basis</td>
+                  <td>{{round($vphd->annftehour,3)}}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>FTE Calc Freq</td>
+                  <td>{{$vphd->ftefreq}}</td>
+                  <td></td>
+                  <td>Budg Pay Freq</td>
+                  <td>{{$vphd->payfreq}}</td>
+                </tr>
+
+                <tr>
+                  <td>FTE Hours</td>
+                  <td>{{round($vphd->ftehours,3)}}</td>
+                  <td></td>
+                  <td>Budg Pay Rate</td>
+                  <td>{{formatdollars($vphd->payrate)}}</td>
+                </tr>
+
+                <tr>
+                  <td>FTEs for Position</td>
+                  <td>{{round($vphd->fulltimeequiv,3)}}</td>
+                  <td><img src="/images/ArrowRight.jpg" width="50" height="15"></td>
+                  <td>FTEs for Position</td>
+                  <td>{{round($vphd->fulltimeequiv,3)}}</td>
+                </tr>
+
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>Budg Annual Cost</td>
+                  <td>{{formatdollars($vphd->budgsal)}}</td>
+                </tr>
+
+
 
 
               <table class="table table-condensed">
@@ -1430,38 +1492,64 @@
                     <th width="25%"></th>
                   </tr>
                 </thead>
-</table>
+
+                <tr>
+                  <td>{{$level1Description}}</td>
+                  <td>{{$vphd->level1}}</td>
+                  <td width="10%">
+                  <td width="10%">
+                  <td width="10%">
+                </tr>
+
+                <tr>
+                  <td>{{$level2Description}}</td>
+                  <td>{{$vphd->level2}}</td>
+                </tr>
+
+                <tr>
+                  <td>{{$level3Description}}</td>
+                  <td>{{$vphd->level3}}</td>
+                </tr>
+
+                <tr>
+                  <td>{{$level4Description}}</td>
+                  <td>{{$vphd->level4}}</td>
+                </tr>
+
+                <tr>
+                  <td>{{$level5Description}}</td>
+                  <td>{{$vphd->level5}}</td>
+                </tr>
+
+              </table>
 
 
-                <table class="table table-condensed">
-                  <thead>
-                    <tr>
-                      <th width="25%">Data Updates</th>
-                      <th width="25%"></th>
-                      <th width="0%"></th>
-                      <th width="25%"></th>
-                      <th width="25%"></th>
-                    </tr>
-                  </thead>
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="25%">Reports to</th>
+                    <th width="25%"></th>
+                    <th width="0%"></th>
+                    <th width="25%"></th>
+                    <th width="25%"></th>
+                  </tr>
+                </thead>
 
+                <tr>
+                  <td>Reports Directly to </td>
+                  <td  style="white-space: nowrap;">@if ($vphd->reptocomp=='') Not Assigned @else {{$vphd->reptocomp}} / {{$vphd->reptoposno}} / {{$vphd->reptodesc}} @endif</td>
+                </tr>
 
-
-                  </table>
+                <tr>
+                  <td>Reports Indirectly to </td>
+                  <td  style="white-space: nowrap;">@if ($vphd->reptocom2=='') Not Assigned @else {{$vphd->reptocom2}} / {{$vphd->reptopos2}} / {{$vphd->reptodesc2}} @endif</td>
+                </tr>
+              </table>
 
 
                 @endforeach
               </table>
             </div>
-            <!-- <div class="col-md-1">this is a test</div>
-            <div class="col-md-1">this is a test</div>
-            <div class="col-md-1">this is a test</div>
-            <div class="col-md-1">this is a test</div>
-            <div class="col-md-1">this is a test</div>
-            <div class="col-md-1">this is a test</div>
-            <div class="col-md-1">this is a test</div>
-            <div class="col-md-1">this is a test</div>
-            <div class="col-md-1">this is a test</div>
-            <div class="col-md-1">this is a test</div> -->
           </div>
         </div>
       </div>

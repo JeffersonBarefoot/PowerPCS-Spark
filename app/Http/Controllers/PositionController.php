@@ -484,6 +484,7 @@ class PositionController extends Controller
         ->where('company','=',$company)
         ->orderby('trans_date','desc')
         ->get();
+      $positionhistorycount = $posHistRecs->count();
 
       // see if we need to show a specific position history record
       if (!empty($request->input('viewposhistid'))) {
@@ -654,7 +655,8 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
         ->with('dirRepCount',$dirRepCount)
         ->with('indirRepCount',$indirRepCount)
         ->with('activeincumbentcount',$activeincumbentcount)
-        ->with('activeincumbentlist',$activeincumbentlist);
+        ->with('activeincumbentlist',$activeincumbentlist)
+        ->with('positionhistorycount',$positionhistorycount);
 
     }
 
