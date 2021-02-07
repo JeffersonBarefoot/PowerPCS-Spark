@@ -195,7 +195,7 @@
 <button type="submit" class="btn btn-primary">Update</button>
 <br>
 <br>
-<a href={{route('positions.update',$position->id)}}>Save Changes </a><br>
+<!-- <a href={{route('positions.update',$position->id)}}>Save Changes </a><br> -->
 
 
       </div>
