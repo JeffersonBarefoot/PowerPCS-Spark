@@ -1331,33 +1331,80 @@
                 </thead>
 
 
-                  <tr>
-                    <td>Position Status:</td>
-                    <td>{{$vphd->active}}</td>
-                    <td></td>
-                    <td>Established:</td>
-                    <td>{{$vphd->startdate}}</td>
-                  </tr>
+                <tr>
+                  <td><b>Settings</b></td>
+                  <td></td>
+                  <td></td>
+                  <td><b>Reference Dates</b></td>
+                  <td></td>
+                </tr>
 
-                  <tr>
-                    <td>Allow Multiple Incumbents:</td>
-                    @if ($vphd->multincumb=="1")
-                      <td>Y</td>
-                    @else
-                      <td>N</td>
-                    @endif
-                    <td></td>
-                    <td>Available:</td>
-                    <td>{{$vphd->avail_date}}</td>
-                  </tr>
+                <tr>
+                  <td>Position Status:</td>
+                  <td>{{$vphd->active}}</td>
+                  <td></td>
+                  <td>Established:</td>
+                  <td>{{$vphd->startdate}}</td>
+                </tr>
 
-                  <tr>
-                    <td>Position Funded:</td>
-                    <td>{{$vphd->funded}}</td>
-                    <td></td>
-                    <td>End Date:</td>
-                    <td>{{$vphd->enddate}}</td>
-                  </tr>
+                <tr>
+                  <td>Allow Mult Incumbs:</td>
+                  @if ($vphd->multincumb=="1")
+                    <td>Y</td>
+                  @else
+                    <td>N</td>
+                  @endif
+                  <td></td>
+                  <td>Available:</td>
+                  <td>{{$vphd->avail_date}}</td>
+                </tr>
+
+                <tr>
+                  <td>Position Funded:</td>
+                  <td>{{$vphd->funded}}</td>
+                  <td></td>
+                  <td>End Date:</td>
+                  <td>{{$vphd->enddate}}</td>
+                </tr>
+
+                <tr>
+                  <td><b>Status Changes</b></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>Last Vacant:</td>
+                  <td>{{$vphd->last_vac}}</td>
+                  <td style="white-space: nowrap;">@if ($vphd->status=='VACANT') *** Status:  Vacant  @endif</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>Last Partially Filled:</td>
+                  <td>{{$vphd->last_par}}</td>
+                  <td style="white-space: nowrap;">@if ($vphd->status=='PARTIALLY FILLED') *** Status:  Partially Filled  @endif</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>Last Filled:</td>
+                  <td>{{$vphd->last_fil}}</td>
+                  <td style="white-space: nowrap;">@if ($vphd->status=='FILLED') *** Status:  Filled  @endif  </td>
+
+                </tr>
+
+                <tr>
+                  <td>Last Overfilled:</td>
+                  <td>{{$vphd->last_fpl}}</td>
+                  <td style="white-space: nowrap;">@if ($vphd->status=='FILLED +') *** Status:  Overfilled  @endif</td>
+                  <td></td>
+                  <td></td>
+                </tr>
               </table>
 
               <table class="table table-condensed">
@@ -1370,39 +1417,8 @@
                     <th width="25%"></th>
                   </tr>
                 </thead>
+</table>
 
-                  <tr>
-                    <td>Hourly Rate</td>
-                    <td>{{FormatMoney($IncDet->unitrate)}}</td>
-                    <td></td>
-                    <td>Annualized Rate</td>
-                    <td>{{FormatDollars($IncDet->annual)}}</td>
-                  </tr>
-
-                  <tr>
-                    <td>Pay Frequency</td>
-                    <td>{{$IncDet->payfreq}}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-
-                  <tr>
-                    <td>FTEs in this Pos:</td>
-                    <td>{{round($IncDet->fulltimeequiv,3)}}</td>
-                    <td></td>
-                    <td>Annual Cost</td>
-                    <td>{{FormatDollars($IncDet->ann_cost)}}</td>
-                  </tr>
-
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </table>
 
               <table class="table table-condensed">
                 <thead>
@@ -1414,39 +1430,8 @@
                     <th width="25%"></th>
                   </tr>
                 </thead>
+</table>
 
-                  <tr>
-                    <td>Org Level 1</td>
-                    <td>{{$IncDet->level1}}</td>
-                    <td></td>
-                    <td>Org Level 4</td>
-                    <td>{{$IncDet->level4}}</td>
-                  </tr>
-
-                  <tr>
-                    <td>Org Level 2</td>
-                    <td>{{$IncDet->level2}}</td>
-                    <td></td>
-                    <td>Org Level 5</td>
-                    <td>{{$IncDet->level5}}</td>
-                  </tr>
-
-                  <tr>
-                    <td>Org Level 3</td>
-                    <td>{{$IncDet->level3}}</td>
-                    <td></td>
-                    <td>Primary Job</td>
-                    <td>{{$IncDet->jobtitle}}</td>
-                  </tr>
-
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </table>
 
                 <table class="table table-condensed">
                   <thead>
@@ -1459,21 +1444,7 @@
                     </tr>
                   </thead>
 
-                    <tr>
-                      <td>Update Effective:</td>
-                      <td>{{$IncDet->hrmsdate}}</td>
-                      <td></td>
-                      <td>Update Reason</td>
-                      <td>{{$IncDet->hrmsreas}}</td>
-                    </tr>
 
-                    <tr>
-                      <td>Update Actual Date</td>
-                      <td>{{$IncDet->trans_date}}</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
 
                   </table>
 
