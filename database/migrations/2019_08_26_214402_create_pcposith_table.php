@@ -60,7 +60,7 @@ class CreatePcposithTable extends Migration
            $table->decimal('salupper',12,2)->default(0);
            $table->decimal('sallower',12,2)->default(0);
            $table->string('salfreq',1)->default('');
-           $table->string('status',20)->default('');
+           $table->string('curstatus',20)->default('');
            $table->date('startdate',)->default('2999-12-31');
            $table->string('supcompany',10)->default('');
            $table->string('supempno',9)->default('');

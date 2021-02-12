@@ -231,7 +231,7 @@ if (!function_exists('UpdatePosition')) {
       //MODEL IS DIRTY
       // if we determine that the model is dirty cycle through columns one by one to see which ones have changes
       $user = auth()->user();
-      $userConfirmMessage = "Changes were made by " . $user->name . " on " . date('Y-m-d') . "\r\n";
+      $userConfirmMessage = $user->name . ': ' . date('Y-m-d H:i:s') . "\n" ;
       foreach($columnList as $columnName) {
 
         // make sure that this field is included in the return string.
@@ -270,7 +270,7 @@ if (!function_exists('UpdatePosition')) {
             if ($columnValue != $originalValue) {
               // dd($originalValue);
               $friendlyName = GetFriendlyColumnName('positions',$columnName);
-              $fieldChange = '  - ' . $friendlyName . ' has changed from ' . $originalValue . ' to ' . $columnValue . "\n" ;
+              $fieldChange = '  - ' . $friendlyName . ' has changed from ' . $originalValue . ' to ' . $columnValue . " \n" ;
               $userConfirmMessage = $userConfirmMessage . $fieldChange ;
 
 
@@ -304,14 +304,70 @@ if (!function_exists('UpdatePosition')) {
       if ($positionhistorycount==0) {
 
 
-// dd('trying to insert record inot hpositions');
+// dd('trying to insert record into hpositions');
 
         $posHist = new HPosition();
         $posHist->posid = $posid;
         $posHist->company = $poscomp;
         $posHist->posno = $posno;
+        $posHist->descr = $position->descr;
         $posHist->trans_date=date('Y-m-d');
 
+        $posHist->active = $position->active;
+        $posHist->annftehour = $position->annftehour;
+        $posHist->avail_date = $position->avail_date;
+        $posHist->budgsal = $position->budgsal;
+        $posHist->eeoclass = $position->eeoclass;
+        $posHist->enddate = $position->enddate;
+        $posHist->exempt = $position->exempt;
+        $posHist->ftefreq = $position->ftefreq;
+        $posHist->ftehours = $position->ftehours;
+        $posHist->fulltimeequiv = $position->fulltimeequiv;
+        $posHist->funded = $position->funded;
+        $posHist->group1 = $position->group1;
+        $posHist->group2 = $position->group2;
+        $posHist->group3 = $position->group3;
+        $posHist->jobdesc = $position->jobdesc;
+        $posHist->lastactdate = $position->lastactdate;
+        $posHist->last_fil = $position->last_fil;
+        $posHist->last_fpl = $position->last_fpl;
+        $posHist->last_par = $position->last_par;
+        $posHist->last_vac = $position->last_vac;
+        $posHist->level1 = $position->level1;
+        $posHist->level2 = $position->level2;
+        $posHist->level3 = $position->level3;
+        $posHist->level4 = $position->level4;
+        $posHist->level5 = $position->level5;
+        $posHist->linktoabra = $position->linktoabra;
+        $posHist->multincumb = $position->multincumb;
+        $posHist->payfreq = $position->payfreq;
+        $posHist->payrate = $position->payrate;
+        $posHist->paytype = $position->paytype;
+        $posHist->reason = $position->reason;
+        $posHist->reptocomp = $position->reptocomp;
+        $posHist->reptodesc = $position->reptodesc;
+        $posHist->reptoposno = $position->reptoposno;
+        $posHist->salgrade = $position->salgrade;
+        $posHist->salupper = $position->salupper;
+        $posHist->sallower = $position->sallower;
+        $posHist->salfreq = $position->salfreq;
+        $posHist->curstatus = $position->curstatus;
+        $posHist->startdate = $position->startdate;
+        $posHist->supcompany = $position->supcompany;
+        $posHist->supempno = $position->supempno;
+        $posHist->supname = $position->supname;
+        $posHist->userdef1 = $position->userdef1;
+        $posHist->userdef2 = $position->userdef2;
+        $posHist->userdef3 = $position->userdef3;
+        $posHist->userdef4 = $position->userdef4;
+        $posHist->userdef5 = $position->userdef5;
+        $posHist->userdef6 = $position->userdef6;
+        $posHist->vac_times = $position->vac_times;
+        $posHist->vac_months = $position->vac_months;
+        $posHist->reptocom2 = $position->reptocom2;
+        $posHist->reptopos2 = $position->reptopos2;
+        $posHist->reptodesc2 = $position->reptodesc2;
+        $posHist->historyreason = $position->historyreason;
 
 
         $posHist->save();

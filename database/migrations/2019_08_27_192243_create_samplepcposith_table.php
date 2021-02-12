@@ -76,6 +76,7 @@ class CreateSamplepcposithTable extends Migration
            $table->string('reptocom2',3)->default('');
            $table->string('reptopos2',20)->default('');
            $table->string('reptodesc2',75)->default('');
+           $table->string('historyreason',2000)->default('');
 
         });
     }

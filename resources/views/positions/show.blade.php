@@ -283,7 +283,7 @@
                 </thead>
 
                 <tr>
-                  <td>Position Status</td>
+                  <td>Active Status</td>
                   <td></td>
                   <div class="radio">
 
@@ -394,7 +394,7 @@
             <table class="table table-condensed">
               <thead>
                 <tr>
-                  <th width="30%">Status Changes</th>
+                  <th width="30%">Capacity Status</th>
                   <th width="30%"></th>
                   <th width="38%"></th>
                   <th width="1%"></th>
@@ -1310,11 +1310,12 @@
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="20%">Started</th>
-                    <th width="20%">Status</th>
-                    <th width="20%">FTEs</th>
-                    <th width="20%">Budg Sal</th>
-                    <th width="20%">Reason</th>
+                    <th width="15%">Starting</th>
+                    <th width="8%">Active</th>
+                    <th width="8%">Capacity</th>
+                    <th width="8%">Budg FTEs</th>
+                    <th width="19%">Budg Sal</th>
+                    <th width="1%"></th>
                   </tr>
                 </thead>
                 @foreach($posHistRecs as $posHistRecs)
@@ -1322,9 +1323,9 @@
                       <!-- <td>{{$posHistRecs->trans_date}}</td> -->
                       <td><a href={{route('positions.show',$position->id)}}?viewposhistid={{$posHistRecs->id}}>{{$posHistRecs->trans_date}}</td>
                       <td>{{$posHistRecs->active}}</td>
+                      <td>{{substr($posHistRecs->curstatus,0,3)}}</td>
                       <td>{{round($posHistRecs->fulltimeequiv,3)}}</td>
                       <td>{{formatdollars($posHistRecs->budgsal)}}</td>
-                      <td>{{$posHistRecs->reason}}</td>
                   </tr>
                 @endforeach
               </table>
@@ -1357,7 +1358,7 @@
                 </tr>
 
                 <tr>
-                  <td>Position Status:</td>
+                  <td>Active Status:</td>
                   <td>{{$vphd->active}}</td>
                   <td></td>
                   <td>Established:</td>
@@ -1395,7 +1396,7 @@
                 <tr>
                   <td>Last Vacant:</td>
                   <td>{{$vphd->last_vac}}</td>
-                  <td style="white-space: nowrap;">@if ($vphd->status=='VACANT') *** Status:  Vacant  @endif</td>
+                  <td style="white-space: nowrap;">@if ($vphd->curstatus=='VACANT') *** Status:  Vacant  @endif</td>
                   <td></td>
                   <td></td>
                 </tr>
@@ -1403,7 +1404,7 @@
                 <tr>
                   <td>Last Partially Filled:</td>
                   <td>{{$vphd->last_par}}</td>
-                  <td style="white-space: nowrap;">@if ($vphd->status=='PARTIALLY FILLED') *** Status:  Partially Filled  @endif</td>
+                  <td style="white-space: nowrap;">@if ($vphd->curstatus=='PARTIALLY FILLED') *** Status:  Partially Filled  @endif</td>
                   <td></td>
                   <td></td>
                 </tr>
@@ -1411,14 +1412,14 @@
                 <tr>
                   <td>Last Filled:</td>
                   <td>{{$vphd->last_fil}}</td>
-                  <td style="white-space: nowrap;">@if ($vphd->status=='FILLED') *** Status:  Filled  @endif  </td>
+                  <td style="white-space: nowrap;">@if ($vphd->curstatus=='FILLED') *** Status:  Filled  @endif  </td>
 
                 </tr>
 
                 <tr>
                   <td>Last Overfilled:</td>
                   <td>{{$vphd->last_fpl}}</td>
-                  <td style="white-space: nowrap;">@if ($vphd->status=='FILLED +') *** Status:  Overfilled  @endif</td>
+                  <td style="white-space: nowrap;">@if ($vphd->curstatus=='FILLED +') *** Status:  Overfilled  @endif</td>
                   <td></td>
                   <td></td>
                 </tr>
@@ -1550,13 +1551,18 @@
                 </tr>
               </table>
 
+    {!! nl2br($vphd->historyreason) !!}
+
 
                 @endforeach
               </table>
+
+
             </div>
           </div>
         </div>
       </div>
+
     </div>
 
     <!-- ************************** -->
