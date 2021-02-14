@@ -20,3 +20,5 @@ Route::resource('positions', 'PositionController');
 
 Route::get('/dumpGridToCsv', 'ReportController@dumpGridToCsv')->name('dumpGridToCsv');
 Route::resource('reports', 'ReportController');
+
+Route::resource('Incumbents', 'IncumbentController');
