@@ -420,7 +420,7 @@
               </tr>
               <tr>
                 <td>Last Became Overfilled</td>
-                <td><input type="date" class="form-control" name="last_fpl" value="{{$position->last_fpl}}" {{$readonly}}></td>
+                <td><input type="date" class="form-control" name="last_ove" value="{{$position->last_ove}}" {{$readonly}}></td>
                 <td>@if ($position->curstatus=='OVERFILLED') *** Current Status:  Overfilled  @endif</td>
               </tr>
             </table>
@@ -1418,8 +1418,8 @@
 
                 <tr>
                   <td>Last Overfilled:</td>
-                  <td>{{$vphd->last_fpl}}</td>
-                  <td style="white-space: nowrap;">@if ($vphd->curstatus=='FILLED +') *** Status:  Overfilled  @endif</td>
+                  <td>{{$vphd->last_ove}}</td>
+                  <td style="white-space: nowrap;">@if ($vphd->curstatus=='OVERFILLED') *** Status:  Overfilled  @endif</td>
                   <td></td>
                   <td></td>
                 </tr>

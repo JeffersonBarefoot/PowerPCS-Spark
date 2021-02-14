@@ -330,7 +330,7 @@ if (!function_exists('UpdatePosition')) {
         $posHist->jobdesc = $position->jobdesc;
         $posHist->lastactdate = $position->lastactdate;
         $posHist->last_fil = $position->last_fil;
-        $posHist->last_fpl = $position->last_fpl;
+        $posHist->last_ove = $position->last_ove;
         $posHist->last_par = $position->last_par;
         $posHist->last_vac = $position->last_vac;
         $posHist->level1 = $position->level1;

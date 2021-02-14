@@ -44,7 +44,7 @@ class CreatePositionsTable extends Migration
        $table->string('jobdesc',50)->default('');
        $table->date('lastactdate',)->default('2999-12-31');
        $table->date('last_fil',)->default('2999-12-31');
-       $table->date('last_fpl',)->default('2999-12-31');
+       $table->date('last_ove',)->default('2999-12-31');
        $table->date('last_par',)->default('2999-12-31');
        $table->date('last_vac',)->default('2999-12-31');
        $table->string('level1',20)->default('');
