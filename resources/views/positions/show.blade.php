@@ -17,6 +17,8 @@
 <!-- note that for UNCHECKED radio buttons you have to use [disabled] instead of [readonly].  CHECKED radio buttons remain active-->
 <?php $readonly=Session::get('readOnlyText') ?>
 <?php $disabled=Session::get('disabledText') ?>
+<?php $expandPositionHistory=Session::get('ExpandPositionHistory') ?>
+<?php $expandIncumbentHistory=Session::get('ExpandIncumbentHistory') ?>
 
 
 <body>
@@ -1042,7 +1044,11 @@
         </h4>
       </div>
 
-      <div id="collapse19999">
+      @if ($expandIncumbentHistory=='Y')
+        <div id="collapse19999" class="panel-collapse">
+      @else
+        <div id="collapse19999" class="panel-collapse collapse">
+      @endif
         <div class="panel-body">
           <!-- *************************** -->
           <!-- Left div contains list of all incumbents -->
@@ -1303,7 +1309,11 @@
         </h4>
       </div>
 
-      <div id="collapse4" class="panel-collapse">
+      @if ($expandPositionHistory=='Y')
+        <div id="collapse4" class="panel-collapse">
+      @else
+        <div id="collapse4" class="panel-collapse collapse">
+      @endif
         <div class="panel-body">
           <div class="row">
             <div class="col-md-6">

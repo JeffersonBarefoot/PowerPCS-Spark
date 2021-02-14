@@ -299,6 +299,7 @@ class PositionController extends Controller
           $viewinchistid='';
         Session::put('viewposhistid', '');
         // Session::put('editMode', '');
+        SessionSet("ExpandIncumbentHistory","N");
 
       } else {
         //dump('Same Position');
@@ -408,7 +409,7 @@ class PositionController extends Controller
 
       //what if this is a new incHistId?  Do we blank out the details, or return first record?
       //jlb 20200225
-
+        SessionSet("ExpandIncumbentHistory","Y");
       }
 
 
@@ -418,7 +419,8 @@ class PositionController extends Controller
       if (!empty($request->input('viewincid'))) {
         $viewincid = $request->input('viewincid');
         $viewinchistid = '';
-      }
+        SessionSet("ExpandIncumbentHistory","Y");
+      } 
       //dump('$viewincid = '.$viewincid);
       //dump('$viewinchistid = '.$viewinchistid);
 
@@ -495,6 +497,8 @@ class PositionController extends Controller
           ->where('id','=',$viewposhistid)
           ->get();
 
+        SessionSet("ExpandPositionHistory","Y");
+
       //what if this is a new incHistId?  Do we blank out the details, or return first record?
       //jlb 20200225
 
@@ -504,6 +508,8 @@ class PositionController extends Controller
       $viewPositionHistoryDetails = \DB::table('hpositions')
         ->where('id','=','blanktable')
         ->get();
+
+      SessionSet("ExpandPositionHistory","N");
 
     }
 
