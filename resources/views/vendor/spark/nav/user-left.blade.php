@@ -3,12 +3,12 @@
 <ul>
 
 <li>
-    <a href="/PosMain" href="#">Setup 987 description</a>
+    <a href="/positions/1" href="#">Positions</a>
 </li>
 
 
 <li>
-    <a href="/positions/1" href="#">Positions</a>
+    <a href="/incumbents/1" href="#">Incumbents</a>
 </li>
 
 <li>

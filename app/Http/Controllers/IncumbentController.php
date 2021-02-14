@@ -96,7 +96,15 @@ return redirect('/incumbents')->with('success', 'Incumbent saved!');
    //***************************************************
   public function show($id)
   {
-      //
+    // dd("Incumbents.Show");
+
+    if (is_null($id)) {
+      $id=1;
+    }
+    $position = Incumbent::find($id);
+
+    //
+    return View('incumbents.show');
   }
 
   /**
