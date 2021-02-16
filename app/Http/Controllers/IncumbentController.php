@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\incumbent;
+use Session;
+use Auth;
 use Illuminate\Support\Facades\Schema\columns;
 use Illuminate\Support\Facades\DB;
 
@@ -101,10 +103,117 @@ return redirect('/incumbents')->with('success', 'Incumbent saved!');
     if (is_null($id)) {
       $id=1;
     }
-    $position = Incumbent::find($id);
+    $incumbent = Incumbent::find($id);
 
+    // the next IFs check to see if a search parameter has been passed via request-inputs from NavBar.
+    // if specific parameters have been passed then remember them.
+    // if nothing has been passed, do nothing so that the session variables don't change and Navbar remembers the last search when you go back to the position.show.blade
+    if (request()->has('company')) {
+      if (empty(request()->input('company'))) {
+        Session::put('posNavbarCompanyQuery','');
+      } else {
+        Session::put('posNavbarCompanyQuery',request()->input('company'));
+      }
+    }
+
+    if (request()->has('lname')) {
+      if (empty(request()->input('lname'))) {
+        Session::put('posNavbarLnameQuery','');
+      } else {
+        Session::put('posNavbarLnameQuery',request()->input('lname'));
+      }
+    }
+
+    if (request()->has('empno')) {
+      if (empty(request()->input('empno'))) {
+        Session::put('posNavbarEmpnoQuery','');
+      } else {
+        Session::put('posNavbarEmpnoQuery',request()->input('empno'));
+      }
+    }
+
+    if (request()->has('level1')) {
+      if (empty(request()->input('level1'))) {
+        Session::put('posNavbarLevel1Query','');
+      } else {
+        Session::put('posNavbarLevel1Query',request()->input('level1'));
+      }
+    }
+
+    if (request()->has('level2')) {
+      if (empty(request()->input('level2'))) {
+        Session::put('posNavbarLevel2Query','');
+      } else {
+        Session::put('posNavbarLevel2Query',request()->input('level2'));
+      }
+    }
+
+    if (request()->has('level3')) {
+      if (empty(request()->input('level3'))) {
+        Session::put('posNavbarLevel3Query','');
+      } else {
+        Session::put('posNavbarLevel3Query',request()->input('level3'));
+      }
+    }
+
+    if (request()->has('level4')) {
+      if (empty(request()->input('level4'))) {
+        Session::put('posNavbarLevel4Query','');
+      } else {
+        Session::put('posNavbarLevel4Query',request()->input('level4'));
+      }
+    }
+
+    if (request()->has('level5')) {
+      if (empty(request()->input('level5'))) {
+        Session::put('posNavbarLevel5Query','');
+      } else {
+        Session::put('posNavbarLevel5Query',request()->input('level5'));
+      }
+    }
+
+    //****************************
+    // N A V B A R
+    // these variables are used to populate the NavBar, not the main portion of Positions.Show
+    // $navbarcompany = $request->input('company');
+    // $navbarposno = $request->input('posno');
+    // $navbardescr = $request->input('descr');
+    // $navbarcompany = $request->input('company');
+    // $navbarposno = $request->input('posno');
+    // $navbardescr = $request->input('descr');
+    $navbarcompany = Session::get('posNavbarCompanyQuery');
+    $navbarempno = Session::get('posNavbarEmpnoQuery');
+    $navbarlname = Session::get('posNavbarLnameQuery');
+    $navbarlevel1 = Session::get('posNavbarLevel1Query');
+    $navbarlevel2 = Session::get('posNavbarLevel2Query');
+    $navbarlevel3 = Session::get('posNavbarLevel3Query');
+    $navbarlevel4 = Session::get('posNavbarLevel4Query');
+    $navbarlevel5 = Session::get('posNavbarLevel5Query');
+
+
+    // dump($request);
+    // dump($navbarcompany);
+
+    // $testAriaCollapse = $request->input('testArial');
+    //dump($testAriaCollapse);
+    //dump($navbarposno);
+
+    $incumbentsnavbar = Incumbent::where('company','like',"$navbarcompany%")
+                        ->where('empno','like',"$navbarempno%")
+                        ->where('lname','like',"$navbarlname%")
+                        ->where('level1','like',"$navbarlevel1%")
+                        ->where('level2','like',"$navbarlevel2%")
+                        ->where('level3','like',"$navbarlevel3%")
+                        ->where('level4','like',"$navbarlevel4%")
+                        ->where('level5','like',"$navbarlevel5%")
+                        ->orderby("company")
+                        ->orderby("lname")
+                        ->get();
+// dd($incumbentsnavbar);
     //
-    return View('incumbents.show');
+    return View('incumbents.show')
+      ->with(compact('incumbent'))
+      ->with(compact('incumbentsnavbar'));
   }
 
   /**
