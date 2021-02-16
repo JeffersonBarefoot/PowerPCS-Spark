@@ -290,19 +290,19 @@
                   <div class="radio">
 
                       @if ($position->active=="A")
-                      <td>
-                        <label><input type="radio" name="active" value="A"checked>Active</label>
-                      </td>
-                      <td>
-                        <label><input type="radio" name="active" value="I" {{$disabled}}>Inactive</label>
-                      </td>
+                        <td>
+                          <label><input type="radio" name="active" value="A"checked>Active</label>
+                        </td>
+                        <td>
+                          <label><input type="radio" name="active" value="I" {{$disabled}}>Inactive</label>
+                        </td>
                       @else
-                      <td>
-                        <label><input type="radio" name="active" value="A" {{$disabled}}>Active</label>
-                      </td>
-                      <td>
-                        <label><input type="radio" name="active" value="I" checked>Inactive</label>
-                      </td>
+                        <td>
+                          <label><input type="radio" name="active" value="A" {{$disabled}}>Active</label>
+                        </td>
+                        <td>
+                          <label><input type="radio" name="active" value="I" checked>Inactive</label>
+                        </td>
                       @endif
 
                   </div>

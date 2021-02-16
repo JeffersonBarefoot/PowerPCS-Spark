@@ -87,12 +87,12 @@ Navbarincumbents.blade.php
                   </tr>
 
                   <tr>
-                    <td>Employee Numbers starting with:</td>
+                    <td>Employee Numbers containing:</td>
                     <td><input type="text" class="form-control" name="empno" value={{ $posNavbarEmpnoQuery }}></td>
                   </tr>
 
                   <tr>
-                    <td>Last Names starting with:</td>
+                    <td>Last Names containing:</td>
                     <td><input type="text" class="form-control" name="lname" value={{ $posNavbarLnameQuery }}></td>
                   </tr>
 
@@ -168,7 +168,7 @@ Navbarincumbents.blade.php
 
               <td height="25"><a href={{route('incumbents.show',$incumbent->id)}}>{{$incumbent->company}}</td>
               <td height="25"><a href={{route('incumbents.show',$incumbent->id)}}>{{$incumbent->empno}}</td>
-              <td height="25"><a href={{route('incumbents.show',$incumbent->id)}}>{{$incumbent->lname}}</td>
+              <td height="25"><a href={{route('incumbents.show',$incumbent->id)}}>{{$incumbent->lname}}, {{$incumbent->fname}}</td>
             </tr>
 
             @endforeach

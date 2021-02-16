@@ -181,16 +181,16 @@ return redirect('/incumbents')->with('success', 'Incumbent saved!');
     // $navbarcompany = $request->input('company');
     // $navbarposno = $request->input('posno');
     // $navbardescr = $request->input('descr');
-    $navbarcompany = Session::get('posNavbarCompanyQuery');
-    $navbarempno = Session::get('posNavbarEmpnoQuery');
-    $navbarlname = Session::get('posNavbarLnameQuery');
-    $navbarlevel1 = Session::get('posNavbarLevel1Query');
-    $navbarlevel2 = Session::get('posNavbarLevel2Query');
-    $navbarlevel3 = Session::get('posNavbarLevel3Query');
-    $navbarlevel4 = Session::get('posNavbarLevel4Query');
-    $navbarlevel5 = Session::get('posNavbarLevel5Query');
+    $navbarcompany =  Session::get('posNavbarCompanyQuery');
+    $navbarempno =    Session::get('posNavbarEmpnoQuery');
+    $navbarlname =    Session::get('posNavbarLnameQuery');
+    $navbarlevel1 =   Session::get('posNavbarLevel1Query');
+    $navbarlevel2 =   Session::get('posNavbarLevel2Query');
+    $navbarlevel3 =   Session::get('posNavbarLevel3Query');
+    $navbarlevel4 =   Session::get('posNavbarLevel4Query');
+    $navbarlevel5 =   Session::get('posNavbarLevel5Query');
 
-
+// dd($navbarempno);
     // dump($request);
     // dump($navbarcompany);
 
@@ -199,8 +199,8 @@ return redirect('/incumbents')->with('success', 'Incumbent saved!');
     //dump($navbarposno);
 
     $incumbentsnavbar = Incumbent::where('company','like',"$navbarcompany%")
-                        ->where('empno','like',"$navbarempno%")
-                        ->where('lname','like',"$navbarlname%")
+                        ->where('empno','like',"%$navbarempno%")
+                        ->where('lname','like',"%$navbarlname%")
                         ->where('level1','like',"$navbarlevel1%")
                         ->where('level2','like',"$navbarlevel2%")
                         ->where('level3','like',"$navbarlevel3%")
