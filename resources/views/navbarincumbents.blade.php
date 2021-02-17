@@ -35,9 +35,6 @@
 <body>
 
 <form action={{route('incumbents.show',$incumbent->id)}} method="get">
-
-Navbarincumbents.blade.php
-
     <div class="row">
         <div class="col-md-3" style="background-color:WhiteSmoke">
 
@@ -153,7 +150,6 @@ Navbarincumbents.blade.php
 
           <table class="table table-condensed">
             <col width="3">
-            <col width="3">
             <col width="80">
             <col width="80">
             <col width="200">
@@ -161,11 +157,8 @@ Navbarincumbents.blade.php
 
             <tr>
               <td>
-                @if ($incumbent->active=='I')<span class="glyphicon glyphicon-remove" style="color:grey" data-toggle="tooltip" title="Inactive"></span>@endif
+                @if ($incumbent->active=='T')<span class="glyphicon glyphicon-remove" style="color:grey" data-toggle="tooltip" title="Inactive"></span>@endif
               </td>
-
-
-
               <td height="25"><a href={{route('incumbents.show',$incumbent->id)}}>{{$incumbent->company}}</td>
               <td height="25"><a href={{route('incumbents.show',$incumbent->id)}}>{{$incumbent->empno}}</td>
               <td height="25"><a href={{route('incumbents.show',$incumbent->id)}}>{{$incumbent->lname}}, {{$incumbent->fname}}</td>

@@ -14,7 +14,7 @@
 
   <!-- ************************** -->
   <!-- ************************** -->
-  <!-- Position Status -->
+  <!-- Incumbent details -->
   <!-- ************************** -->
   <!-- ************************** -->
 
@@ -24,30 +24,96 @@
     To keep open:  <div class="panel-collapse" id="collapse1" >   -->
     <!-- <div class='panel-collapse collapse' id='collapse1' > -->
 
-            <table class="table table-condensed">
-              <thead>
-                <tr>
-                  <th width="35%">Settings</th>
-                  <th width="5%"></th>
-                  <th width="15%"></th>
-                  <th width="15%"></th>
-                  <th width="30%"></th>
-                </tr>
-              </thead>
+    <div class="row">
+      <div class="col-md-4">
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th width="96%">History on File</th>
+              <th width="1%"></th>
+              <th width="1%"></th>
+              <th width="1%"></th>
+              <th width="1%"></th>
+            </tr>
+          </thead>
 
-              <tr>
-<td> test </td>
-<td> {{$incumbent->lname}}{{$incumbent->fname}} </td>
-              </tr>
+          <table>
+            <th><a href={{route('incumbents.show',$incumbent->id)}}>View Current Status</th>
+          </table>
+          <br>
+          <table>
+            <th></th>
+          </table>
 
-              <tr>
 
-              </tr>
 
-              <tr>
 
-              </tr>
-            </table>
+        </table>
+        <table>
+          <th>History Records on File</th>
+@foreach($IncumbentHistory as $vih)
+        <tr>
+          <td>{{$vih->lname}}</td>
+          <td></td>
+
+        </tr>
+
+        <tr>
+          <td>(((List history records here)))</td>
+          <td></td>
+
+        </tr>
+
+        <tr>
+          <td>12/31/2000         CEO         1.00FTE          $135,000 </td>
+          <td></td>
+
+        </tr>
+@endforeach
+        </table>
+
+
+
+
+      </table>
+      </div>
+
+      <!-- *************************** -->
+      <!-- Right div contains xxxxxxxxxxxxxxxxxxxxxx -->
+      <div class="col-md-8">
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th width="45%">Details</th>
+              <th width="10%"></th>
+              <th width="40%"></th>
+              <th width="4%"></th>
+              <th width="1%"></th>
+            </tr>
+          </thead>
+          <tr>
+            <td>Active Status</td>
+            <td></td>
+
+          </tr>
+
+          <tr>
+            <td>Allow Multiple Incumbents:</td>
+            <td></td>
+
+          </tr>
+
+          <tr>
+            <td>Position Funded</td>
+            <td></td>
+
+          </tr>
+
+
+        </table>
+      </div>
+    </div>
+
 
 
 

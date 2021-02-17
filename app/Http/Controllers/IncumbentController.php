@@ -211,9 +211,22 @@ return redirect('/incumbents')->with('success', 'Incumbent saved!');
                         ->get();
 // dd($incumbentsnavbar);
     //
+
+    //****************************
+    // I N C U M B E N T   H I S T O R Y
+    // pull all history records for a selected incumbents
+    // this will populate the middle column of incumbent history, showing all hist records
+    $viewIncumbentHistory = \DB::table('hincumbents')
+      ->where('company','=',$incumbentCompany)
+      ->where('empno','=',$incumbentEmpno)
+      ->orderby('trans_date','desc')
+      ->get();
+
+    
     return View('incumbents.show')
       ->with(compact('incumbent'))
-      ->with(compact('incumbentsnavbar'));
+      ->with(compact('incumbentsnavbar'))
+      ->with(compact('viewIncumbentHistory'));
   }
 
   /**
