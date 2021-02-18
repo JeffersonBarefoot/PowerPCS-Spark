@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\incumbent;
+use App\HIncumbent;
 use Session;
 use Auth;
 use Illuminate\Support\Facades\Schema\columns;
@@ -217,12 +218,15 @@ return redirect('/incumbents')->with('success', 'Incumbent saved!');
     // pull all history records for a selected incumbents
     // this will populate the middle column of incumbent history, showing all hist records
     $viewIncumbentHistory = \DB::table('hincumbents')
-      ->where('company','=',$incumbentCompany)
-      ->where('empno','=',$incumbentEmpno)
+      ->where('company','=',$incumbent->company)
+      ->where('empno','=',$incumbent->empno)
       ->orderby('trans_date','desc')
       ->get();
+dump($incumbent);
+dump($incumbent->company);
+dump($incumbent->empno);
+dump($viewIncumbentHistory);
 
-    
     return View('incumbents.show')
       ->with(compact('incumbent'))
       ->with(compact('incumbentsnavbar'))

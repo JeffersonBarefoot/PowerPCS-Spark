@@ -420,7 +420,7 @@ class PositionController extends Controller
         $viewincid = $request->input('viewincid');
         $viewinchistid = '';
         SessionSet("ExpandIncumbentHistory","Y");
-      } 
+      }
       //dump('$viewincid = '.$viewincid);
       //dump('$viewinchistid = '.$viewinchistid);
 
@@ -610,7 +610,7 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
 // execute these lines to import sample data
 //######################
 // importpositions('');
-// importhpositions('');
+importhpositions('');
 // importincumbents('');
 // importhincumbents('');
 
@@ -636,7 +636,7 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
 //######################
 //######################
 //######################
-
+dump($viewIncumbentHistory);
       // save all session variables prior to returning to the blade
       Session::put('reportsDirTo', '');
       Session::put('reportsIndirTo', '');

@@ -1,5 +1,30 @@
 
 <?php
+
+/**
+* Class and Function List:
+* Function list:
+* - GetPositionField()
+* - GetPosition()
+* - GetPositions()
+* - GetFriendlyColumnName()
+* - GetColumnType()
+* - GetColumnLength()
+* - validateData()
+* - FormatMoney()
+* - FormatDollars()
+* - UpdatePosition()
+* - ImportPositions()
+* - ImportHPositions()
+* - ImportIncumbents()
+* - ImportHIncumbents()
+* - getTimestamp()
+* - sessionSet()
+* - sessionGet()
+* - sessionForgetOne()
+* Classes list:
+*/
+
 use App\Models\Post;
 use App\Position;
 use App\HPosition;
@@ -38,6 +63,16 @@ if (!function_exists('GetPositions')) {
       //  ->where('posno', '=', $posno);
 
   }
+}
+
+if (!function_exists('GetIncumbentField')) {
+    function GetIncumbentField($employer, $empno, $fieldname)
+    {
+        return DB::table('incumbents')
+          ->where('company', '=', $employer)
+          ->where('empno', '=', $empno)
+          ->value($fieldname);
+    }
 }
 
 if (!function_exists('GetFriendlyColumnName')) {
@@ -305,9 +340,11 @@ if (!function_exists('UpdatePosition')) {
 
 
 // dd('trying to insert record into hpositions');
+        $user = auth()->user();
 
         $posHist = new HPosition();
         $posHist->posid = $posid;
+        $posHist->teamid = $user->currentTeam->id;
         $posHist->company = $poscomp;
         $posHist->posno = $posno;
         $posHist->descr = $position->descr;
@@ -471,8 +508,7 @@ if (!function_exists('ImportHPositions')) {
   //***************************************************
   //***************************************************
   function ImportHPositions($incomingfile)
-  {
-    if (($handle = fopen ( public_path () . '/ImportFiles/samplehpositions.csv', 'r' )) !== FALSE) {
+  {    if (($handle = fopen ( public_path () . '/ImportFiles/samplehpositions.csv', 'r' )) !== FALSE) {
 
       // extract headers so we can see what fields are being imported
       $header = fgetcsv($handle, 2000, ',');
@@ -492,8 +528,18 @@ if (!function_exists('ImportHPositions')) {
             $fieldname=$header[$i];
             $fielddata=$data[$i];
 
+            if ($fieldname=="company") {
+              $companyvalue = $fielddata;
+            }
+
+            if ($fieldname=="posno") {
+              $posnovalue = $fielddata;
+            }
+
             // validate the incoming data, based on the table.field data type
             $fielddata=validateData('hpositions',$fieldname,$fielddata);
+
+            // find the related position, and capture the position ID
 
             // update the field in the new positions records
             // import will look like:  $position->active="A"
@@ -502,14 +548,25 @@ if (!function_exists('ImportHPositions')) {
         endwhile;
 
         // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
+        // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
+        $positionid = GetPositionField($companyvalue, $posnovalue, "id");
+
+        if (! is_null($positionid)) {
+          $hposition->posid=$positionid;
+        }
+
+        // add correct team ID
+        $user = auth()->user();
+        $hposition->teamid=$user->currentTeam->id;
 
         $hposition->save();
-      }
-
+        }
       fclose ( $handle );
     }
   }
+
 }
+
 
 if (!function_exists('ImportIncumbents')) {
 
@@ -565,10 +622,10 @@ if (!function_exists('ImportIncumbents')) {
 
         if (! is_null($positionid)) {
           $incumbent->posid=$positionid;
-          $incumbent->save();
-        }
-      }
+          }
 
+        $incumbent->save();
+      }
       fclose ( $handle );
     }
   }
@@ -605,6 +662,22 @@ if (!function_exists('ImportHIncumbents')) {
             $fieldname=$header[$i];
             $fielddata=$data[$i];
 
+            if ($fieldname=="company") {
+              $companyvalue = $fielddata;
+            }
+
+            if ($fieldname=="poscompany") {
+              $poscompanyvalue = $fielddata;
+            }
+
+            if ($fieldname=="posno") {
+              $posnovalue = $fielddata;
+            }
+
+            if ($fieldname=="empno") {
+              $empnovalue = $fielddata;
+            }
+
             // validate the incoming data, based on the table.field data type
             $fielddata=validateData('hincumbents',$fieldname,$fielddata);
 
@@ -615,7 +688,21 @@ if (!function_exists('ImportHIncumbents')) {
             $i++;
         endwhile;
 
-        // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
+        // MAKE SURE THAT THERE'S A POSCOMPANY AND POSNO, AND THEY ARE UNIQUE
+        $positionid = GetPositionField($poscompanyvalue, $posnovalue, "id");
+        if (! is_null($positionid)) {
+          $hincumbent->posid=$positionid;
+        }
+
+        // MAKE SURE THAT THERE'S A COMPANY AND EMPNO, AND THEY ARE UNIQUE
+        $incumbentid = GetIncumbentField($companyvalue, $empnovalue, "id");
+        if (! is_null($incumbentid)) {
+          $hincumbent->incid=$incumbentid;
+        }
+
+        // add correct team ID
+        $user = auth()->user();
+        $hincumbent->teamid=$user->currentTeam->id;
 
         $hincumbent->save();
       }

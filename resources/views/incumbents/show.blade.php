@@ -38,7 +38,7 @@
           </thead>
 
           <table>
-            <th><a href={{route('incumbents.show',$incumbent->id)}}>View Current Status</th>
+            <th><a href={{route('incumbents.show',$incumbent->id)}}>Currently Active in:</th>
           </table>
           <br>
           <table>
@@ -51,7 +51,7 @@
         </table>
         <table>
           <th>History Records on File</th>
-@foreach($IncumbentHistory as $vih)
+@foreach($viewIncumbentHistory as $vih)
         <tr>
           <td>{{$vih->lname}}</td>
           <td></td>
