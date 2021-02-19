@@ -34,7 +34,7 @@
     To keep open:  <div class="panel-collapse" id="collapse1" >   -->
     <!-- <div class='panel-collapse collapse' id='collapse1' > -->
 
-    <div class="row">
+
         <!-- *************************** -->
         <!-- Left div contains list of all incumbents -->
         <div class="row">
@@ -43,9 +43,9 @@
               <thead>
                 <tr>
                   <th width="10%"></th>
-                  <th width="20%">From </th>
-                  <th width="20%">To</th>
-                  <th width="50%">Position</th>
+                  <th width="25%">From </th>
+                  <th width="25%">To</th>
+                  <th width="40%">Position</th>
                   <!-- <th width="15%"></th>
                   <th width="30%"></th> -->
                 </tr>
@@ -59,7 +59,7 @@
                     </td>
                     <td>{{$VPO->posstart}}</td>
                     <td>{{$VPO->posstop}}</td>
-                    <td><a href={{route('incumbents.show',$VPO->id)}}?viewincid={{$VPO->posid}}>{{$VPO->descr}}</td>
+                    <td><a href={{route('incumbents.show',$VPO->incumbentempno)}}?reqcompany={{$VPO->incumbentcompany}}&reqpositioncompany={{$VPO->positioncompany}}&reqpositionposno={{$VPO->positionposno}}>{{$VPO->descr}}</td>
 
                   </tr>
                 @endforeach
@@ -70,42 +70,55 @@
 
           <!-- *************************** -->
           <!-- Middle div contains list of all history records for the selected incumbent -->
-          <div class="col-md-2">Records on file for
-            @foreach($viewPositionsOccupied as $vi)
-              {{$vi->fname.' '.$vi->lname}}
-            @endforeach
-
+          <?php $selectedPositionText=SessionGet('selectedincumbentposition') ?>
+          <div class="col-md-3">History in {{$selectedPositionText}}
             <table class="table table-condensed">
               <thead>
                 <tr>
-                  <th width="40%">Record Created</th>
-                  <th width="10%">Status</th>
-                  <th width="10%">FTE</th>
+                  <th width="40%">Starting</th>
+                  <th width="20%">FTEs</th>
                   <th width="40%">Ann Cost</th>
                 </tr>
               </thead>
-                <tr>
-                  @foreach($viewPositionsOccupied as $viewinc)
-                  @foreach($viewPositionsOccupied as $incHistory)
-                    <tr>
 
-                    </tr>
-                  @endforeach
-                  @endforeach
-                </tr>
+
+              <tr>
+                @foreach($viewIncumbentPositionHistory as $VIPH)
+                  <tr>
+                    <td>{{$VIPH->posstart}}</td>
+                    <td>{{$VIPH->fulltimeequiv}}</td>
+                    <td>{{FormatMoney($VIPH->ann_cost)}}</td>
+                  </tr>
+                @endforeach
+              </tr>
             </table>
           </div>
 
           <!-- *************************** -->
           <!-- Right div contains details of selected incumbent -->
-          <div class="col-md-6">Details:
-            @foreach($viewPositionsOccupied as $vd)
-              {{$vd->fname.' '.$vd->lname.' @ '.$vd->trans_date.', annual cost '.FormatDollars($vd->ann_cost)}}
-            @endforeach
+          <div class="col-md-5">Details:
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th width="40%">Starting</th>
+                  <th width="20%">FTEs</th>
+                  <th width="40%">Ann Cost</th>
+                </tr>
+              </thead>
 
 
+              <tr>
+                @foreach($viewIncumbentPositionHistory as $VIPH)
+                  <tr>
+                    <td>{{$VIPH->posstart}}</td>
+                    <td>{{$VIPH->fulltimeequiv}}</td>
+                    <td>{{FormatMoney($VIPH->ann_cost)}}</td>
+                  </tr>
+                @endforeach
+              </tr>
+            </table>
           </div>
         </div>
-    </div>
+
 </body>
 @endsection

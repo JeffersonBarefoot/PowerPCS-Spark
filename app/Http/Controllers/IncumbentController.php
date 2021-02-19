@@ -97,50 +97,53 @@ return redirect('/incumbents')->with('success', 'Incumbent saved!');
    //***************************************************
    //***************************************************
    //***************************************************
-  public function show($id)
+  public function show($empno, Request $request)
   {
+    $request->flash();
 
   // dd($user->currentTeam->id);
     $user = auth()->user();
     $team = $user->currentTeam->id;
-    // dd($team);
-// dd($id);
-    // find record with this ID that's in this team
+
+    $reqcompany = $request->input('reqcompany');
+    $reqempno = $empno;
+    $reqpositioncompany = $request->input('reqpositioncompany');
+    $reqpositionposno = $request->input('reqpositionposno');
+
+    $selectedposition = DB::table('positions')
+      ->where('posno', '=', $reqpositionposno)
+      ->where('company', '=', $reqpositioncompany)
+      ->pluck('descr');  // "5"
+    $badChars=array('[',']','"');
+    $selectedposition=str_replace($badChars,'',$selectedposition);
+    SessionSet('selectedincumbentposition',$selectedposition);
+
+
+    // dump($reqcompany.$empno.$team);
+
+    //Determine which incumbent will populate the SHOW screen
+    // find record with this company/empno that's in this team
     // if doesn't exist, then find the lowest ID on this team and go there
-    $incumbent = Incumbent::where('id', '=' , $id)
+    $incumbent = Incumbent::where('empno', '=' , $empno)
+      ->where('company', '=', $reqcompany)
       ->where('teamid' , '=' , $team)
       ->firstOr(function(){
 
-        $user = auth()->user();
-        $team = $user->currentTeam->id;
-        $id=DB::table('incumbents')->where('teamid' , '=' , $team)->min('id');
+    $user = auth()->user();
+    $team = $user->currentTeam->id;
+    $id=DB::table('incumbents')->where('teamid' , '=' , $team)->min('id');
+    return $incumbent = Incumbent::find($id);
+    });
 
-
-        return $incumbent = Incumbent::find($id);
-
-
-      });
-
-
-      // $company = $incumbent->company;
-      // dd($company);
-
-// dd($incumbent->company);
-
-    // $incumbent = Incumbent::find($id)
-    //   ->where('teamid', '=' , $team);
-    //
-    // if (is_null($incumbent)) {
-    //
-    //   // $id=1;
-    //   $id=DB::table('incumbents')->min('id')
-    //     ->where('teamid',$user->currentTeam->id);
-    //   $incumbent = Incumbent::find($id);
-    // }
-
-
-
-
+    //****************************
+    // N A V B A R
+    // these variables are used to populate the NavBar, not the main portion of Positions.Show
+    // $navbarcompany = $request->input('company');
+    // $navbarposno = $request->input('posno');
+    // $navbardescr = $request->input('descr');
+    // $navbarcompany = $request->input('company');
+    // $navbarposno = $request->input('posno');
+    // $navbardescr = $request->input('descr');
     // the next IFs check to see if a search parameter has been passed via request-inputs from NavBar.
     // if specific parameters have been passed then remember them.
     // if nothing has been passed, do nothing so that the session variables don't change and Navbar remembers the last search when you go back to the position.show.blade
@@ -208,15 +211,6 @@ return redirect('/incumbents')->with('success', 'Incumbent saved!');
       }
     }
 
-    //****************************
-    // N A V B A R
-    // these variables are used to populate the NavBar, not the main portion of Positions.Show
-    // $navbarcompany = $request->input('company');
-    // $navbarposno = $request->input('posno');
-    // $navbardescr = $request->input('descr');
-    // $navbarcompany = $request->input('company');
-    // $navbarposno = $request->input('posno');
-    // $navbardescr = $request->input('descr');
     $navbarcompany =  Session::get('posNavbarCompanyQuery');
     $navbarempno =    Session::get('posNavbarEmpnoQuery');
     $navbarlname =    Session::get('posNavbarLnameQuery');
@@ -226,51 +220,62 @@ return redirect('/incumbents')->with('success', 'Incumbent saved!');
     $navbarlevel4 =   Session::get('posNavbarLevel4Query');
     $navbarlevel5 =   Session::get('posNavbarLevel5Query');
 
-// dd($navbarempno);
-    // dump($request);
-    // dump($navbarcompany);
-
-    // $testAriaCollapse = $request->input('testArial');
-    //dump($testAriaCollapse);
-    //dump($navbarposno);
-
+    // determine which incumbents will show up in the navbar
     $incumbentsnavbar = Incumbent::where('company','like',"$navbarcompany%")
-                        ->where('empno','like',"%$navbarempno%")
-                        ->where('lname','like',"%$navbarlname%")
-                        ->where('level1','like',"$navbarlevel1%")
-                        ->where('level2','like',"$navbarlevel2%")
-                        ->where('level3','like',"$navbarlevel3%")
-                        ->where('level4','like',"$navbarlevel4%")
-                        ->where('level5','like',"$navbarlevel5%")
-                        ->orderby("company")
-                        ->orderby("lname")
-                        ->get();
-// dd($incumbentsnavbar);
-    //
+      ->where('empno','like',"%$navbarempno%")
+      ->where('lname','like',"%$navbarlname%")
+      ->where('level1','like',"$navbarlevel1%")
+      ->where('level2','like',"$navbarlevel2%")
+      ->where('level3','like',"$navbarlevel3%")
+      ->where('level4','like',"$navbarlevel4%")
+      ->where('level5','like',"$navbarlevel5%")
+      ->select('company','empno','fname','lname','active')
+      ->distinct()
+      ->orderby("company")
+      ->orderby("lname")
+      ->get();
 
     //****************************
     // I N C U M B E N T   H I S T O R Y
-    // pull all history records for a selected incumbents
-    // this will populate the middle column of incumbent history, showing all hist records
+    // pull all history records for the selected incumbent
+    // this will populate the left column of incumbent show
     $viewPositionsOccupied = \DB::table('incumbents')
       ->join('positions','posid','=','positions.id')
-      ->where('incumbents.company','=',$incumbent->company)
-      ->where('incumbents.empno','=',$incumbent->empno)
+      ->where('incumbents.empno','=',$empno)
+      ->where('incumbents.company','=',$reqcompany)
       ->orderby('incumbents.trans_date','desc')
+      ->select(DB::raw('incumbents.*, positions.*
+        , incumbents.id as incumbentid
+        , incumbents.company as incumbentcompany
+        , incumbents.empno as incumbentempno
+        , positions.id as positionid
+        , positions.posno as positionposno
+        , positions.company as positioncompany'))
       ->get();
-// dump($incumbent);
-// dump($incumbent->company);
-// dump($incumbent->empno);
-// dump($viewIncumbentHistory);
+
+      // dd($viewPositionsOccupied);
 
     // viewHPositionRecords
+    $viewIncumbentPositionHistory = \DB::table('hincumbents')
+      ->join('positions','posid','=','positions.id')
+      ->where('poscompany','=',$reqpositioncompany)
+      ->where('hincumbents.posno','=',$reqpositionposno)
+      ->where('hincumbents.company','=',$reqcompany)
+      ->where('empno','=',$reqempno)
+      ->orderby('hincumbents.trans_date','desc')
+      ->get();
 
     // view HPositionDetails
+
+
+
 
     return View('incumbents.show')
       ->with(compact('incumbent'))
       ->with(compact('incumbentsnavbar'))
-      ->with(compact('viewPositionsOccupied'));
+      ->with(compact('viewPositionsOccupied'))
+      ->with(compact('viewIncumbentPositionHistory'));
+
   }
 
   /**

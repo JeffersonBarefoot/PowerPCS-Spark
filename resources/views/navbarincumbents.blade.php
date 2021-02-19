@@ -159,9 +159,9 @@
               <td>
                 @if ($incumbent->active=='T')<span class="glyphicon glyphicon-remove" style="color:grey" data-toggle="tooltip" title="Inactive"></span>@endif
               </td>
-              <td height="25"><a href={{route('incumbents.show',$incumbent->id)}}>{{$incumbent->company}}</td>
-              <td height="25"><a href={{route('incumbents.show',$incumbent->id)}}>{{$incumbent->empno}}</td>
-              <td height="25"><a href={{route('incumbents.show',$incumbent->id)}}>{{$incumbent->lname}}, {{$incumbent->fname}}</td>
+              <td height="25"><a href={{route('incumbents.show',trim($incumbent->empno))}}?reqcompany={{$incumbent->company}}>{{$incumbent->company}}</td>
+              <td height="25"><a href={{route('incumbents.show',trim($incumbent->empno))}}?reqcompany={{$incumbent->company}}>{{$incumbent->empno}}</td>
+              <td height="25"><a href={{route('incumbents.show',trim($incumbent->empno))}}?reqcompany={{$incumbent->company}}>{{$incumbent->lname}}, {{$incumbent->fname}}</td>
             </tr>
 
             @endforeach
