@@ -153,6 +153,10 @@ class PositionController extends Controller
     //***************************************************
     public function show($id,Request $request)
     {
+
+// dump("1:  ".getTimestamp());
+
+
       // dump('positioncontroller.show');
       // dump($id);
       // dump("end");
@@ -281,6 +285,7 @@ class PositionController extends Controller
       // position history
       //
       //newly selected position
+// dump("2:  ".getTimestamp());
 
       if ($sessionPositionID <> $id) { // not on the same position as last time
         // code...
@@ -359,7 +364,7 @@ class PositionController extends Controller
       }
       // dump($switcheditmode);
 
-
+// dump("3:  ".getTimestamp());
       //****************************
       // N A V B A R
       // these variables are used to populate the NavBar, not the main portion of Positions.Show
@@ -397,6 +402,8 @@ class PositionController extends Controller
                           ->orderby("company")
                           ->orderby("descr")
                           ->get();
+
+// dump("4:  ".getTimestamp());
 
       //****************************
       // I N C U M B E N T S
@@ -479,6 +486,9 @@ class PositionController extends Controller
       // pull all details for the selected incumbent-history record.
       // this can be used to show details of a "selected incumbent"
 
+
+// dump("5:  ".getTimestamp());
+
       //****************************
       // P O S I T I O N   H I S T O R Y
       $posHistRecs = \DB::table('hpositions')
@@ -514,6 +524,8 @@ class PositionController extends Controller
     }
 
 // dump($viewPositionHistoryDetails);
+
+// dump("6:  ".getTimestamp());
 
       //****************************
       // REPORTS TO data
@@ -610,7 +622,7 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
 // execute these lines to import sample data
 //######################
 // importpositions('');
-importhpositions('');
+// importhpositions('');
 // importincumbents('');
 // importhincumbents('');
 
@@ -636,13 +648,15 @@ importhpositions('');
 //######################
 //######################
 //######################
-dump($viewIncumbentHistory);
+// dump($viewIncumbentHistory);
       // save all session variables prior to returning to the blade
       Session::put('reportsDirTo', '');
       Session::put('reportsIndirTo', '');
       Session::put('viewincid', $viewincid);
       Session::put('viewinchistid', $viewinchistid);
       Session::put('viewPosHistId', '');
+
+// dump("7:  ".getTimestamp());
 
       //****************************
       // R E T U R N   T O   positions.show

@@ -8,118 +8,104 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
-
 <body>
-  Incumbent.Show.Blade.Php
+  <div class="row">
+      <!-- <div class="col-sm-8 offset-sm-0"> -->
+      <div class="col-md-12">
+          <h1 class="display-5">&nbsp;&nbsp;&nbsp;{{$incumbent->fname}}&nbsp{{$incumbent->lname}};<small>{{$incumbent->company}} / {{$incumbent->empno}}</small></h1>
+
+        <!-- SAVE EDIT CHANGES -->
+        <!-- Not working as of 2020-12-11 -->
+
+        <br>
+        <br>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <br>
+        <br>
+      </div>
+  </div>
 
   <!-- ************************** -->
   <!-- ************************** -->
   <!-- Incumbent details -->
   <!-- ************************** -->
   <!-- ************************** -->
-
-
-
     <!-- To Collapse:   <div class="panel-collapse collapse" id="collapse1" >
     To keep open:  <div class="panel-collapse" id="collapse1" >   -->
     <!-- <div class='panel-collapse collapse' id='collapse1' > -->
 
     <div class="row">
-      <div class="col-md-4">
-        <table class="table table-condensed">
-          <thead>
-            <tr>
-              <th width="96%">History on File</th>
-              <th width="1%"></th>
-              <th width="1%"></th>
-              <th width="1%"></th>
-              <th width="1%"></th>
-            </tr>
-          </thead>
+        <!-- *************************** -->
+        <!-- Left div contains list of all incumbents -->
+        <div class="row">
+          <div class="col-md-4">Positions that {{$incumbent->fname}}{{$incumbent->lname}} has occupied:
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th width="10%"></th>
+                  <th width="20%">From </th>
+                  <th width="20%">To</th>
+                  <th width="50%">Position</th>
+                  <!-- <th width="15%"></th>
+                  <th width="30%"></th> -->
+                </tr>
+              </thead>
 
-          <table>
-            <th><a href={{route('incumbents.show',$incumbent->id)}}>Currently Active in:</th>
-          </table>
-          <br>
-          <table>
-            <th></th>
-          </table>
+              <tr>
+                @foreach($viewPositionsOccupied as $VPO)
+                  <tr>
+                    <td>
+                      @if ($VPO->active_pos=='I')<span class="glyphicon glyphicon-remove" style="color:grey" data-toggle="tooltip" title="Inactive"></span>@endif
+                    </td>
+                    <td>{{$VPO->posstart}}</td>
+                    <td>{{$VPO->posstop}}</td>
+                    <td><a href={{route('incumbents.show',$VPO->id)}}?viewincid={{$VPO->posid}}>{{$VPO->descr}}</td>
 
+                  </tr>
+                @endforeach
+              </tr>
 
+            </table>
+          </div>
 
+          <!-- *************************** -->
+          <!-- Middle div contains list of all history records for the selected incumbent -->
+          <div class="col-md-2">Records on file for
+            @foreach($viewPositionsOccupied as $vi)
+              {{$vi->fname.' '.$vi->lname}}
+            @endforeach
 
-        </table>
-        <table>
-          <th>History Records on File</th>
-@foreach($viewIncumbentHistory as $vih)
-        <tr>
-          <td>{{$vih->lname}}</td>
-          <td></td>
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th width="40%">Record Created</th>
+                  <th width="10%">Status</th>
+                  <th width="10%">FTE</th>
+                  <th width="40%">Ann Cost</th>
+                </tr>
+              </thead>
+                <tr>
+                  @foreach($viewPositionsOccupied as $viewinc)
+                  @foreach($viewPositionsOccupied as $incHistory)
+                    <tr>
 
-        </tr>
+                    </tr>
+                  @endforeach
+                  @endforeach
+                </tr>
+            </table>
+          </div>
 
-        <tr>
-          <td>(((List history records here)))</td>
-          <td></td>
-
-        </tr>
-
-        <tr>
-          <td>12/31/2000         CEO         1.00FTE          $135,000 </td>
-          <td></td>
-
-        </tr>
-@endforeach
-        </table>
-
-
-
-
-      </table>
-      </div>
-
-      <!-- *************************** -->
-      <!-- Right div contains xxxxxxxxxxxxxxxxxxxxxx -->
-      <div class="col-md-8">
-        <table class="table table-condensed">
-          <thead>
-            <tr>
-              <th width="45%">Details</th>
-              <th width="10%"></th>
-              <th width="40%"></th>
-              <th width="4%"></th>
-              <th width="1%"></th>
-            </tr>
-          </thead>
-          <tr>
-            <td>Active Status</td>
-            <td></td>
-
-          </tr>
-
-          <tr>
-            <td>Allow Multiple Incumbents:</td>
-            <td></td>
-
-          </tr>
-
-          <tr>
-            <td>Position Funded</td>
-            <td></td>
-
-          </tr>
+          <!-- *************************** -->
+          <!-- Right div contains details of selected incumbent -->
+          <div class="col-md-6">Details:
+            @foreach($viewPositionsOccupied as $vd)
+              {{$vd->fname.' '.$vd->lname.' @ '.$vd->trans_date.', annual cost '.FormatDollars($vd->ann_cost)}}
+            @endforeach
 
 
-        </table>
-      </div>
+          </div>
+        </div>
     </div>
-
-
-
-
-
-
 </body>
-
-
 @endsection

@@ -99,12 +99,47 @@ return redirect('/incumbents')->with('success', 'Incumbent saved!');
    //***************************************************
   public function show($id)
   {
-    // dd("Incumbents.Show");
 
-    if (is_null($id)) {
-      $id=1;
-    }
-    $incumbent = Incumbent::find($id);
+  // dd($user->currentTeam->id);
+    $user = auth()->user();
+    $team = $user->currentTeam->id;
+    // dd($team);
+// dd($id);
+    // find record with this ID that's in this team
+    // if doesn't exist, then find the lowest ID on this team and go there
+    $incumbent = Incumbent::where('id', '=' , $id)
+      ->where('teamid' , '=' , $team)
+      ->firstOr(function(){
+
+        $user = auth()->user();
+        $team = $user->currentTeam->id;
+        $id=DB::table('incumbents')->where('teamid' , '=' , $team)->min('id');
+
+
+        return $incumbent = Incumbent::find($id);
+
+
+      });
+
+
+      // $company = $incumbent->company;
+      // dd($company);
+
+// dd($incumbent->company);
+
+    // $incumbent = Incumbent::find($id)
+    //   ->where('teamid', '=' , $team);
+    //
+    // if (is_null($incumbent)) {
+    //
+    //   // $id=1;
+    //   $id=DB::table('incumbents')->min('id')
+    //     ->where('teamid',$user->currentTeam->id);
+    //   $incumbent = Incumbent::find($id);
+    // }
+
+
+
 
     // the next IFs check to see if a search parameter has been passed via request-inputs from NavBar.
     // if specific parameters have been passed then remember them.
@@ -217,20 +252,25 @@ return redirect('/incumbents')->with('success', 'Incumbent saved!');
     // I N C U M B E N T   H I S T O R Y
     // pull all history records for a selected incumbents
     // this will populate the middle column of incumbent history, showing all hist records
-    $viewIncumbentHistory = \DB::table('hincumbents')
-      ->where('company','=',$incumbent->company)
-      ->where('empno','=',$incumbent->empno)
-      ->orderby('trans_date','desc')
+    $viewPositionsOccupied = \DB::table('incumbents')
+      ->join('positions','posid','=','positions.id')
+      ->where('incumbents.company','=',$incumbent->company)
+      ->where('incumbents.empno','=',$incumbent->empno)
+      ->orderby('incumbents.trans_date','desc')
       ->get();
-dump($incumbent);
-dump($incumbent->company);
-dump($incumbent->empno);
-dump($viewIncumbentHistory);
+// dump($incumbent);
+// dump($incumbent->company);
+// dump($incumbent->empno);
+// dump($viewIncumbentHistory);
+
+    // viewHPositionRecords
+
+    // view HPositionDetails
 
     return View('incumbents.show')
       ->with(compact('incumbent'))
       ->with(compact('incumbentsnavbar'))
-      ->with(compact('viewIncumbentHistory'));
+      ->with(compact('viewPositionsOccupied'));
   }
 
   /**

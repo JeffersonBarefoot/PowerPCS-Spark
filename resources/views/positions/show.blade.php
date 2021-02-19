@@ -185,20 +185,11 @@
       <div class="col-md-12">
           <h1 class="display-5">&nbsp;&nbsp;&nbsp;{{$position->descr}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{$position->company}} / {{$position->posno}}</small></h1>
 
-<a href={{route('positions.show',$position->id)}}?editmode=switch>{{Session::get('editModeButtonText')}} test</a><br>
-<a href={{route('positions.create')}}>Add New Position </a><br>
-<a href={{ route('verifydestroy') }}?positiontodelete={{$position->id}}>Delete This Position </a><br>
-
-<!-- SAVE EDIT CHANGES -->
-<!-- Not working as of 2020-12-11 -->
-
-<br>
-<br>
-<button type="submit" class="btn btn-primary">Update</button>
-<br>
-<br>
-<!-- <a href={{route('positions.update',$position->id)}}>Save Changes </a><br> -->
-
+          <a href={{route('positions.show',$position->id)}}?editmode=switch>{{Session::get('editModeButtonText')}} test</a><br>
+          <a href={{route('positions.create')}}>Add New Position </a><br>
+          <a href={{ route('verifydestroy') }}?positiontodelete={{$position->id}}>Delete This Position </a><br>
+          <button type="Save Changes" class="btn btn-primary">Update</button>
+          <br><br>
 
       </div>
   </div>
