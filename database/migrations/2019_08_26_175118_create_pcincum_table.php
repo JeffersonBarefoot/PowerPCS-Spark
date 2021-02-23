@@ -61,6 +61,9 @@ class CreatePcincumTable extends Migration
             $table->string('race',20)->default('');
             $table->string('sex',10)->default('');
             $table->string('education',30)->default('');
+            $table->string('historyreason',4000)->default('');
+            $table->date('historystart');
+            $table->date('historyend');
         });
 
         DB::table('incumbents')->insert([

@@ -38,14 +38,13 @@
         <!-- *************************** -->
         <!-- Left div contains list of all incumbents -->
         <div class="row">
-          <div class="col-md-4">Positions that {{$incumbent->fname}}{{$incumbent->lname}} has occupied:
+          <div class="col-md-3">Positions that {{$incumbent->fname}}{{$incumbent->lname}} has occupied:
             <table class="table table-condensed">
               <thead>
                 <tr>
                   <th width="10%"></th>
-                  <th width="25%">From </th>
-                  <th width="25%">To</th>
-                  <th width="40%">Position</th>
+                  <th width="40%">Active from</th>
+                  <th width="50%">Position</th>
                   <!-- <th width="15%"></th>
                   <th width="30%"></th> -->
                 </tr>
@@ -57,8 +56,7 @@
                     <td>
                       @if ($VPO->active_pos=='I')<span class="glyphicon glyphicon-remove" style="color:grey" data-toggle="tooltip" title="Inactive"></span>@endif
                     </td>
-                    <td>{{$VPO->posstart}}</td>
-                    <td>{{$VPO->posstop}}</td>
+                    <td>{{date_format(date_create($VPO->posstart),"m/Y")." to ".date_format(date_create($VPO->posstop),"m/Y")}}</td>
                     <td><a href={{route('incumbents.show',$VPO->incumbentempno)}}?reqcompany={{$VPO->incumbentcompany}}&reqpositioncompany={{$VPO->positioncompany}}&reqpositionposno={{$VPO->positionposno}}>{{$VPO->descr}}</td>
 
                   </tr>
@@ -75,7 +73,7 @@
             <table class="table table-condensed">
               <thead>
                 <tr>
-                  <th width="40%">Starting</th>
+                  <th width="40%">Effective</th>
                   <th width="20%">FTEs</th>
                   <th width="40%">Ann Cost</th>
                 </tr>
@@ -85,8 +83,8 @@
               <tr>
                 @foreach($viewIncumbentPositionHistory as $VIPH)
                   <tr>
-                    <td>{{$VIPH->posstart}}</td>
-                    <td>{{$VIPH->fulltimeequiv}}</td>
+                    <td>{{date_format(date_create($VIPH->posstart),"m/y")." to ".date_format(date_create($VIPH->posstop),"m/y")}}</td>
+                    <td>{{round($VIPH->fulltimeequiv,5)}}</td>
                     <td>{{FormatMoney($VIPH->ann_cost)}}</td>
                   </tr>
                 @endforeach
@@ -96,7 +94,7 @@
 
           <!-- *************************** -->
           <!-- Right div contains details of selected incumbent -->
-          <div class="col-md-5">Details:
+          <div class="col-md-6">Details:
             <table class="table table-condensed">
               <thead>
                 <tr>
@@ -110,9 +108,9 @@
               <tr>
                 @foreach($viewIncumbentPositionHistory as $VIPH)
                   <tr>
-                    <td>{{$VIPH->posstart}}</td>
-                    <td>{{$VIPH->fulltimeequiv}}</td>
-                    <td>{{FormatMoney($VIPH->ann_cost)}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                   </tr>
                 @endforeach
               </tr>

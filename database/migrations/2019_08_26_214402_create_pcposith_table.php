@@ -77,7 +77,9 @@ class CreatePcposithTable extends Migration
            $table->string('reptocom2',10)->default('');
            $table->string('reptopos2',20)->default('');
            $table->string('reptodesc2',75)->default('');
-           $table->string('historyreason',2000)->default('');
+           $table->string('historyreason',4000)->default('');
+           $table->date('historystart');
+           $table->date('historyend');
         });
     }
 

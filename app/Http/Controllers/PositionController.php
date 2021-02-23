@@ -494,7 +494,7 @@ class PositionController extends Controller
       $posHistRecs = \DB::table('hpositions')
         ->where('posno','=',$posno)
         ->where('company','=',$company)
-        ->orderby('trans_date','desc')
+        ->orderby('historyend','desc')
         ->get();
       $positionhistorycount = $posHistRecs->count();
 

@@ -405,18 +405,32 @@ if (!function_exists('UpdatePosition')) {
         $posHist->reptopos2 = $position->reptopos2;
         $posHist->reptodesc2 = $position->reptodesc2;
         $posHist->historyreason = $position->historyreason;
-
+        $posHist->historystart = $position->historystart;
+        $posHist->historyend = getTodaysDate();
 
         $posHist->save();
+
+        // if need history record then position.historyreason is JUST the userConfirmMessage
+        // $originalHistoryReason = $position->historyreason;
+        // $newHistoryReason =   $originalHistoryReason . $userConfirmMessage;
+        // $newHistoryReason = $userConfirmMessage;
+        $position->historyreason=$userConfirmMessage;
+        $position->historystart=date('Y-m-d');
+        $position->save();
+
+      } else { // if don't need history record then the history reason is existing PLUS new userConfirmMessage.  DON'T update historystart date
+
+        $originalHistoryReason = $position->historyreason;
+        $newHistoryReason =   $originalHistoryReason . $userConfirmMessage;
+        // $newHistoryReason = $userConfirmMessage;
+        $position->historyreason=$newHistoryReason;
+        // $position->historystart=date('Y-m-d');
 
       }
 
 
-//***************************************************
-        $originalHistoryReason = $position->historyreason;
-        $newHistoryReason =   $originalHistoryReason . $userConfirmMessage;
-        $position->historyreason=$newHistoryReason;
-        $position->save();
+
+
 
       // dd($userConfirmMessage);
 
@@ -725,6 +739,17 @@ if (!function_exists('getTimestamp')) {
     $dt->setTimezone(new DateTimeZone($tz));
     $timestamp = $dt->format('Ymd-his');
     return $timestamp;
+
+  }
+}
+
+if (!function_exists('getTodaysDate')) {
+  function getTodaysDate()
+  {
+
+    $tz = 'America/New_York';
+    $date = new DateTime("now", new DateTimeZone($tz) );
+    return $date->format('Y-m-d');
 
   }
 }

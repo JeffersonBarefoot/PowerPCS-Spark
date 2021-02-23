@@ -1308,12 +1308,31 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-md-6">
+
               <table class="table table-condensed">
                 <thead>
                   <tr>
-                    <th width="15%">Starting</th>
+                    <th width="25%">Most recent changes</th>
+                    <th width="25%"></th>
+                    <th width="0%"></th>
+                    <th width="25%"></th>
+                    <th width="25%"></th>
+                  </tr>
+                </thead>
+              </table>
+              @if(is_null($position->historyreason))
+                No changes on file
+              @else
+                  {!! nl2br($position->historyreason) !!}
+              @endif
+              <br>
+
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="15%">From</th>
                     <th width="8%">Active</th>
-                    <th width="8%">Capacity</th>
+                    <th width="8%">Filled?</th>
                     <th width="8%">Budg FTEs</th>
                     <th width="19%">Budg Sal</th>
                     <th width="1%"></th>
@@ -1322,9 +1341,28 @@
                 @foreach($posHistRecs as $posHistRecs)
                   <tr>
                       <!-- <td>{{$posHistRecs->trans_date}}</td> -->
-                      <td><a href={{route('positions.show',$position->id)}}?viewposhistid={{$posHistRecs->id}}>{{$posHistRecs->trans_date}}</td>
+                      @if (is_null($posHistRecs->historystart))
+                        <td><a href={{route('positions.show',$position->id)}}?viewposhistid={{$posHistRecs->id}}>
+                          {{'Unknown to '.date_format(date_create($posHistRecs->historyend),"m/d/y")}}
+                        </td>
+                      @else
+                        <td><a href={{route('positions.show',$position->id)}}?viewposhistid={{$posHistRecs->id}}>
+                          {{date_format(date_create($posHistRecs->historystart),"m/d/y").' to '.date_format(date_create($posHistRecs->historyend),"m/d/y")}}
+                        </td>
+                      @endif
                       <td>{{$posHistRecs->active}}</td>
-                      <td>{{substr($posHistRecs->curstatus,0,3)}}</td>
+                      <td>
+                          @switch($posHistRecs->curstatus)
+                            @case ('VACANT') Vacant
+                            @break
+                            @case ('PARTIALLY FILLED') Partially Filled
+                            @break
+                            @case ('FILLED') Filled
+                            @break
+                            @case ('OVERFILLED') Overfilled
+                            @break
+                          @endswitch
+                      </td>
                       <td>{{round($posHistRecs->fulltimeequiv,3)}}</td>
                       <td>{{formatdollars($posHistRecs->budgsal)}}</td>
                   </tr>
@@ -1334,9 +1372,13 @@
 
             <!-- *************************** -->
             <!-- Right div contains details of selected position history record -->
-            <div class="col-md-6">Details:
+            <div class="col-md-6">
               @foreach($viewPositionHistoryDetails as $vphd)
-                {{$vphd->company.'/'.$vphd->posno.', '.$vphd->descr.' @ '.$vphd->trans_date.', annual cost '.FormatDollars($vphd->budgsal)}}
+                {{$vphd->company.'/'.$vphd->posno.' '.$vphd->descr}}
+                &nbsp;&#11044;&nbsp;
+                {{date_format(date_create($vphd->historystart),"m/d/y").' to '.date_format(date_create($vphd->historyend),"m/d/y")}}
+                &nbsp;&#11044;&nbsp;
+                {{'Annual cost '.FormatDollars($vphd->budgsal)}}
 
               <table class="table table-condensed">
                 <thead>
@@ -1552,11 +1594,20 @@
                 </tr>
               </table>
 
-    {!! nl2br($vphd->historyreason) !!}
-
-
-                @endforeach
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th width="25%">Changes made</th>
+                    <th width="25%"></th>
+                    <th width="0%"></th>
+                    <th width="25%"></th>
+                    <th width="25%"></th>
+                  </tr>
+                </thead>
               </table>
+              {!! nl2br($vphd->historyreason) !!}
+            @endforeach
+          </table>
 
 
             </div>
