@@ -1326,7 +1326,12 @@
                   {!! nl2br($position->historyreason) !!}
               @endif
               <br>
+            </div>
+            </div>
 
+
+              <div class="row">
+                <div class="col-md-6">
               <table class="table table-condensed">
                 <thead>
                   <tr>
