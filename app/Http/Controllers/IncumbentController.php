@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\incumbent;
-use App\HIncumbent;
+use App\hincumbent;
 use Session;
 use Auth;
 use Illuminate\Support\Facades\Schema\columns;
@@ -108,7 +108,12 @@ return redirect('/incumbents')->with('success', 'Incumbent saved!');
     $reqcompany = $request->input('reqcompany');
     $reqempno = $empno;
     $reqpositioncompany = $request->input('reqpositioncompany');
+    // $reqpositionposno = $request->input('reqpositionposno');
     $reqpositionposno = $request->input('reqpositionposno');
+    $reqincumbenthistoryid = $request->input('reqincumbenthistoryid');
+    // if(empty($reqincumbenthistoryid)) {
+    //   $reqincumbenthistoryid=1;
+    // }
 
     $selectedposition = DB::table('positions')
       ->where('posno', '=', $reqpositionposno)
@@ -263,18 +268,42 @@ return redirect('/incumbents')->with('success', 'Incumbent saved!');
       ->where('hincumbents.company','=',$reqcompany)
       ->where('empno','=',$reqempno)
       ->orderby('hincumbents.trans_date','desc')
+      ->select(DB::raw('hincumbents.*, positions.*
+        , hincumbents.id as incumbentid
+        , hincumbents.company as incumbentcompany
+        , hincumbents.empno as incumbentempno
+        , positions.id as positionid
+        , positions.posno as positionposno
+        , positions.company as positioncompany'))
       ->get();
 
     // view HPositionDetails
-
-
-
+    // dd($reqincumbenthistoryid);
+    if (!empty($reqincumbenthistoryid)){
+      $IncHistRec = \DB::table('hincumbents')
+        ->where('id','=',$reqincumbenthistoryid)
+        ->get();
+      } else{
+        // $IncHistRec = \DB::table('hincumbents')
+        //   ->where('id','=','blanktable')
+        //   ->get();
+        $IncHistRec = null;
+      }
+// dump($viewIncumbentPositionHistory);
+// dump($reqincumbenthistoryid);
+// dd($IncHistRec);
+// if(empty($IncHistRec)) {
+//   dd('empty');
+// } else {
+//   dd('not empty');
+// }
 
     return View('incumbents.show')
       ->with(compact('incumbent'))
       ->with(compact('incumbentsnavbar'))
       ->with(compact('viewPositionsOccupied'))
-      ->with(compact('viewIncumbentPositionHistory'));
+      ->with(compact('viewIncumbentPositionHistory'))
+      ->with(compact('IncHistRec'));
 
   }
 
