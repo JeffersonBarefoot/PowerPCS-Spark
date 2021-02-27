@@ -261,8 +261,9 @@ if (!function_exists('UpdatePosition')) {
     }
 
     // check model to see if any changes at all have been made.  If not, nothing to do
+// dump(1);
     if ($position->IsDirty()) {
-
+// dump($position->getdirty());
       //MODEL IS DIRTY
       // if we determine that the model is dirty cycle through columns one by one to see which ones have changes
       $user = auth()->user();
@@ -273,13 +274,14 @@ if (!function_exists('UpdatePosition')) {
         // if so, see if it's dirty so that we can log as needed
         $returnStringValue = $request->get($columnName);
         if (!is_null($returnStringValue)) {
+// dump($columnName);
 
           //$columnName = $column->COLUMN_NAME;
           // dd($column);
           //$position.$columnName = $request->get($columnName);
           $columnValue = $request->get($columnName);
           $columnType = GetColumnType('positions',$columnName);
-          // dump("ColumnType".$columnType);
+// dump($columnValue);
 
           // if using FORMATMONEY() function then a leading $ will be in the data.  Strip it fann_descale_output
           // validate the incoming data, based on the table.field data type
@@ -303,7 +305,8 @@ if (!function_exists('UpdatePosition')) {
             $originalValue = $position->getOriginal($columnName);
 
             if ($columnValue != $originalValue) {
-              // dd($originalValue);
+// dump($originalValue);
+// dump($columnValue);
               $friendlyName = GetFriendlyColumnName('positions',$columnName);
               $fieldChange = '  - ' . $friendlyName . ' has changed from ' . $originalValue . ' to ' . $columnValue . " \n" ;
               $userConfirmMessage = $userConfirmMessage . $fieldChange ;
@@ -425,6 +428,7 @@ if (!function_exists('UpdatePosition')) {
         // $newHistoryReason = $userConfirmMessage;
         $position->historyreason=$newHistoryReason;
         // $position->historystart=date('Y-m-d');
+        $position->save();
 
       }
 
