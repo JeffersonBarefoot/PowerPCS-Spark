@@ -784,3 +784,174 @@ if (!function_exists('sessionForgetOne')) {
     return true;
   }
 }
+
+//***************************************************
+//***************************************************
+//***************************************************
+//**  SEED SAMPLE POSITION HISTORY RECORDS
+//**
+//**  Build a reasonable set of history records based on sample *BRM position records
+//**
+//***************************************************
+//***************************************************
+//***************************************************
+
+function SeedPositionHistory($teamId,$newRecords)
+{
+  $positionsToSeed = \DB::table('positions')
+    ->where('TeamID','=',$teamId)
+    ->get();
+
+  // delete existing sample history records for this team
+  \DB::table('hpositions')
+    ->where('TeamID','=',$teamId)
+    ->delete();
+// dump(1);
+
+  Foreach ($positionsToSeed as $PTS){
+
+    $count = 0 ;
+    do {
+// dump(2);
+      // set a starting point...a HPOSITION record that is identical to the POSITION record
+      $posHist = new HPosition();
+      $posHist->posid = $PTS->id;
+      $posHist->teamid = $PTS->teamid;
+      $posHist->company = $PTS->company;
+      $posHist->posno = $PTS->posno;
+      $posHist->descr = $PTS->descr;
+      $posHist->trans_date=date('Y-m-d');
+      $posHist->active = $PTS->active;
+      $posHist->annftehour = $PTS->annftehour;
+      $posHist->avail_date = $PTS->avail_date;
+      $posHist->budgsal = $PTS->budgsal;
+      $posHist->eeoclass = $PTS->eeoclass;
+      $posHist->enddate = $PTS->enddate;
+      $posHist->exempt = $PTS->exempt;
+      $posHist->ftefreq = $PTS->ftefreq;
+      $posHist->ftehours = $PTS->ftehours;
+      $posHist->fulltimeequiv = $PTS->fulltimeequiv;
+      $posHist->funded = $PTS->funded;
+      $posHist->group1 = $PTS->group1;
+      $posHist->group2 = $PTS->group2;
+      $posHist->group3 = $PTS->group3;
+      $posHist->jobdesc = $PTS->jobdesc;
+      $posHist->lastactdate = $PTS->lastactdate;
+      $posHist->last_fil = $PTS->last_fil;
+      $posHist->last_ove = $PTS->last_ove;
+      $posHist->last_par = $PTS->last_par;
+      $posHist->last_vac = $PTS->last_vac;
+      $posHist->level1 = $PTS->level1;
+      $posHist->level2 = $PTS->level2;
+      $posHist->level3 = $PTS->level3;
+      $posHist->level4 = $PTS->level4;
+      $posHist->level5 = $PTS->level5;
+      $posHist->linktoabra = $PTS->linktoabra;
+      $posHist->multincumb = $PTS->multincumb;
+      $posHist->payfreq = $PTS->payfreq;
+      $posHist->payrate = $PTS->payrate;
+      $posHist->paytype = $PTS->paytype;
+      $posHist->reason = $PTS->reason;
+      $posHist->reptocomp = $PTS->reptocomp;
+      $posHist->reptodesc = $PTS->reptodesc;
+      $posHist->reptoposno = $PTS->reptoposno;
+      $posHist->salgrade = $PTS->salgrade;
+      $posHist->salupper = $PTS->salupper;
+      $posHist->sallower = $PTS->sallower;
+      $posHist->salfreq = $PTS->salfreq;
+      $posHist->curstatus = $PTS->curstatus;
+      $posHist->startdate = $PTS->startdate;
+      $posHist->supcompany = $PTS->supcompany;
+      $posHist->supempno = $PTS->supempno;
+      $posHist->supname = $PTS->supname;
+      $posHist->userdef1 = $PTS->userdef1;
+      $posHist->userdef2 = $PTS->userdef2;
+      $posHist->userdef3 = $PTS->userdef3;
+      $posHist->userdef4 = $PTS->userdef4;
+      $posHist->userdef5 = $PTS->userdef5;
+      $posHist->userdef6 = $PTS->userdef6;
+      $posHist->vac_times = $PTS->vac_times;
+      $posHist->vac_months = $PTS->vac_months;
+      $posHist->reptocom2 = $PTS->reptocom2;
+      $posHist->reptopos2 = $PTS->reptopos2;
+      $posHist->reptodesc2 = $PTS->reptodesc2;
+      $posHist->historyreason = $PTS->historyreason;
+      $posHist->historystart = $PTS->historystart;
+      $posHist->historyend = getTodaysDate();
+
+      // make changes that will determine the differences that exist within the history record
+
+      // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      // random number of days since last history records
+      if ($count == 0) {
+        // if this is the first seeding loop for this position then use the POSITIONS history date
+        $lastStart = $posHist->historystart;
+
+        if (is_null($lastStart)) {
+          $lastStart = getTodaysDate();
+          dump('ughhhhhh');
+        }
+
+      } else {
+        // otherwise just use the date from the last loop through, so we continue iterating backwards chronologically
+      }
+
+      // last day of this history record is the first day of the "next" record
+      $thisEnd = $lastStart;
+
+      // thisStart = thisEnd - random # of days
+      $dthisEnd = date_create($thisEnd);
+      $elapsedDays = rand(400,800);
+      $updateString = sprintf("%u days",$elapsedDays);
+      $dthisStart = date_sub($dthisEnd,date_interval_create_from_date_string($updateString));
+      $thisStart = $dthisStart->format('Y-m-d');
+
+      $posHist->historystart  = $dthisStart;
+      $posHist->historyend    = $thisEnd;
+
+      // set the start date so that it's available for the next record being created for this position
+      $lastStart = $thisStart;
+
+      // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      // some percent pay increase
+      if ($count == 0) {
+        // if this is the first seeding loop for this position then use the POSITIONS data
+        $BudgSal = $posHist->budgsal;
+        $PayRate = $posHist->payrate;
+        }
+
+      $percentIncrease = round(rand(2,8),0);
+      $newPayRate = $PayRate/(1+($percentIncrease/100));
+      $newBudgSal = $BudgSal/(1+($percentIncrease/100));
+
+      $posHist->payrate = $newPayRate;
+      $posHist->budgsal = $newBudgSal;
+
+      // set variables so they're available next imagesetinterpolation
+      $BudgSal = $newBudgSal;
+      $PayRate = $newPayRate;
+
+
+
+      // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      // occasional change in ftehours
+
+      // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      // occasional change in active status
+
+      // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      // occasional change in Capacity status
+
+      // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      // occasional change in location
+
+
+
+      $posHist->save();
+      $count = $count + 1;
+
+    } while ($count < $newRecords);
+
+  }
+
+}
