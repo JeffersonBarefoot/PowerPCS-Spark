@@ -1096,16 +1096,24 @@
                   </tr>
                 </thead>
                   <tr>
-                    @foreach($viewincumbent as $viewinc)
-                    @foreach($viewIncumbentHistory as $incHistory)
-                      <tr>
-                        <!-- <td><a href={{route('positions.show',$position->id)}}?viewincid={{$viewinc->id}}&viewinchistid={{$incHistory->id}}>{{$incHistory->posstart}}</td> -->
-                        <td><a href={{route('positions.show',$position->id)}}?viewinchistid={{$incHistory->id}}>{{$incHistory->trans_date}}</td>
-                        <td>{{$incHistory->active_pos}}</td>
-                        <td>{{round($incHistory->fulltimeequiv,3)}}</td>
-                        <td>{{FormatDollars($incHistory->ann_cost)}}</td>
-                      </tr>
+                    @foreach($viewincumbent as $VI)
+                      <td><a href={{route('positions.show',$position->id)}}?viewinchistid={{'CURRENT'.$VI->id}}>Cur Status</td>
+                      <td>{{$VI->active_pos}}</td>
+                      <td>{{round($VI->fulltimeequiv,3)}}</td>
+                      <td>{{FormatDollars($VI->ann_cost)}}</td>
                     @endforeach
+                  </tr>
+                  <tr>
+                    @foreach($viewincumbent as $viewinc)
+                      @foreach($viewIncumbentHistory as $incHistory)
+                        <tr>
+                          <!-- <td><a href={{route('positions.show',$position->id)}}?viewincid={{$viewinc->id}}&viewinchistid={{$incHistory->id}}>{{$incHistory->posstart}}</td> -->
+                          <td><a href={{route('positions.show',$position->id)}}?viewinchistid={{$incHistory->id}}>{{$incHistory->trans_date}}</td>
+                          <td>{{$incHistory->active_pos}}</td>
+                          <td>{{round($incHistory->fulltimeequiv,3)}}</td>
+                          <td>{{FormatDollars($incHistory->ann_cost)}}</td>
+                        </tr>
+                      @endforeach
                     @endforeach
                   </tr>
 

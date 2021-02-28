@@ -289,6 +289,7 @@ class PositionController extends Controller
 
       if ($sessionPositionID <> $id) { // not on the same position as last time
         // code...
+// dump('on new position');
         Session::put('positionID', $id);
         $viewincid = '' ;
         // dump('New position!!');
@@ -307,7 +308,7 @@ class PositionController extends Controller
         SessionSet("ExpandIncumbentHistory","N");
 
       } else {
-        //dump('Same Position');
+// dump('Same Position');
         $freshPosition = "NO";
         Session::put('freshPosition', 'NO');
         $viewincid = Session::get('viewincid') ;
@@ -320,7 +321,8 @@ class PositionController extends Controller
       }
       //dump('checking whether session variable was set ... ' . $viewincid);
 
-
+// dump("starting show...viewinhistcid = " );
+// dump($viewinchistid);
 
 
 
@@ -409,8 +411,6 @@ class PositionController extends Controller
       // I N C U M B E N T S
       // gather all incumbents related to this position
 
-
-
       if (!empty($request->input('viewinchistid'))) {
         $viewinchistid = $request->input('viewinchistid');
 
@@ -418,76 +418,35 @@ class PositionController extends Controller
       //jlb 20200225
         SessionSet("ExpandIncumbentHistory","Y");
       }
-
-
-
-      // see if we passed a new viewincid, so need to update the variable
+// dump($viewinchistid);      // see if we passed a new viewincid, so need to update the variable
       // otherwise keep the one that we have been using
       if (!empty($request->input('viewincid'))) {
         $viewincid = $request->input('viewincid');
         $viewinchistid = '';
         SessionSet("ExpandIncumbentHistory","Y");
       }
-      //dump('$viewincid = '.$viewincid);
-      //dump('$viewinchistid = '.$viewinchistid);
+// dump($viewinchistid);
+      $incumbentCompany           = GetIncumbentFieldById($viewincid,'company');
+      $incumbentEmpno             = GetIncumbentFieldById($viewincid,'empno');
+      $incumbentsinposition       = GetIncumbents($company,$posno);
+      $activeincumbentsinposition = GetActiveIncumbents($company,$posno);
+      $viewincumbent              = GetIncumbentById($viewincid);
+      $viewIncumbentHistory       = GetHIncumbent($incumbentCompany,$incumbentEmpno,$company,$posno);
+      $activeincumbentcount       = $activeincumbentsinposition->count();
 
-
-      $incumbentsinposition = \DB::table('incumbents')
-        ->where('posno','=',$posno)
-        ->orderby("active_pos","asc")
-        ->orderby("posstart","desc")
-        ->get();
-
-      // determine all ACTIVE incumbents related to this position
-      $activeincumbentsinposition = \DB::table('incumbents')
-        ->where('posno','=',$posno)
-        ->where('active_pos','=','A')
-        ->orderby("posstart","desc")
-        ->get();
-
+      if (substr($viewinchistid,0,7)=="CURRENT") {
+        $idlength                 = strlen($viewinchistid);
+        $viewinchistid            = substr($viewinchistid,7,$idlength-7);
+        $viewIncumbentDetails     = GetIncumbentById($viewinchistid);
+      } else {
+        $viewIncumbentDetails     = GetHIncumbentRecordById($viewinchistid);
+      }
 
       // build a text element that can be displayed on the incumbents tab
       $activeincumbentlist = '';
       foreach ($activeincumbentsinposition as $ActInc){
         $activeincumbentlist = $activeincumbentlist.substr($ActInc->fname,0,1).' '.$ActInc->lname.', ' ;
       }
-
-      $activeincumbentcount = $activeincumbentsinposition->count();
-
-      // pull all details for a selected incumbent.
-      // this is used to identify the empno and company, for the history query
-      $viewincumbent = \DB::table('incumbents')
-        ->where('id','=',$viewincid)
-        ->get();
-      $incumbentCompany='';
-      $incumbentEmpno='';
-      foreach ($viewincumbent as $vi){
-        $incumbentCompany=$vi->company;
-        $incumbentEmpno=$vi->empno;
-      }
-
-      // pull all history records for a selected incumbents
-      // this will populate the middle column of incumbent history, showing all hist records
-      $viewIncumbentHistory = \DB::table('hincumbents')
-        ->where('poscompany','=',$company)
-        ->where('posno','=',$posno)
-        ->where('company','=',$incumbentCompany)
-        ->where('empno','=',$incumbentEmpno)
-        ->orderby('trans_date','desc')
-        ->get();
-
-      // pull the specific history record that we are currently dealing wih
-      // IMPORTANT:  need a way to incorporate the CURRENT record into the SHOW blade
-        $viewIncumbentDetails = \DB::table('hincumbents')
-          ->where('id','=',$viewinchistid)
-          ->get();
-
-//var_dump("$viewIncumbentDetails");
-      // pull all details for the selected incumbent-history record.
-      // this can be used to show details of a "selected incumbent"
-
-
-// dump("5:  ".getTimestamp());
 
       //****************************
       // P O S I T I O N   H I S T O R Y

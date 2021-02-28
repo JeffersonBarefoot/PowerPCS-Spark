@@ -65,6 +65,70 @@ if (!function_exists('GetPositions')) {
   }
 }
 
+if (!function_exists('GetIncumbent')) {
+    function GetIncumbent($employer, $empno, $poscompany, $posno)
+    {
+        return DB::table('incumbents')
+          ->where('company', '=', $employer)
+          ->where('empno', '=', $empno)
+          ->where('poscompany', '=', $poscompany)
+          ->where('posno', '=', $posno);
+    }
+}
+
+if (!function_exists('GetIncumbentById')) {
+    function GetIncumbentById($ID)
+    {
+        return DB::table('incumbents')
+          ->where('id', '=', $ID)
+          ->get();
+    }
+}
+
+if (!function_exists('GetIncumbents')) {
+    function GetIncumbents($poscompany, $posno)
+    {
+        return DB::table('incumbents')
+          ->where('poscompany', '=', $poscompany)
+          ->where('posno', '=', $posno)
+          ->get();
+    }
+}
+
+if (!function_exists('GetActiveIncumbents')) {
+    function GetActiveIncumbents($poscompany, $posno)
+    {
+        return DB::table('incumbents')
+          ->where('poscompany', '=', $poscompany)
+          ->where('posno', '=', $posno)
+          ->where ('active_pos','=','A')
+          ->get();
+    }
+}
+
+if (!function_exists('GetHIncumbent')) {
+    function GetHIncumbent($employer, $empno, $poscompany, $posno)
+    {
+        return DB::table('hincumbents')
+          ->where('company', '=', $employer)
+          ->where('empno', '=', $empno)
+          ->where('poscompany', '=', $poscompany)
+          ->where('posno', '=', $posno)
+          ->orderby('trans_date','desc')
+          ->get();
+    }
+}
+
+if (!function_exists('GetHIncumbentRecordById')) {
+    function GetHIncumbentRecordById($ID)
+    {
+        return DB::table('hincumbents')
+          ->where('id', '=', $ID)
+          ->get();
+    }
+}
+
+// DON"T RELY ON THIS.  Need to include poscompany and posno to be complete
 if (!function_exists('GetIncumbentField')) {
     function GetIncumbentField($employer, $empno, $fieldname)
     {
@@ -72,6 +136,15 @@ if (!function_exists('GetIncumbentField')) {
           ->where('company', '=', $employer)
           ->where('empno', '=', $empno)
           ->value($fieldname);
+    }
+}
+
+if (!function_exists('GetIncumbentFieldById')) {
+    function GetIncumbentFieldById($ID,$fieldname)
+    {
+        return DB::table('incumbents')
+        ->where('id', '=', $ID)
+        ->value($fieldname);
     }
 }
 
@@ -930,8 +1003,6 @@ function SeedPositionHistory($teamId,$newRecords)
       // set variables so they're available next imagesetinterpolation
       $BudgSal = $newBudgSal;
       $PayRate = $newPayRate;
-
-
 
       // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       // occasional change in ftehours
