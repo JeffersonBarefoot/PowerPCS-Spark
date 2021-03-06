@@ -4,6 +4,7 @@
 @parent
 <!-- Include a navbar with auth user features-->
 <home :user="user" inline-template>
+
     <div class="container-fluid">
         <!-- Application Dashboard -->
         <!-- <div class="row justify-content-center"> -->

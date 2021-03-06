@@ -1,5 +1,5 @@
 <!-- NavBar For Authenticated Users -->
-<nav class="navbar navbar-light navbar-expand-md navbar-spark">
+<nav class="navbar navbar-light navbar-expand-md navbar-spark ">
     <div class="container" v-if="user">
         <!-- Branding Image -->
         @include('spark::nav.brand')

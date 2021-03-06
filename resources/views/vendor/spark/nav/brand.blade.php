@@ -11,7 +11,7 @@
 
     <!-- <img src="\img\ISS_logo_infinitysymbol.png" alt="PowerPCS by Infisoft"> -->
   <a href="\home">
-    <img src="\img\logo_no_text.bmp" width="60px" alt="PowerPCS by Infisoft">
+    <img src="\img\PowerPCS.jpg" width="240px" alt="PowerPCS by Infisoft">
   </a>
 
   </body>

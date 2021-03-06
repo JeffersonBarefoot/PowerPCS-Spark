@@ -16,7 +16,7 @@
 </li>
 
 <li>
-    <a href="/PosMain" href="#">Uploads</a>
+    <a href="/PosMain" href="#">PowerPCS Tools</a>
 </li>
 
 </ul>
