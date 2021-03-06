@@ -418,14 +418,14 @@ class PositionController extends Controller
       //jlb 20200225
         SessionSet("ExpandIncumbentHistory","Y");
       }
-// dump($viewinchistid);      // see if we passed a new viewincid, so need to update the variable
+      // see if we passed a new viewincid, so need to update the variable
       // otherwise keep the one that we have been using
       if (!empty($request->input('viewincid'))) {
         $viewincid = $request->input('viewincid');
         $viewinchistid = '';
         SessionSet("ExpandIncumbentHistory","Y");
       }
-// dump($viewinchistid);
+
       $incumbentCompany           = GetIncumbentFieldById($viewincid,'company');
       $incumbentEmpno             = GetIncumbentFieldById($viewincid,'empno');
       $incumbentsinposition       = GetIncumbents($company,$posno);
@@ -434,11 +434,15 @@ class PositionController extends Controller
       $viewIncumbentHistory       = GetHIncumbent($incumbentCompany,$incumbentEmpno,$company,$posno);
       $activeincumbentcount       = $activeincumbentsinposition->count();
 
+      // determine whether viewing a CURRENT or HISTORY record
+      // this depends on which record in the middle DIV the user clicked on
       if (substr($viewinchistid,0,7)=="CURRENT") {
+        // current record.  Strip out CURRENT designator and get record from Incumbents
         $idlength                 = strlen($viewinchistid);
         $viewinchistid            = substr($viewinchistid,7,$idlength-7);
         $viewIncumbentDetails     = GetIncumbentById($viewinchistid);
       } else {
+        // history record.  Get record from HIncumbents
         $viewIncumbentDetails     = GetHIncumbentRecordById($viewinchistid);
       }
 
@@ -538,13 +542,13 @@ class PositionController extends Controller
       $directReports = \DB::table('positions')
         ->where('reptoposno','=',$posno)
         ->where('reptocomp','=',$company)
-        ->orderby("posno")
+        ->orderby("descr")
         ->get();
 
       $indirectReports = \DB::table('positions')
         ->where('reptopos2','=',$posno)
         ->where('reptocom2','=',$company)
-        ->orderby("posno")
+        ->orderby("descr")
         ->get();
 
       $dirRepCount = count($directReports);
