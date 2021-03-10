@@ -11,14 +11,16 @@
 |
 */
 
-Route::get('/', 'WelcomeController@show');
+Route::get('/',               'WelcomeController@show');
 
-Route::get('/home', 'HomeController@show');
+Route::get('/home',           'HomeController@show');
 
-Route::get('/verifydestroy', 'PositionController@verifydestroy')->name('verifydestroy');
-Route::resource('positions', 'PositionController');
+Route::get('/verifydestroy',  'PositionController@verifydestroy')->name('verifydestroy');
+Route::get('/Tools',          'PositionController@Tools')->name('Tools');
+Route::post('/uploadfile',    'PositionController@uploadfile')->name('uploadfile');
+Route::resource('positions',  'PositionController');
 
-Route::get('/dumpGridToCsv', 'ReportController@dumpGridToCsv')->name('dumpGridToCsv');
-Route::resource('reports', 'ReportController');
+Route::get('/dumpGridToCsv',  'ReportController@dumpGridToCsv')->name('dumpGridToCsv');
+Route::resource('reports',    'ReportController');
 
 Route::resource('incumbents', 'IncumbentController');

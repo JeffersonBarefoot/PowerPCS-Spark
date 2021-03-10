@@ -776,4 +776,51 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
 // JLB 2021-01-26
       return redirect('/positions/9')->with('success', 'Position deleted!');
     }
+
+
+      //***************************************************
+      //***************************************************
+      //***************************************************
+      //**   T O O L S
+      //***************************************************
+      //***************************************************
+      //***************************************************
+      public function Tools()
+  {
+
+
+     return view('positions.Tools');
+
+     // return view('positions.destroy')
+     //   ->with('id',$positionToDestroy)
+     //   ->with(compact('position'));
+
+
+  }
+
+  //***************************************************
+  //***************************************************
+  //***************************************************
+  //**   U P L O A D   F I L E
+  //***************************************************
+  //***************************************************
+  //***************************************************
+  public function uploadfile(Request $request)
+{
+
+
+ // return view('positions.uploadfile');
+
+
+dump('Upload Files in Position Controller');
+$request->logo->store('logos','1.csv');
+
+ // return view('positions.destroy')
+ //   ->with('id',$positionToDestroy)
+ //   ->with(compact('position'));
+
+ // return view('positions.Tools');
+}
+
+
 }

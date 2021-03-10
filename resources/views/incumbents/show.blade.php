@@ -72,7 +72,9 @@
           <!-- Middle div contains list of all history records for the selected incumbent -->
           <?php $selectedPositionText=SessionGet('selectedincumbentposition') ?>
           <div class="col-md-3">
-            History for {{$incumbent->fname}} {{$incumbent->lname}} in {{$selectedPositionText}}<br>
+            {{$incumbent->fname}} {{$incumbent->lname}}
+            &nbsp;&#11044;&nbsp;
+            {{$selectedPositionText}}<br>
             <table class="table table-condensed">
               <thead>
                 <tr>
