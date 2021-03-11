@@ -798,29 +798,4 @@ Session::put('expandIncumbents', 'xHere is how you return a session variable int
 
   }
 
-  //***************************************************
-  //***************************************************
-  //***************************************************
-  //**   U P L O A D   F I L E
-  //***************************************************
-  //***************************************************
-  //***************************************************
-  public function uploadfile(Request $request)
-{
-
-
- // return view('positions.uploadfile');
-
-
-dump('Upload Files in Position Controller');
-$request->logo->store('logos','1.csv');
-
- // return view('positions.destroy')
- //   ->with('id',$positionToDestroy)
- //   ->with(compact('position'));
-
- // return view('positions.Tools');
-}
-
-
 }
