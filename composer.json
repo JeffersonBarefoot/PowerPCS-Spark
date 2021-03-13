@@ -38,6 +38,9 @@
     "autoload": {
         "files": [
           "app/functions/SQLData.php",
+          "app/functions/UtilityFunctions.php",
+          "app/functions/DataFunctions.php",
+          "app/functions/ImportFunctions.php",
           "app/functions/ReportFunctions.php"
         ],
         "psr-4": {
