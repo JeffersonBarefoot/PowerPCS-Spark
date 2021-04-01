@@ -32,18 +32,15 @@
 
 
       <div>
-        <!-- https://blog.quickadminpanel.com/file-upload-in-laravel-the-ultimate-guide/ -->
-        <!-- <form action={{ route('uploadfile') }} method="PUT" enctype="multipart/form-data"> -->
+        <li>Import Incumbent Change file</li>
         <form action="{{ route('uploadfile') }}" method="POST" enctype="multipart/form-data">
-
             {{ csrf_field() }}
-
-            File to Upload:
             <br />
-            <input type="file" name="importFileName" accept=".csv"/>
-            <br /><br />
+            <input type="file" name="importFileName5" accept=".csv"/>
+            <br />
             <input type="submit" value=" Save " />
         </form>
+        <br /><br />
       </div>
     </div>
   </div>
@@ -71,7 +68,6 @@
         <h1>Import Files</h1>
         <ul>
         <li>Initial Setup - Positions</li>
-        <?php sessionSet("uploadType","setupPositions") ?>
         <form action="{{ route('uploadfile') }}" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             <br />
@@ -83,7 +79,6 @@
 
 
         <li>Initial Setup - Position history</li>
-        <?php sessionSet("uploadType","setupPositionHistory") ?>
         <form action="{{ route('uploadfile') }}" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             <br />
@@ -94,7 +89,6 @@
         <br /><br />
 
         <li>Initial Setup - Incumbents</li>
-        <?php sessionSet("uploadType","setupIncumbents") ?>
         <form action="{{ route('uploadfile') }}" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             <br />
@@ -105,7 +99,6 @@
         <br /><br />
 
         <li>Initial Setup - Incumbent history</li>
-        <?php sessionSet("uploadType","setupIncumbentHistory") ?>
         <form action="{{ route('uploadfile') }}" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             <br />
