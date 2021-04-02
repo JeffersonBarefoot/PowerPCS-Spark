@@ -301,12 +301,18 @@ if (!function_exists('ImportPositions')) {
   //***************************************************
   //***************************************************
   //***************************************************
-  function ImportPositions($incomingfile)
+  function ImportPositions($incomingFile)
   {
-    // if (($handle = fopen ( public_path () . '/ImportFiles/samplepositions.csv', 'r' )) !== FALSE) {
-    if (($handle = fopen ( public_path () . '/ImportFiles/brmpositions.csv', 'r' )) !== FALSE) {
+
+    $fileToProcess = '../storage/app/importFiles/'.$incomingFile;
+
+    // dump($fileToProcess);
+
+
+    if (($handle = fopen ( $fileToProcess, 'r' )) !== FALSE) {
 
       // extract headers so we can see what fields are being imported
+      // the 2000 is the max line length, and is optional ("slightly slower")
       $header = fgetcsv($handle, 2000, ',');
       $headercount = count($header);
 
@@ -317,30 +323,45 @@ if (!function_exists('ImportPositions')) {
         $position = new Position();
         $i = 0;
 
-        // scan through all fields in the current record
-        while ($i<$headercount):
+        // check for empty lines...in a CSV file they show up "as an array comprising a single null field, and will not be treated as an error."
+        if (! empty($data[0])) {
 
-            // grab the fieldname from $header and the imported data from $data
-            $fieldname=$header[$i];
-            $fielddata=$data[$i];
+          // scan through all fields in the current record
+          while ($i<$headercount):
 
-            // validate the incoming data, based on the table.field data type
-            $fielddata=validateData('positions',$fieldname,$fielddata);
+              // grab the fieldname from $header and the imported data from $data
+              $fieldname=$header[$i];
+              $fielddata=$data[$i];
 
-            // update the field in the new positions records
-            // import will look like:  $position->active="A"
-            $position->$fieldname=$fielddata;
-            $i++;
-        endwhile;
+            // if ! is_null($fielddata);
+
+              // validate the incoming data, based on the table.field data type
+              $fielddata=validateData('positions',$fieldname,$fielddata);
+
+              // update the field in the new positions records
+              // import will look like:  $position->active="A"
+              $position->$fieldname=$fielddata;
+
+            // endif;
+
+              $i++;
+          endwhile;
+
+
 
         // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
 
         $position->save();
+        // ERRORS TO CATCH:
+        //incorrect field names will error on save()
+
+        }
+
       }
 
       fclose ( $handle );
 
-      rename('/ImportFiles/brmpositions.csv.imported','/ImportFiles/brmpositions.csv');
+      // rename('/ImportFiles/brmpositions.csv.imported','/ImportFiles/brmpositions.csv');
 
 
     }
@@ -362,8 +383,11 @@ if (!function_exists('ImportHPositions')) {
   //***************************************************
   //***************************************************
   //***************************************************
-  function ImportHPositions($incomingfile)
-  {    if (($handle = fopen ( public_path () . '/ImportFiles/samplehpositions.csv', 'r' )) !== FALSE) {
+  function ImportHPositions($incomingFile)
+  {
+
+    $fileToProcess = '../storage/app/importFiles/'.$incomingFile;
+    if (($handle = fopen ( $fileToProcess, 'r' )) !== FALSE) {
 
       // extract headers so we can see what fields are being imported
       $header = fgetcsv($handle, 2000, ',');
@@ -376,46 +400,52 @@ if (!function_exists('ImportHPositions')) {
         $hposition = new HPosition();
         $i = 0;
 
-        // scan through all fields in the current record
-        while ($i<$headercount):
+        // check for empty lines...in a CSV file they show up "as an array comprising a single null field, and will not be treated as an error."
+        if (! empty($data[0])) {
 
-            // grab the fieldname from $header and the imported data from $data
-            $fieldname=$header[$i];
-            $fielddata=$data[$i];
+          // scan through all fields in the current record
+          while ($i<$headercount):
 
-            if ($fieldname=="company") {
-              $companyvalue = $fielddata;
-            }
+              // grab the fieldname from $header and the imported data from $data
+              $fieldname=$header[$i];
+              $fielddata=$data[$i];
 
-            if ($fieldname=="posno") {
-              $posnovalue = $fielddata;
-            }
+              if (strToUpper($fieldname)=="COMPANY") {
+                $companyvalue = $fielddata;
+              }
 
-            // validate the incoming data, based on the table.field data type
-            $fielddata=validateData('hpositions',$fieldname,$fielddata);
+              if (strToUpper($fieldname)=="POSNO") {
+                $posnovalue = $fielddata;
+              }
 
-            // find the related position, and capture the position ID
+              // validate the incoming data, based on the table.field data type
+              $fielddata=validateData('hpositions',$fieldname,$fielddata);
 
-            // update the field in the new positions records
-            // import will look like:  $position->active="A"
-            $hposition->$fieldname=$fielddata;
-            $i++;
-        endwhile;
+              // find the related position, and capture the position ID
 
-        // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
-        // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
-        $positionid = GetPositionField($companyvalue, $posnovalue, "id");
+              // update the field in the new positions records
+              // import will look like:  $position->active="A"
+              $hposition->$fieldname=$fielddata;
+              $i++;
+          endwhile;
 
-        if (! is_null($positionid)) {
-          $hposition->posid=$positionid;
+
+          // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
+          // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
+          $positionid = GetPositionField($companyvalue, $posnovalue, "id");
+
+          if (! is_null($positionid)) {
+            $hposition->posid=$positionid;
+          }
+
+          // add correct team ID
+          $user = auth()->user();
+          $hposition->teamid=$user->currentTeam->id;
+
+          $hposition->save();
+
         }
-
-        // add correct team ID
-        $user = auth()->user();
-        $hposition->teamid=$user->currentTeam->id;
-
-        $hposition->save();
-        }
+      }
       fclose ( $handle );
     }
   }
@@ -432,9 +462,10 @@ if (!function_exists('ImportIncumbents')) {
   //***************************************************
   //***************************************************
   //***************************************************
-  function ImportIncumbents($incomingfile)
+  function ImportIncumbents($incomingFile)
   {
-    if (($handle = fopen ( public_path () . '/ImportFiles/sampleincums.csv', 'r' )) !== FALSE) {
+    $fileToProcess = '../storage/app/importFiles/'.$incomingFile;
+    if (($handle = fopen ( $fileToProcess, 'r' )) !== FALSE) {
 
       // extract headers so we can see what fields are being imported
       $header = fgetcsv($handle, 2000, ',');
@@ -447,39 +478,43 @@ if (!function_exists('ImportIncumbents')) {
         $incumbent = new Incumbent() ;
         $i = 0;
 
-        // scan through all fields in the current record
-        while ($i<$headercount):
+        // check for empty lines...in a CSV file they show up "as an array comprising a single null field, and will not be treated as an error."
+        if (! empty($data[0])) {
 
-            // grab the fieldname from $header and the imported data from $data
-            $fieldname=$header[$i];
-            $fielddata=$data[$i];
+          // scan through all fields in the current record
+          while ($i<$headercount):
 
-            if ($fieldname=="company") {
-              $companyvalue = $fielddata;
+              // grab the fieldname from $header and the imported data from $data
+              $fieldname=$header[$i];
+              $fielddata=$data[$i];
+
+              if (strToUpper($fieldname)=="COMPANY") {
+                $companyvalue = $fielddata;
+              }
+
+              if (strToUpper($fieldname)=="POSNO") {
+                $posnovalue = $fielddata;
+              }
+
+
+              // validate the incoming data, based on the table.field data type
+              $fielddata=validateData('incumbents',$fieldname,$fielddata);
+
+              // update the field in the new positions records
+              // import will look like:  $position->active="A"
+              $incumbent->$fieldname=$fielddata;
+              $i++;
+          endwhile;
+
+          // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
+          $positionid = GetPositionField($companyvalue, $posnovalue, "id");
+
+          if (! is_null($positionid)) {
+            $incumbent->posid=$positionid;
             }
 
-            if ($fieldname=="posno") {
-              $posnovalue = $fielddata;
-            }
-
-
-            // validate the incoming data, based on the table.field data type
-            $fielddata=validateData('incumbents',$fieldname,$fielddata);
-
-            // update the field in the new positions records
-            // import will look like:  $position->active="A"
-            $incumbent->$fieldname=$fielddata;
-            $i++;
-        endwhile;
-
-        // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
-        $positionid = GetPositionField($companyvalue, $posnovalue, "id");
-
-        if (! is_null($positionid)) {
-          $incumbent->posid=$positionid;
-          }
-
-        $incumbent->save();
+          $incumbent->save();
+        }
       }
       fclose ( $handle );
     }
@@ -495,9 +530,10 @@ if (!function_exists('ImportHIncumbents')) {
   //***************************************************
   //***************************************************
   //***************************************************
-  function ImportHIncumbents($incomingfile)
+  function ImportHIncumbents($incomingFile)
   {
-    if (($handle = fopen ( public_path () . '/ImportFiles/samplehincums.csv', 'r' )) !== FALSE) {
+    $fileToProcess = '../storage/app/importFiles/'.$incomingFile;
+    if (($handle = fopen ( $fileToProcess, 'r' )) !== FALSE) {
 
       // extract headers so we can see what fields are being imported
       $header = fgetcsv($handle, 2000, ',');
@@ -510,56 +546,60 @@ if (!function_exists('ImportHIncumbents')) {
         $hincumbent = new HIncumbent() ;
         $i = 0;
 
-        // scan through all fields in the current record
-        while ($i<$headercount):
+        // check for empty lines...in a CSV file they show up "as an array comprising a single null field, and will not be treated as an error."
+        if (! empty($data[0])) {
 
-            // grab the fieldname from $header and the imported data from $data
-            $fieldname=$header[$i];
-            $fielddata=$data[$i];
+          // scan through all fields in the current record
+          while ($i<$headercount):
 
-            if ($fieldname=="company") {
-              $companyvalue = $fielddata;
-            }
+              // grab the fieldname from $header and the imported data from $data
+              $fieldname=$header[$i];
+              $fielddata=$data[$i];
 
-            if ($fieldname=="poscompany") {
-              $poscompanyvalue = $fielddata;
-            }
+              if (strToUpper($fieldname)=="COMPANY") {
+                $companyvalue = $fielddata;
+              }
 
-            if ($fieldname=="posno") {
-              $posnovalue = $fielddata;
-            }
+              if (strToUpper($fieldname)=="POSCOMPANY") {
+                $poscompanyvalue = $fielddata;
+              }
 
-            if ($fieldname=="empno") {
-              $empnovalue = $fielddata;
-            }
+              if (strToUpper($fieldname)=="POSNO") {
+                $posnovalue = $fielddata;
+              }
 
-            // validate the incoming data, based on the table.field data type
-            $fielddata=validateData('hincumbents',$fieldname,$fielddata);
+              if (strToUpper($fieldname)=="EMPNO") {
+                $empnovalue = $fielddata;
+              }
 
-            // update the field in the new positions records
-            // import will look like:  $position->active="A"
-            // dump();
-            $hincumbent->$fieldname=$fielddata;
-            $i++;
-        endwhile;
+              // validate the incoming data, based on the table.field data type
+              $fielddata=validateData('hincumbents',$fieldname,$fielddata);
 
-        // MAKE SURE THAT THERE'S A POSCOMPANY AND POSNO, AND THEY ARE UNIQUE
-        $positionid = GetPositionField($poscompanyvalue, $posnovalue, "id");
-        if (! is_null($positionid)) {
-          $hincumbent->posid=$positionid;
+              // update the field in the new positions records
+              // import will look like:  $position->active="A"
+              // dump();
+              $hincumbent->$fieldname=$fielddata;
+              $i++;
+          endwhile;
+
+          // MAKE SURE THAT THERE'S A POSCOMPANY AND POSNO, AND THEY ARE UNIQUE
+          $positionid = GetPositionField($poscompanyvalue, $posnovalue, "id");
+          if (! is_null($positionid)) {
+            $hincumbent->posid=$positionid;
+          }
+
+          // MAKE SURE THAT THERE'S A COMPANY AND EMPNO, AND THEY ARE UNIQUE
+          $incumbentid = GetIncumbentField($companyvalue, $empnovalue, "id");
+          if (! is_null($incumbentid)) {
+            $hincumbent->incid=$incumbentid;
+          }
+
+          // add correct team ID
+          $user = auth()->user();
+          $hincumbent->teamid=$user->currentTeam->id;
+
+          $hincumbent->save();
         }
-
-        // MAKE SURE THAT THERE'S A COMPANY AND EMPNO, AND THEY ARE UNIQUE
-        $incumbentid = GetIncumbentField($companyvalue, $empnovalue, "id");
-        if (! is_null($incumbentid)) {
-          $hincumbent->incid=$incumbentid;
-        }
-
-        // add correct team ID
-        $user = auth()->user();
-        $hincumbent->teamid=$user->currentTeam->id;
-
-        $hincumbent->save();
       }
 
       fclose ( $handle );
@@ -597,6 +637,7 @@ function SeedPositionHistory($teamId,$newRecords)
     do {
 // dump(2);
       // set a starting point...a HPOSITION record that is identical to the POSITION record
+      // lOOK AT ELOQUENT REPLICATE FUNCTION
       $posHist = new HPosition();
       $posHist->posid = $PTS->id;
       $posHist->teamid = $PTS->teamid;
