@@ -106,6 +106,15 @@ if (!function_exists('GetActiveIncumbents')) {
     }
 }
 
+if (!function_exists('GetAllActiveIncumbents')) {
+    function GetAllActiveIncumbents()
+    {
+        return DB::table('incumbents')
+          ->where ('active_pos','=','A')
+          ->get();
+    }
+}
+
 if (!function_exists('GetHIncumbent')) {
     function GetHIncumbent($employer, $empno, $poscompany, $posno)
     {

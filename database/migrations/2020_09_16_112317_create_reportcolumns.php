@@ -36,7 +36,7 @@ class CreateReportcolumns extends Migration
       DB::table('reportcolumns')->insert([['reportid'=>'1000','columnorder'=>'30','field'=>'descr','header'=>'Position'],]);
       DB::table('reportcolumns')->insert([['reportid'=>'1000','columnorder'=>'40','field'=>'level1','header'=>'Department'],]);
       DB::table('reportcolumns')->insert([['reportid'=>'1000','columnorder'=>'50','field'=>'curstatus','header'=>'Status'],]);
-      DB::table('reportcolumns')->insert([['reportid'=>'1000','columnorder'=>'60','field'=>'budgsal','format'=>'R$,2''header'=>'Budg Salary'],]);
+      DB::table('reportcolumns')->insert([['reportid'=>'1000','columnorder'=>'60','field'=>'budgsal','format'=>'R$,2','header'=>'Budg Salary'],]);
 
       DB::table('reportcolumns')->insert([['reportid'=>'1010','columnorder'=>'10','field'=>'company','header'=>'Company'],]);
       DB::table('reportcolumns')->insert([['reportid'=>'1010','columnorder'=>'20','field'=>'posno','header'=>'Pos #'],]);

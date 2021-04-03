@@ -1,40 +1,40 @@
 
 <?php
 
-/**
-* Class and Function List:
-* Function list:
-* - GetPositionField()
-* - GetPosition()
-* - GetPositions()
-* - GetFriendlyColumnName()
-* - GetColumnType()
-* - GetColumnLength()
-* - validateData()
-* - FormatMoney()
-* - FormatDollars()
-* - UpdatePosition()
-* - ImportPositions()
-* - ImportHPositions()
-* - ImportIncumbents()
-* - ImportHIncumbents()
-* - getTimestamp()
-* - sessionSet()
-* - sessionGet()
-* - sessionForgetOne()
-* Classes list:
-*/
+  /**
+  * Class and Function List:
+  * Function list:
+  * - GetPositionField()
+  * - GetPosition()
+  * - GetPositions()
+  * - GetFriendlyColumnName()
+  * - GetColumnType()
+  * - GetColumnLength()
+  * - validateData()
+  * - FormatMoney()
+  * - FormatDollars()
+  * - UpdatePosition()
+  * - ImportPositions()
+  * - ImportHPositions()
+  * - ImportIncumbents()
+  * - ImportHIncumbents()
+  * - getTimestamp()
+  * - sessionSet()
+  * - sessionGet()
+  * - sessionForgetOne()
+  * Classes list:
+  */
 
-use App\Models\Post;
-use App\Position;
-use App\HPosition;
-use App\Incumbent;
-use App\HIncumbent;
-use Illuminate\Support\Facades\Schema\columns;
-use Illuminate\Support\Facades\DB;
+  use App\Models\Post;
+  use App\Position;
+  use App\HPosition;
+  use App\Incumbent;
+  use App\HIncumbent;
+  use Illuminate\Support\Facades\Schema\columns;
+  use Illuminate\Support\Facades\DB;
 
-// leave namespace out so that functions are global
-//namespace App\Http\Middleware;
+  // leave namespace out so that functions are global
+  //namespace App\Http\Middleware;
 
 
 if (!function_exists('UpdatePosition')) {
@@ -98,9 +98,9 @@ if (!function_exists('UpdatePosition')) {
     }
 
     // check model to see if any changes at all have been made.  If not, nothing to do
-// dump(1);
+    // dump(1);
     if ($position->IsDirty()) {
-// dump($position->getdirty());
+      // dump($position->getdirty());
       //MODEL IS DIRTY
       // if we determine that the model is dirty cycle through columns one by one to see which ones have changes
       $user = auth()->user();
@@ -111,14 +111,14 @@ if (!function_exists('UpdatePosition')) {
         // if so, see if it's dirty so that we can log as needed
         $returnStringValue = $request->get($columnName);
         if (!is_null($returnStringValue)) {
-// dump($columnName);
+          // dump($columnName);
 
           //$columnName = $column->COLUMN_NAME;
           // dd($column);
           //$position.$columnName = $request->get($columnName);
           $columnValue = $request->get($columnName);
           $columnType = GetColumnType('positions',$columnName);
-// dump($columnValue);
+          // dump($columnValue);
 
           // if using FORMATMONEY() function then a leading $ will be in the data.  Strip it fann_descale_output
           // validate the incoming data, based on the table.field data type
@@ -142,8 +142,8 @@ if (!function_exists('UpdatePosition')) {
             $originalValue = $position->getOriginal($columnName);
 
             if ($columnValue != $originalValue) {
-// dump($originalValue);
-// dump($columnValue);
+              // dump($originalValue);
+              // dump($columnValue);
               $friendlyName = GetFriendlyColumnName('positions',$columnName);
               $fieldChange = '  - ' . $friendlyName . ' has changed from ' . $originalValue . ' to ' . $columnValue . " \n" ;
               $userConfirmMessage = $userConfirmMessage . $fieldChange ;
@@ -167,19 +167,19 @@ if (!function_exists('UpdatePosition')) {
       //Also, we can create a history record here.
       //May need to grab a copy of the original record at the very beginning of this function
 
-//***************************************************
+      //***************************************************
       // see if a history record is needed
       $posHistRecs = \DB::table('hpositions')
         ->where('posid','=',$posid)
         ->where('trans_date','=',date('Y-m-d'))
         ->get();
       $positionhistorycount = $posHistRecs->count();
-// dd($positionhistorycount);
+      // dd($positionhistorycount);
       // if no records with today's date need to add a new history record
       if ($positionhistorycount==0) {
 
 
-// dd('trying to insert record into hpositions');
+        // dd('trying to insert record into hpositions');
         $user = auth()->user();
 
         $posHist = new HPosition();
@@ -452,7 +452,6 @@ if (!function_exists('ImportHPositions')) {
 
 }
 
-
 if (!function_exists('ImportIncumbents')) {
 
   //***************************************************
@@ -474,7 +473,7 @@ if (!function_exists('ImportIncumbents')) {
       // scan remaining CSV records, and put each into an array named $data
       while ( ($data = fgetcsv ( $handle, 2000, ',' )) !== FALSE ) {
 
-        //add a new record to positions table
+        //add a new record to incumbents table
         $incumbent = new Incumbent() ;
         $i = 0;
 
@@ -488,12 +487,20 @@ if (!function_exists('ImportIncumbents')) {
               $fieldname=$header[$i];
               $fielddata=$data[$i];
 
-              if (strToUpper($fieldname)=="COMPANY") {
-                $companyvalue = $fielddata;
+              if (strToUpper($fieldname)=="POSCOMPANY") {
+                $poscompanyvalue = $fielddata;
               }
 
               if (strToUpper($fieldname)=="POSNO") {
                 $posnovalue = $fielddata;
+              }
+
+              if (strToUpper($fieldname)=="COMPANY") {
+                $companyvalue = $fielddata;
+              }
+
+              if (strToUpper($fieldname)=="EMPNO") {
+                $empnovalue = $fielddata;
               }
 
 
@@ -507,7 +514,7 @@ if (!function_exists('ImportIncumbents')) {
           endwhile;
 
           // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
-          $positionid = GetPositionField($companyvalue, $posnovalue, "id");
+          $positionid = GetPositionField($poscompanyvalue, $posnovalue, "id");
 
           if (! is_null($positionid)) {
             $incumbent->posid=$positionid;
@@ -607,173 +614,280 @@ if (!function_exists('ImportHIncumbents')) {
   }
 }
 
+if (!function_exists('SeedPositionHistory')) {
+  //***************************************************
+  //***************************************************
+  //***************************************************
+  //**  SEED SAMPLE POSITION HISTORY RECORDS
+  //**
+  //**  Build a reasonable set of history records based on sample *BRM position records
+  //**
+  //***************************************************
+  //***************************************************
+  //***************************************************
 
-//***************************************************
-//***************************************************
-//***************************************************
-//**  SEED SAMPLE POSITION HISTORY RECORDS
-//**
-//**  Build a reasonable set of history records based on sample *BRM position records
-//**
-//***************************************************
-//***************************************************
-//***************************************************
+  function SeedPositionHistory($teamId,$newRecords)
+  {
+    $positionsToSeed = \DB::table('positions')
+      ->where('TeamID','=',$teamId)
+      ->get();
 
-function SeedPositionHistory($teamId,$newRecords)
-{
-  $positionsToSeed = \DB::table('positions')
-    ->where('TeamID','=',$teamId)
-    ->get();
+    // delete existing sample history records for this team
+    \DB::table('hpositions')
+      ->where('TeamID','=',$teamId)
+      ->delete();
+  // dump(1);
 
-  // delete existing sample history records for this team
-  \DB::table('hpositions')
-    ->where('TeamID','=',$teamId)
-    ->delete();
-// dump(1);
+    Foreach ($positionsToSeed as $PTS){
 
-  Foreach ($positionsToSeed as $PTS){
+      $count = 0 ;
+      do {
+  // dump(2);
+        // set a starting point...a HPOSITION record that is identical to the POSITION record
+        // lOOK AT ELOQUENT REPLICATE FUNCTION
+        $posHist = new HPosition();
+        $posHist->posid = $PTS->id;
+        $posHist->teamid = $PTS->teamid;
+        $posHist->company = $PTS->company;
+        $posHist->posno = $PTS->posno;
+        $posHist->descr = $PTS->descr;
+        $posHist->trans_date=date('Y-m-d');
+        $posHist->active = $PTS->active;
+        $posHist->annftehour = $PTS->annftehour;
+        $posHist->avail_date = $PTS->avail_date;
+        $posHist->budgsal = $PTS->budgsal;
+        $posHist->eeoclass = $PTS->eeoclass;
+        $posHist->enddate = $PTS->enddate;
+        $posHist->exempt = $PTS->exempt;
+        $posHist->ftefreq = $PTS->ftefreq;
+        $posHist->ftehours = $PTS->ftehours;
+        $posHist->fulltimeequiv = $PTS->fulltimeequiv;
+        $posHist->funded = $PTS->funded;
+        $posHist->group1 = $PTS->group1;
+        $posHist->group2 = $PTS->group2;
+        $posHist->group3 = $PTS->group3;
+        $posHist->jobdesc = $PTS->jobdesc;
+        $posHist->lastactdate = $PTS->lastactdate;
+        $posHist->last_fil = $PTS->last_fil;
+        $posHist->last_ove = $PTS->last_ove;
+        $posHist->last_par = $PTS->last_par;
+        $posHist->last_vac = $PTS->last_vac;
+        $posHist->level1 = $PTS->level1;
+        $posHist->level2 = $PTS->level2;
+        $posHist->level3 = $PTS->level3;
+        $posHist->level4 = $PTS->level4;
+        $posHist->level5 = $PTS->level5;
+        $posHist->linktoabra = $PTS->linktoabra;
+        $posHist->multincumb = $PTS->multincumb;
+        $posHist->payfreq = $PTS->payfreq;
+        $posHist->payrate = $PTS->payrate;
+        $posHist->paytype = $PTS->paytype;
+        $posHist->reason = $PTS->reason;
+        $posHist->reptocomp = $PTS->reptocomp;
+        $posHist->reptodesc = $PTS->reptodesc;
+        $posHist->reptoposno = $PTS->reptoposno;
+        $posHist->salgrade = $PTS->salgrade;
+        $posHist->salupper = $PTS->salupper;
+        $posHist->sallower = $PTS->sallower;
+        $posHist->salfreq = $PTS->salfreq;
+        $posHist->curstatus = $PTS->curstatus;
+        $posHist->startdate = $PTS->startdate;
+        $posHist->supcompany = $PTS->supcompany;
+        $posHist->supempno = $PTS->supempno;
+        $posHist->supname = $PTS->supname;
+        $posHist->userdef1 = $PTS->userdef1;
+        $posHist->userdef2 = $PTS->userdef2;
+        $posHist->userdef3 = $PTS->userdef3;
+        $posHist->userdef4 = $PTS->userdef4;
+        $posHist->userdef5 = $PTS->userdef5;
+        $posHist->userdef6 = $PTS->userdef6;
+        $posHist->vac_times = $PTS->vac_times;
+        $posHist->vac_months = $PTS->vac_months;
+        $posHist->reptocom2 = $PTS->reptocom2;
+        $posHist->reptopos2 = $PTS->reptopos2;
+        $posHist->reptodesc2 = $PTS->reptodesc2;
+        $posHist->historyreason = $PTS->historyreason;
+        $posHist->historystart = $PTS->historystart;
+        $posHist->historyend = getTodaysDate();
 
-    $count = 0 ;
-    do {
-// dump(2);
-      // set a starting point...a HPOSITION record that is identical to the POSITION record
-      // lOOK AT ELOQUENT REPLICATE FUNCTION
-      $posHist = new HPosition();
-      $posHist->posid = $PTS->id;
-      $posHist->teamid = $PTS->teamid;
-      $posHist->company = $PTS->company;
-      $posHist->posno = $PTS->posno;
-      $posHist->descr = $PTS->descr;
-      $posHist->trans_date=date('Y-m-d');
-      $posHist->active = $PTS->active;
-      $posHist->annftehour = $PTS->annftehour;
-      $posHist->avail_date = $PTS->avail_date;
-      $posHist->budgsal = $PTS->budgsal;
-      $posHist->eeoclass = $PTS->eeoclass;
-      $posHist->enddate = $PTS->enddate;
-      $posHist->exempt = $PTS->exempt;
-      $posHist->ftefreq = $PTS->ftefreq;
-      $posHist->ftehours = $PTS->ftehours;
-      $posHist->fulltimeequiv = $PTS->fulltimeequiv;
-      $posHist->funded = $PTS->funded;
-      $posHist->group1 = $PTS->group1;
-      $posHist->group2 = $PTS->group2;
-      $posHist->group3 = $PTS->group3;
-      $posHist->jobdesc = $PTS->jobdesc;
-      $posHist->lastactdate = $PTS->lastactdate;
-      $posHist->last_fil = $PTS->last_fil;
-      $posHist->last_ove = $PTS->last_ove;
-      $posHist->last_par = $PTS->last_par;
-      $posHist->last_vac = $PTS->last_vac;
-      $posHist->level1 = $PTS->level1;
-      $posHist->level2 = $PTS->level2;
-      $posHist->level3 = $PTS->level3;
-      $posHist->level4 = $PTS->level4;
-      $posHist->level5 = $PTS->level5;
-      $posHist->linktoabra = $PTS->linktoabra;
-      $posHist->multincumb = $PTS->multincumb;
-      $posHist->payfreq = $PTS->payfreq;
-      $posHist->payrate = $PTS->payrate;
-      $posHist->paytype = $PTS->paytype;
-      $posHist->reason = $PTS->reason;
-      $posHist->reptocomp = $PTS->reptocomp;
-      $posHist->reptodesc = $PTS->reptodesc;
-      $posHist->reptoposno = $PTS->reptoposno;
-      $posHist->salgrade = $PTS->salgrade;
-      $posHist->salupper = $PTS->salupper;
-      $posHist->sallower = $PTS->sallower;
-      $posHist->salfreq = $PTS->salfreq;
-      $posHist->curstatus = $PTS->curstatus;
-      $posHist->startdate = $PTS->startdate;
-      $posHist->supcompany = $PTS->supcompany;
-      $posHist->supempno = $PTS->supempno;
-      $posHist->supname = $PTS->supname;
-      $posHist->userdef1 = $PTS->userdef1;
-      $posHist->userdef2 = $PTS->userdef2;
-      $posHist->userdef3 = $PTS->userdef3;
-      $posHist->userdef4 = $PTS->userdef4;
-      $posHist->userdef5 = $PTS->userdef5;
-      $posHist->userdef6 = $PTS->userdef6;
-      $posHist->vac_times = $PTS->vac_times;
-      $posHist->vac_months = $PTS->vac_months;
-      $posHist->reptocom2 = $PTS->reptocom2;
-      $posHist->reptopos2 = $PTS->reptopos2;
-      $posHist->reptodesc2 = $PTS->reptodesc2;
-      $posHist->historyreason = $PTS->historyreason;
-      $posHist->historystart = $PTS->historystart;
-      $posHist->historyend = getTodaysDate();
+        // make changes that will determine the differences that exist within the history record
 
-      // make changes that will determine the differences that exist within the history record
+        // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        // random number of days since last history records
+        if ($count == 0) {
+          // if this is the first seeding loop for this position then use the POSITIONS history date
+          $lastStart = $posHist->historystart;
 
-      // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      // random number of days since last history records
-      if ($count == 0) {
-        // if this is the first seeding loop for this position then use the POSITIONS history date
-        $lastStart = $posHist->historystart;
+          if (is_null($lastStart)) {
+            $lastStart = getTodaysDate();
+            dump('ughhhhhh');
+          }
 
-        if (is_null($lastStart)) {
-          $lastStart = getTodaysDate();
-          dump('ughhhhhh');
+        } else {
+          // otherwise just use the date from the last loop through, so we continue iterating backwards chronologically
         }
 
-      } else {
-        // otherwise just use the date from the last loop through, so we continue iterating backwards chronologically
-      }
+        // last day of this history record is the first day of the "next" record
+        $thisEnd = $lastStart;
 
-      // last day of this history record is the first day of the "next" record
-      $thisEnd = $lastStart;
+        // thisStart = thisEnd - random # of days
+        $dthisEnd = date_create($thisEnd);
+        $elapsedDays = rand(400,800);
+        $updateString = sprintf("%u days",$elapsedDays);
+        $dthisStart = date_sub($dthisEnd,date_interval_create_from_date_string($updateString));
+        $thisStart = $dthisStart->format('Y-m-d');
 
-      // thisStart = thisEnd - random # of days
-      $dthisEnd = date_create($thisEnd);
-      $elapsedDays = rand(400,800);
-      $updateString = sprintf("%u days",$elapsedDays);
-      $dthisStart = date_sub($dthisEnd,date_interval_create_from_date_string($updateString));
-      $thisStart = $dthisStart->format('Y-m-d');
+        $posHist->historystart  = $dthisStart;
+        $posHist->historyend    = $thisEnd;
 
-      $posHist->historystart  = $dthisStart;
-      $posHist->historyend    = $thisEnd;
+        // set the start date so that it's available for the next record being created for this position
+        $lastStart = $thisStart;
 
-      // set the start date so that it's available for the next record being created for this position
-      $lastStart = $thisStart;
+        // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        // some percent pay increase
+        if ($count == 0) {
+          // if this is the first seeding loop for this position then use the POSITIONS data
+          $BudgSal = $posHist->budgsal;
+          $PayRate = $posHist->payrate;
+          }
 
-      // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      // some percent pay increase
-      if ($count == 0) {
-        // if this is the first seeding loop for this position then use the POSITIONS data
-        $BudgSal = $posHist->budgsal;
-        $PayRate = $posHist->payrate;
-        }
+        $percentIncrease = round(rand(2,8),0);
+        $newPayRate = $PayRate/(1+($percentIncrease/100));
+        $newBudgSal = $BudgSal/(1+($percentIncrease/100));
 
-      $percentIncrease = round(rand(2,8),0);
-      $newPayRate = $PayRate/(1+($percentIncrease/100));
-      $newBudgSal = $BudgSal/(1+($percentIncrease/100));
+        $posHist->payrate = $newPayRate;
+        $posHist->budgsal = $newBudgSal;
 
-      $posHist->payrate = $newPayRate;
-      $posHist->budgsal = $newBudgSal;
+        // set variables so they're available next imagesetinterpolation
+        $BudgSal = $newBudgSal;
+        $PayRate = $newPayRate;
 
-      // set variables so they're available next imagesetinterpolation
-      $BudgSal = $newBudgSal;
-      $PayRate = $newPayRate;
+        // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        // occasional change in ftehours
 
-      // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      // occasional change in ftehours
+        // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        // occasional change in active status
 
-      // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      // occasional change in active status
+        // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        // occasional change in Capacity status
 
-      // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      // occasional change in Capacity status
-
-      // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      // occasional change in location
+        // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        // occasional change in location
 
 
 
-      $posHist->save();
-      $count = $count + 1;
+        $posHist->save();
+        $count = $count + 1;
 
-    } while ($count < $newRecords);
+      } while ($count < $newRecords);
+
+    }
 
   }
+}
 
+if (!function_exists('ImportIncumbentChanges')) {
+
+  //***************************************************
+  //***************************************************
+  //***************************************************
+  //**  I M P O R T   I N C U M B E N T   C H A N G E S
+  //**
+  //**  Import Incumbent changes from a CSV file
+  //**
+  //**  Typically done on a regular basis, to update incumbent data or add to/remove from positions
+  //**
+  //*** This procedure allows a user to specify position numbers in an HRMS User Defined field.
+  //***
+  //***
+  //*** * The procedure will review positions to see which incumbents should be in them, and
+  //*** * transfer incumbents in and out accordingly.  Also need to make sure that the status
+  //*** * hasn't changed, or update the position record properly if it has.
+  //***
+  //*** * 1 - create a cursor with all PowerPCS incumbents and their current positions.
+  //*** * 2 - create a cursor with all HRMS employees, their Annual cost and FTES,  and their
+  //*** *     assigned positions.  Validate all position numbers, warn if invalid, and remove
+  //*** *     them from the list.  Blank position numbers aren't processed.
+  //*** * 3 - find out all incumbents who need to be removed from a position, and all
+  //*** *     that need to be added to a position.
+  //*** * 4 - combine the adds and removals.  This gives us the set of all positions that
+  //*** *     we need to process.  Note that an incumbent may be in the list 2 times...
+  //*** *     i.e. added to position A, and removed from position B.
+  //*** * 5 - cycle through the positions identified in Step 4.
+  //*** * 6 - identify their original status, and their ending status.  Identify the
+  //*** *     "since" date (i.e. vacant since...) if there is a change.
+  //*** * 7 - process removals.  Create history records if required.
+  //*** * 8 - process additions.
+  //*** * 9 - update the position's status.
+  //***************************************************
+  //***************************************************
+  //***************************************************
+  function ImportIncumbentChanges($incomingFile)
+  {
+
+    $fileToProcess = '../storage/app/importFiles/'.$incomingFile;
+
+  //*** * 1 - create a cursor with all PowerPCS incumbents and their current positions.
+  $PcsActiveIncumbents = GetAllActiveIncumbents();
+
+  //*** * 2 - create a cursor with all HRMS employees, their Annual cost and FTES,  and their
+  //*** *     assigned positions.  Validate all position numbers, warn if invalid, and remove
+  //*** *     them from the list.  Blank position numbers aren't processed.
+    if (($handle = fopen ( $fileToProcess, 'r' )) !== FALSE) {
+
+      // extract headers so we can see what fields are being imported
+      // the 2000 is the max line length, and is optional ("slightly slower")
+      $header = fgetcsv($handle, 2000, ',');
+      $headercount = count($header);
+
+      // scan remaining CSV records, and put each into an array named $data
+      while ( ($data = fgetcsv ( $handle, 2000, ',' )) !== FALSE ) {
+
+        //add a new record to positions table
+        $position = new Position();
+        $i = 0;
+
+        // check for empty lines...in a CSV file they show up "as an array comprising a single null field, and will not be treated as an error."
+        if (! empty($data[0])) {
+
+          // scan through all fields in the current record
+          while ($i<$headercount):
+
+              // grab the fieldname from $header and the imported data from $data
+              $fieldname=$header[$i];
+              $fielddata=$data[$i];
+
+            // if ! is_null($fielddata);
+
+              // validate the incoming data, based on the table.field data type
+              $fielddata=validateData('positions',$fieldname,$fielddata);
+
+              // update the field in the new positions records
+              // import will look like:  $position->active="A"
+              $position->$fieldname=$fielddata;
+
+            // endif;
+
+              $i++;
+          endwhile;
+
+
+
+        // MAKE SURE THAT THERE'S A COMPANY AND POSNO, AND THEY ARE UNIQUE
+
+        $position->save();
+        // ERRORS TO CATCH:
+        //incorrect field names will error on save()
+
+        }
+
+      }
+
+      fclose ( $handle );
+
+      // rename('/ImportFiles/brmpositions.csv.imported','/ImportFiles/brmpositions.csv');
+
+
+    }
+  }
 }
