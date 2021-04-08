@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateImportTable extends Migration
+class CreateImportsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateImportTable extends Migration
      */
     public function up()
     {
-        Schema::create('import', function (Blueprint $table) {
+        Schema::create('imports', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('teamid')->default(999999999);
             $table->unsignedInteger('importedbyid')->default(999999999);
@@ -39,6 +39,6 @@ class CreateImportTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('import');
+        Schema::dropIfExists('imports');
     }
 }
