@@ -119,7 +119,7 @@ return redirect('/incumbents')->with('success', 'Incumbent saved!');
       ->where('posno', '=', $reqpositionposno)
       ->where('company', '=', $reqpositioncompany)
       ->pluck('descr');  // "5"
-    $badChars=array('[',']','"');
+    $badChars=['[',']','"'];
     $selectedposition=str_replace($badChars,'',$selectedposition);
     SessionSet('selectedincumbentposition',$selectedposition);
 
